@@ -1,0 +1,24 @@
+#!/bin/bash
+#
+# Creates a disk image (dmg) on Mac OS X from the command line.
+#
+# usage:
+#    mkdmg <volname> <srcdir>
+#
+# Where <volname> is the name to use for the mounted image and <srcdir> is
+# where the contents to put on the dmg are.
+#
+# The result will be a file called <volname>.dmg
+
+if [ $# != 2 ]; then
+myname=`basename $0`
+  echo "usage: $myname volname srcdir"
+  exit 0
+fi
+
+VOL="$1"
+SRCDIR="$2"
+
+DMG="$VOL.dmg"
+
+hdiutil create -volname ${VOL} -srcfolder ${SRCDIR} -uid 99 -gid 99 -ov ${DMG}

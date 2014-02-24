@@ -1,0 +1,13 @@
+#!/bin/bash
+
+osascript << EAPPLESCRIPT
+
+tell application "Finder"       
+  set theFiles to selection
+  set theList to ""
+  repeat with aFile in theFiles
+    set theList to theList & "'" & POSIX path of (aFile as alias) & "'" & " "
+  end repeat
+  theList
+end tell
+EAPPLESCRIPT
