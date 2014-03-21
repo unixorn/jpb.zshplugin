@@ -129,7 +129,7 @@ fi
 
 export VISUAL=${EDITOR}
 
-# Old-school OS9 Mac files had a different line ending than *nix, deal with
+# Old-school OS9 Mac text files had a different line ending than *nix, deal with
 # converting back and forth.
 alias mac2unix="tr '\015' '\012'"
 alias unix2mac="tr '\012' '\015'"
@@ -326,4 +326,13 @@ pjson() {
       fi
     done
   fi
+}
+
+# from: https://vinipsmaker.wordpress.com/2014/02/23/my-zsh-config/
+# bash prints ^C when you're typing a command and control-c to cancel, so it
+# is easy to see it wasn't executed. By default, zsh doesn't print the ^C.
+# Fortunately, it is easy to trap SIGINT.
+TRAPINT() {
+  print -n -u2 '^C'
+  return $((128+$1))
 }
