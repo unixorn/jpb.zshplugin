@@ -29,6 +29,7 @@ do
     exit 0
   else
     echo "'$*' attempt $attempts failed; waiting to retry..."
+    echo
     sleep ${DELAY}
   fi
 done
