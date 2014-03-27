@@ -101,30 +101,30 @@ fi
 # places, so go through the usual suspects and create an alias when we find
 # it.
 if [ -x /bin/vim ]; then
-    alias vi="/bin/vim"
-    alias vim="/bin/vim"
-    export EDITOR='/bin/vim'
+  alias vi="/bin/vim"
+  alias vim="/bin/vim"
+  export EDITOR='/bin/vim'
 fi
 
 if [ -x /usr/bin/vim ]; then
-    alias vi="/usr/bin/vim"
-    alias vim="/usr/bin/vim"
-    export EDITOR='/usr/bin/vim'
+  alias vi="/usr/bin/vim"
+  alias vim="/usr/bin/vim"
+  export EDITOR='/usr/bin/vim'
 fi
 
 # If there's a macports vim, it is almost certainly more current than the
 # one Apple ships
 if [ -x /opt/local/bin/vim ]; then
-    alias vim='/opt/local/bin/vim'
-    alias vi="/opt/local/bin/vim"
-    export EDITOR='/opt/local/bin/vim'
+  alias vim='/opt/local/bin/vim'
+  alias vi="/opt/local/bin/vim"
+  export EDITOR='/opt/local/bin/vim'
 fi
 
 # Same for homebrew.
 if [ -x /usr/local/bin/vim ]; then
-    alias vim='/usr/local/bin/vim'
-    alias vi="/usr/local/bin/vim"
-    export EDITOR="/usr/local/bin/vim"
+  alias vim='/usr/local/bin/vim'
+  alias vi="/usr/local/bin/vim"
+  export EDITOR="/usr/local/bin/vim"
 fi
 
 export VISUAL=${EDITOR}
@@ -200,42 +200,42 @@ hgrep() {
 watch() { t=$1; shift; while test :; do clear; date=$(date); echo -e "Every $ts: $@ \t\t\t\t $date"; $@; sleep $t; done }
 
 cleanxmlclip() {
-    pbpaste | tidy -xml -wrap 0 | pbcopy
+  pbpaste | tidy -xml -wrap 0 | pbcopy
 }
 
 calc() {
-    awk "BEGIN{ print $* }" ;
+  awk "BEGIN{ print $* }" ;
 }
 
 procs_for_path() {
-    for pid in $(lsof "$*" | cut -d' ' -f 3 | sort | uniq); do ps -f -p $pid; done
+  for pid in $(lsof "$*" | cut -d' ' -f 3 | sort | uniq); do ps -f -p $pid; done
 }
 
 # begin sysadvent2011 functions
 _awk_col() {
-      echo "$1" | egrep -v '^[0-9]+$' || echo "\$$1"
+  echo "$1" | egrep -v '^[0-9]+$' || echo "\$$1"
 }
 
 sum() {
-      [ "${1#-F}" != "$1" ] && SP=${1} && shift
-          [ "$#" -eq 0 ] && set -- 0
-              key="$(_awk_col "$1")"
-                  awk $SP "{ x+=$key } END { printf(\"%d\n\", x) }"
+  [ "${1#-F}" != "$1" ] && SP=${1} && shift
+  [ "$#" -eq 0 ] && set -- 0
+  key="$(_awk_col "$1")"
+  awk $SP "{ x+=$key } END { printf(\"%d\n\", x) }"
 }
 
 sumby() {
-      [ "${1#-F}" != "$1" ] && SP=${1} && shift
-          [ "$#" -lt 0 ] && set -- 0 1
-              key="$(_awk_col "$1")"
-                  val="$(_awk_col "$2")"
-                      awk $SP "{ a[$key] += $val } END { for (i in a) { printf(\"%d %s\\n\", a[i], i) } }"
+  [ "${1#-F}" != "$1" ] && SP=${1} && shift
+  [ "$#" -lt 0 ] && set -- 0 1
+  key="$(_awk_col "$1")"
+  val="$(_awk_col "$2")"
+  awk $SP "{ a[$key] += $val } END { for (i in a) { printf(\"%d %s\\n\", a[i], i) } }"
 }
 
 countby() {
-      [ "${1#-F}" != "$1" ] && SP=${1} && shift
-          [ "$#" -eq 0 ] && set -- 0
-              key="$(_awk_col "$1")"
-                  awk $SP "{ a[$key]++ } END { for (i in a) { printf(\"%d %s\\n\", a[i], i) } }"
+  [ "${1#-F}" != "$1" ] && SP=${1} && shift
+  [ "$#" -eq 0 ] && set -- 0
+  key="$(_awk_col "$1")"
+  awk $SP "{ a[$key]++ } END { for (i in a) { printf(\"%d %s\\n\", a[i], i) } }"
 }
 # end sysadvent
 
