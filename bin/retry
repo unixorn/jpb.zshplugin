@@ -2,9 +2,6 @@
 #
 # Run a command over and over until it exits 0. Wait $DELAY seconds between
 # attempts.
-#
-# I mainly use this when I'm trying to ssh into a freshly spun up instance in
-# EC2 so it will keep trying until sshd is up on the new instance.
 
 if [ -z $DELAY ]; then
   DELAY=5
@@ -29,6 +26,12 @@ do
     exit 0
   else
     echo "'$*' attempt $attempts failed; waiting to retry..."
+    if [ ! -z $MAXRETRIES ]; then
+      if (( $attempts >= $MAXRETRIES )); then
+        echo "max retries was $MAXRETRIES, $attempts failed attempts, exiting..."
+        exit 1
+      fi
+    fi
     echo
     sleep ${DELAY}
   fi
