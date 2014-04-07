@@ -188,12 +188,30 @@ alias tarxvf="tar xvf"
 # from cads
 ff() { find . -type f -iname '*'$*'*' -ls ; }
 
+# Got tired of constantly doing history | grep X | tail
 hgrep40() {
   history | grep -i "$@" | tail -40
 }
 
 hgrep() {
   history | grep -i "$@" | tail -20
+}
+
+rot13() {
+  echo $1 | tr "A-Za-z" "N-ZA-Mn-za-m"
+}
+
+# SHA stuff
+sha1() {
+  echo -n $1 | openssl sha1 /dev/stdin
+}
+
+sha256() {
+  echo -n $1 | openssl sha256 /dev/stdin
+}
+
+sha512() {
+  echo -n $1 | openssl sha512 /dev/stdin
 }
 
 # from commandlinefu.com
