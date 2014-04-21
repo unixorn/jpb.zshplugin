@@ -50,6 +50,13 @@ if [[ "$(uname -s)" = "Darwin" ]]; then
   alias pbconvert="pbpaste | perl -pe 's/\r\n|\r/\n/g' | pbcopy"
   alias pbsort="pbpaste | sort | pbcopy"
 
+  # Show/hide hidden files in Finder
+  alias show_dotfiles="defaults write com.apple.Finder AppleShowAllFiles -bool true && killall Finder"
+  alias hide_dotfiles="defaults write com.apple.Finder AppleShowAllFiles -bool false && killall Finder"
+
+  # Zap those damn .DS_Store files
+  alias zap_ds_store="find . -type f -name '*.DS_Store' -delete -ls"
+
   # sound
   alias mute="osascript -e 'set volume output muted true'"
   alias stfu="osascript -e 'set volume output muted true'"
