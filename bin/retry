@@ -8,9 +8,9 @@ if [ -z $DELAY ]; then
 fi
 
 if [ "$1" == "--help" ] ; then
-  echo "$0 command"
+  echo "$(basename $0) command"
   echo "or"
-  echo "DELAY=30 $0 command"
+  echo "DELAY=30 $(basename $0) command"
   echo
   echo "Keep trying command until it succeeds. Wait DELAY seconds between attempts"
   echo
@@ -21,11 +21,11 @@ attempts=0
 while true
 do
   (( attempts = $attempts +1 ))
-  $*
+  $@
   if [[ $? == 0 ]]; then
     exit 0
   else
-    echo "'$*' attempt $attempts failed; waiting to retry..."
+    echo -n "'$@' attempt $attempts failed; waiting to retry..."
     if [ ! -z $MAXRETRIES ]; then
       if (( $attempts >= $MAXRETRIES )); then
         echo "max retries was $MAXRETRIES, $attempts failed attempts, exiting..."

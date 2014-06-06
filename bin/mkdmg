@@ -11,8 +11,7 @@
 # The result will be a file called <volname>.dmg
 
 if [ $# != 2 ]; then
-myname=`basename $0`
-  echo "usage: $myname volname srcdir"
+  echo "usage: $(basename $0) volname srcdir"
   exit 0
 fi
 

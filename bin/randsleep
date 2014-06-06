@@ -6,7 +6,7 @@ if [ ! -z "$1" ] ; then
 fi
 
 if [ "$1" == "--help" ] ; then
-  echo "$0 [time to sleep in seconds]"
+  echo "$(basename $0) [time to sleep in seconds]"
   echo "time to sleep in seconds, defaults to 600"
   echo "Will sleep between zero and LIMIT"
   exit 1
