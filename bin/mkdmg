@@ -15,6 +15,11 @@ if [ $# != 2 ]; then
   exit 0
 fi
 
+if [ $(uname -a | grep -ci DARWIN) != 1 ]; then
+  echo "Sorry, this script only works on OS X"
+  exit 1
+fi
+
 VOL="$1"
 SRCDIR="$2"
 
