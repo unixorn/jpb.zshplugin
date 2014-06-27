@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Use: Put something this in your .tmux.conf file
+# Use: Put something like this in your .tmux.conf file
 # set -g status-right: '#(wifi-signal-strength)'
 #
 # from: https://github.com/ngs/dotfiles/blob/master/bin/wifi-signal-strength
