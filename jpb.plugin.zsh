@@ -92,9 +92,9 @@ fi
 if [[ "$(uname -s)" = "Linux"  ]]; then
   # we're on linux
   alias cputop="top -o cpu"
-  alias l-d="ls -lFaGd"
+  alias l-d="ls -lFad"
   alias l="ls -la"
-  alias l="ls -laFG"
+  alias l="ls -laF"
   alias ll="ls -lFa | TERM=vt100 less"
   alias ll="ls -la | less"
 fi
