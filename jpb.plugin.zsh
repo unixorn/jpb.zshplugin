@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-export GOPATH=~/gocode
-
 # What platform are we on?
 on_linux() { [[ "$(uname -s)" = "Linux"  ]] }
 on_osx()   { [[ "$(uname -s)" = "Darwin" ]] }
@@ -80,6 +78,13 @@ if [[ "$(uname -s)" = "Darwin" ]]; then
       sudo ${EDITOR} ${1}; # use the default editor
       sudo plutil -convert binary1 ${1} # convert it back to binary
     fi
+  }
+
+  # Manually remove a downloaded app or file from the quarantine
+  function unquarantine() {
+    for attribute in com.apple.metadata:kMDItemDownloadedDate com.apple.metadata:kMDItemWhereFroms com.apple.quarantine; do
+      xattr -r -d "$attribute" "$@"
+    done
   }
 
 fi
