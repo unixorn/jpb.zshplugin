@@ -52,9 +52,6 @@ if [[ "$(uname -s)" = "Darwin" ]]; then
   alias show_dotfiles="defaults write com.apple.Finder AppleShowAllFiles -bool true && killall Finder"
   alias hide_dotfiles="defaults write com.apple.Finder AppleShowAllFiles -bool false && killall Finder"
 
-  # Zap those damn .DS_Store files
-  alias zap_ds_store="find . -type f -name '*.DS_Store' -delete -ls"
-
   # sound
   alias mute="osascript -e 'set volume output muted true'"
   alias stfu="osascript -e 'set volume output muted true'"
@@ -196,6 +193,13 @@ alias raek='rake'
 alias tartvf="tar tvf"
 alias tartvzf="tar tvzf"
 alias tarxvf="tar xvf"
+
+# Zap those damn .DS_Store files
+zap_ds_store() {
+  if [ -d ${1} ]; then
+    find ${1} -type f -name '.DS_Store' -delete -ls
+  fi
+}
 
 # from cads
 ff() { find . -type f -iname '*'$*'*' -ls ; }
