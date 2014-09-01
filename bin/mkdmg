@@ -25,4 +25,4 @@ SRCDIR="$2"
 
 DMG="$VOL.dmg"
 
-hdiutil create -volname ${VOL} -srcfolder ${SRCDIR} -uid 99 -gid 99 -ov ${DMG}
+hdiutil create -volname "${VOL}" -srcfolder "${SRCDIR}" -uid 99 -gid 99 -ov "${DMG}"
