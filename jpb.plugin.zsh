@@ -372,3 +372,7 @@ TRAPINT() {
 }
 
 alias hexpass="openssl rand -hex 24"
+
+function sshaddme {
+  ssh $1 "mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys" < ~/.ssh/id_?sa.pub  # '?sa' is a glob, not a typo!
+}
