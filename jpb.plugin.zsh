@@ -370,3 +370,5 @@ TRAPINT() {
   print -n -u2 '^C'
   return $((128+$1))
 }
+
+alias hexpass="openssl rand -hex 24"
