@@ -310,7 +310,11 @@ jsoncurl() {
 # recursively touch, e.g. touch + mkdir -p
 # so files can easily be created at depth
 canhaz() {
-  mkdir -p $(dirname "$1") && touch "$1"
+  mkdir -p $(dirname "${1}") && touch "${1}"
+}
+
+canhaz_script() {
+  mkdir -p $(dirname "${1}") && touch "${1}" && chmod +x "${1}"
 }
 
 pong() {
@@ -375,4 +379,15 @@ alias hexpass="openssl rand -hex 24"
 
 function sshaddme {
   ssh $1 "mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys" < ~/.ssh/id_?sa.pub  # '?sa' is a glob, not a typo!
+}
+
+# mkdir & cd
+function mkcd {
+    mkdir -p "$@" && cd $_
+}
+
+# delete .pyc and .pyo files
+function pyclean {
+  find . -name '*.pyc' -delete
+  find . -name '*.pyo' -delete
 }
