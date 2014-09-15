@@ -52,6 +52,10 @@ if [[ "$(uname -s)" = "Darwin" ]]; then
   alias show_dotfiles="defaults write com.apple.Finder AppleShowAllFiles -bool true && killall Finder"
   alias hide_dotfiles="defaults write com.apple.Finder AppleShowAllFiles -bool false && killall Finder"
 
+  # Hide/show all desktop icons for presenting
+  alias show_desktop_icons="defaults write com.apple.finder CreateDesktop -bool true && killall Finder"
+  alias hide_desktop_icons="defaults write com.apple.finder CreateDesktop -bool false && killall Finder"
+
   # sound
   alias mute="osascript -e 'set volume output muted true'"
   alias stfu="osascript -e 'set volume output muted true'"
