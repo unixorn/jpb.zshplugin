@@ -13,4 +13,9 @@ if [ -f /etc/debian_version ];then
   esac
 fi
 
-ps ${PS_ARGS} | grep $* | grep -ve grep -ve ${0}
+
+if [ ! -z $1 ] ; then
+  ps ${PS_ARGS} | grep $* | grep -ve grep -ve ${0}
+else
+  echo "I need a process name to search for"
+fi
