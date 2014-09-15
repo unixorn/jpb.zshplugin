@@ -1,0 +1,80 @@
+#!/usr/bin/env ruby
+# Usage: ansi2html [-w] [--css]
+#
+#   -w    : wrap HTML output in PRE tags
+#   -css  : include CSS styles
+#
+# Convert terminal color ANSI escape sequences to HTML.
+#
+# Examples:
+#
+#   $ git log --oneline --decorate -10 --color | ansi2html
+#
+#   $ ruby -e '30.upto(37) {|n| puts "\e[#{n}mHi \e[1;#{n}mho\e[m" }' | ansi2html
+#
+# Author: Mislav Marohnić
+
+require 'cgi'
+
+if ARGV.include?('-h') || ARGV.include?('--help')
+  File.open(__FILE__, 'r') do |source|
+    source.each do |line|
+      case line
+      when /^#!/ then next
+      when /^#/ then puts line.sub(/^# ?/, '')
+      else break
+      end
+    end
+  end
+  exit 0
+end
+
+wrap = ARGV.delete('-w')
+css = ARGV.delete('--css')
+data = ARGF.read
+out = $stdout
+
+COLORS = [
+  %w[black black #818383],
+  %w[red #BA3521 #F9391F],
+  %w[green #25BC22 #31E722],
+  %w[yellow #ADAD27 #EAEC23],
+  %w[blue #3D2EE2 #562FE2],
+  %w[magenta #AE38D4 #F935F7],
+  %w[cyan #2BB9C9 #14F0F0],
+  %w[white #DEDFE1 #E9EBEB],
+]
+
+def classnames(code)
+  codes = code.split(';').map { |c| c.to_i }
+  codes.delete(0)
+  if color_code = codes.find { |c| c.between?(30, 37) }
+    codes.delete(color_code)
+    codes << COLORS[color_code - 30][0]
+  end
+  codes << 'bright' if codes.delete(1)
+  codes.map { |c| "ansi-#{c}" }.join(' ')
+end
+
+open = false
+
+out << "<pre class='ansi'>" if wrap
+# replace escape sequences with SPAN tags
+out << CGI.escapeHTML(data.rstrip).gsub(/\e\[ ([\d;]*)m /x) {
+  opentag = $1.empty?? nil : "<span class='#{classnames($1)}'>"
+  closetag = open ? '</span>' : nil
+  open = !!opentag
+  "#{closetag}#{opentag}"
+}
+out << "</pre>" if wrap
+out << "\n"
+
+if css
+  out.puts "\n<style type=\"text/css\">"
+  out.puts "  pre.ansi { color: #DEDFE1; background-color: #010101; }"
+  COLORS.map do |name, normal, bright|
+    out.puts "  pre.ansi .ansi-#{name} { color: #{normal}; }"
+    out.puts "  pre.ansi .ansi-#{name}.ansi-bright { color: #{bright}; }"
+  end
+  out.puts "</style>"
+end
