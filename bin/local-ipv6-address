@@ -1,7 +1,19 @@
 #!/bin/bash
 
-active_interface=`netstat -nr | awk '{ if ($1 ~/default/) { print $6} }'`
+if [[ "$(uname -s)" = "Linux"  ]]; then
+  active_interface=$(route | awk '{ if ($1 ~/default/) { print $8} }')
 
-ifconfig ${active_interface} | \
-  grep inet6 | \
-  awk '{ if ($1 ~/inet/) { print $2} }'
+  ifconfig ${active_interface} | \
+    grep inet6 | \
+    awk '{ if ($1 ~/inet/) { print $2} }' | \
+    tr ':' '\n' | \
+    grep -v addr
+fi
+
+if [[ "$(uname -s)" = "Darwin" ]]; then
+  active_interface=$(netstat -nr | awk '{ if ($1 ~/default/) { print $6} }')
+
+  ifconfig ${active_interface} | \
+    grep inet6 | \
+    awk '{ if ($1 ~/inet/) { print $2} }'
+fi
