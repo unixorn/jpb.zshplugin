@@ -403,3 +403,7 @@ function pyclean {
   find . -name '*.pyc' -delete
   find . -name '*.pyo' -delete
 }
+
+function smite () {
+  ps wax | grep ${1} | grep -v grep | awk '{print $1}' | xargs murder
+}
