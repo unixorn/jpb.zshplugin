@@ -17,5 +17,5 @@ fi
 if [ ! -z $1 ] ; then
   ps ${PS_ARGS} | grep $* | grep -ve grep -ve ${0}
 else
-  echo "I need a process name to search for"
+  echo "Specify a process name to search for"
 fi

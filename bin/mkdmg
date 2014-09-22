@@ -1,5 +1,9 @@
 #!/bin/bash
 #
+# Author: Joe Block <jpb@unixorn.net>
+#
+# This is covered by the Apache 2.0 license
+#
 # Creates a disk image (dmg) on Mac OS X from the command line.
 #
 # usage:
