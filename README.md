@@ -1,7 +1,7 @@
 # jpb.zshplugin
 =============
 
-Antigen plugin to load some of my tools.
+[Antigen](https://github.com/zsh-users/antigen) plugin to load some of my tools.
 
 ## Installing
 
@@ -11,7 +11,7 @@ add `antigen bundle unixorn/git-extra-commands` to your .zshrc
 
 ### Without using any frameworks
 
-git clone this repository, then add its bin directory to your $PATH. Add `source /path/to/here/jpb.plugin.zsh` to your `.zshrc` file.
+git clone this repository, then add its bin directory to your $PATH. Add `source /path/to/here/jpb.plugin.zsh` to your `.zshrc` file. The scripts in here don't actually require you to be using ZSH as your login shell, they're being distributed as an [antigen](https://github.com/zsh-users/antigen) plugin because it's convenient.
 
 ## Credits
 
