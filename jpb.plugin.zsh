@@ -404,8 +404,16 @@ function pyclean {
   find . -name '*.pyo' -delete
 }
 
-function smite () {
+function smite() {
   ps wax | grep ${1} | grep -v grep | awk '{print $1}' | xargs murder
 }
 
 alias python_module_path="echo 'import sys; t=__import__(sys.argv[1],fromlist=[\".\"]); print(t.__file__)'  | python - "
+
+function 755() {
+  chmod 755 $@
+}
+
+function 644() {
+  chmod 644 $@
+}
