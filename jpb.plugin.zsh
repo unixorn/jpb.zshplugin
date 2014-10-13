@@ -161,8 +161,13 @@ alias my_ips="ifconfig -a | perl -nle'/(\d+\.\d+\.\d+\.\d+)/ && print $1'"
 alias myip="dig +short myip.opendns.com @resolver1.opendns.com"
 
 alias reattach='screen -r'
+
+# SSH stuff
 alias ssh="ssh -A"
-alias sshnohostchecks="ssh -A -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
+alias sshi='ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o GlobalKnownHostsFile=/dev/null'
+alias scpi='scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o GlobalKnownHostsFile=/dev/null'
+alias sshnohostchecks='sshi'
+
 alias stripcolors='sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g"'
 
 alias wget="wget -c"
