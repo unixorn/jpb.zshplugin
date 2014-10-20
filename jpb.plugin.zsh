@@ -567,3 +567,9 @@ fi
 
 export LSCOLORS=exfxcxdxbxegedAbAgacad
 export LS_COLORS="di=34;40:ln=35;40:so=32;40:pi=33;40:ex=31;40:bd=34;46:cd=34;43:su=1;;41:sg=1;;46:tw=0;42:ow=0;43:"
+
+# OS X has a habit of changing the way it does some of its non-posixy things
+# every major rev or so. Add a helper to standardize detecting the rev
+function osx_major_version(){
+  sw_vers -productVersion | awk -F '.' '{print $1 "." $2}'
+}
