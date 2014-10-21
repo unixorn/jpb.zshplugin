@@ -1,0 +1,82 @@
+#!/usr/bin/env python
+#
+# Python rewrite since the original bash script had no license and no way to
+# specify the size of the RAM disk.
+#
+# Copyright 2014 Joe Block <jpb@unixorn.net>
+#
+# Apache 2.0 License (see LICENSE in this repo for further details)
+
+import argparse
+import logging
+import os
+import sys
+
+from subprocess import check_call, check_output
+
+g_CLIargs = None
+
+def darwinRAMDisk(args=None):
+  """We're running on OS X, create a RAMDisk"""
+  if args.megabytes:
+    blocks = int(args.megabytes) * 2048
+  if args.gigabytes:
+    blocks = int(args.gigabytes) * 1024 * 2048
+  deviceCreateCommand = ("hdiutil attach -nomount ram://%s" % blocks).split(' ')
+  rawVolume = check_output(deviceCreateCommand).strip()
+  check_output(['diskutil', 'erasevolume', 'HFS+', args.name, rawVolume])
+
+
+def linuxRAMDisk(args=None):
+  """Running on Linux, create a RAM disk"""
+  if not os.path.is_dir(args.name):
+    print "%s is not a directory" % args.name
+  if args.megabytes:
+    size="size=%sm" % args.megabytes
+  if args.gigabytes:
+    size="size=%sg" % args.gigabytes
+  check_output(['mount', '-t', 'ramfs', '-o', size, 'ramfs', args.name])
+
+
+def setupRAMdisk(args=None):
+  """Get the operating system flavor"""
+  if sys.platform.startswith('darwin'):
+    darwinRAMDisk(args)
+  elif sys.platform.startswith('linux'):
+    linuxRAMDisk(args)
+  else:
+    print "Can't create RAM disk on %s" % sys.platform
+    sys.exit(1)
+
+
+if __name__ == "__main__":
+  parser = argparse.ArgumentParser(description="RAMDisk creator")
+  parser.add_argument("--name",
+                      action="store",
+                      dest="name",
+                      help="Specify the name of the RAM disk on OSX, or the path to mountpoint on FreeBSD or Linux")
+  parser.add_argument("--megabytes",
+                      action="store",
+                      dest="megabytes",
+                      help="Size of RAM disk in megabytes")
+  parser.add_argument("--gigabytes",
+                      action="store",
+                      dest="gigabytes",
+                      help="Size of RAM disk in gigabytes")
+  args = parser.parse_args()
+
+  # sanity check arguments
+  sane = True
+  if not args.name:
+    print "You must specify a name for the RAM disk with --name."
+    sane = False
+  if (not args.megabytes) and (not args.gigabytes):
+    print "You must specify the disk size with either --megabytes or --gigabytes."
+    sane = False
+  if args.megabytes and args.gigabytes:
+    print "Please specify either megabytes or gigabytes, not both."
+    sane = False
+  if not sane:
+    sys.exit(1)
+  setupRAMdisk(args)
+
