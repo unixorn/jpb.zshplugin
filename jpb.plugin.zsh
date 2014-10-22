@@ -423,6 +423,13 @@ function 644() {
   chmod 644 $@
 }
 
+# Lesspipe
+LESSPIPE=`which lesspipe.sh`
+if [ -n "${LESSPIPE}" ]; then
+  export LESSOPEN="| ${LESSPIPE} %s"
+  export LESS=' -R '
+fi
+
 # I use grc to colorize some command output for clarity.
 # brew install grc to check it out.
 GRC=`which grc`
@@ -573,3 +580,5 @@ export LS_COLORS="di=34;40:ln=35;40:so=32;40:pi=33;40:ex=31;40:bd=34;46:cd=34;43
 function osx_major_version(){
   sw_vers -productVersion | awk -F '.' '{print $1 "." $2}'
 }
+
+alias asroot='sudo $(fc -ln -1)'
