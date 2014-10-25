@@ -419,8 +419,16 @@ function 755() {
   chmod 755 $@
 }
 
+function 700() {
+  chmod 700 $@
+}
+
 function 644() {
   chmod 644 $@
+}
+
+function 600() {
+  chmod 600 $@
 }
 
 # Lesspipe
@@ -437,7 +445,7 @@ GRC=`which grc`
 if [ "$TERM" != dumb ] && [ -n "$GRC" ]; then
   alias colourify="$GRC -es --colour=auto"
 
-  # Use functions so we can still take advantage of ZSH completionfunctions
+  # Use functions so we can still take advantage of ZSH completion functions
 
   function as(){
     grc --colour=auto /usr/bin/as
