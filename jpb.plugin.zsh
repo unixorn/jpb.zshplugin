@@ -373,12 +373,10 @@ alias knife='nocorrect knife'
 
 # from: https://coderwall.com/p/hwu5uq?i=9&p=1&q=sort%3Ascore+desc&t%5B%5D=zsh
 pjson() {
-  if [ $# -gt 0 ];
-    then
+  if [ $# -gt 0 ]; then
     for arg in $@
     do
-      if [ -f $arg ];
-        then
+      if [ -f $arg ]; then
         cat $arg | python -m json.tool
       else
         echo "$arg" | python -m json.tool
