@@ -641,3 +641,8 @@ function zurl {
     print $match
   fi
 }
+
+# Helper function to clean up orphaned images
+docker-clean-images(){
+  docker images|grep \<none\>|awk '{print $3}' | xargs docker rmi
+}
