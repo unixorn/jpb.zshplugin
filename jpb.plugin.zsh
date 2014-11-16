@@ -642,7 +642,13 @@ function zurl {
   fi
 }
 
-# Helper function to clean up orphaned images
-docker-clean-images(){
-  docker images|grep \<none\>|awk '{print $3}' | xargs docker rmi
+function stopwatch(){
+  case $(uname) in
+    "Linux") DATE=date ;;
+    "Darwin") DATE=gdate ;;
+  esac
+  local BEGIN=`$DATE +%s`
+  while true; do
+    echo -ne "$($DATE -u --date @$((`$DATE +%s` - $BEGIN)) +%H:%M:%S)\r";
+  done
 }
