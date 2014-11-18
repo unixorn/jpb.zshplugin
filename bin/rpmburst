@@ -1,0 +1,10 @@
+#!/bin/bash
+#
+# Burst an rpm. Does it in the current directory, so look out.
+
+if [ ! -f "${1}" ]; then
+  echo "${1} not found!"
+  exit 1
+fi
+
+rpm2cpio "${1}" | cpio -idmv
