@@ -1,0 +1,62 @@
+#!/usr/bin/env zsh
+#
+# https://github.com/blueyed/dotfiles/blob/master/usr/bin/get_distro
+#
+# Display information about currently used distribution.
+# Code is taken and adopted from byobu.
+
+if [ -r "/etc/issue" ]; then
+  # lsb_release is *really* slow;  try to use /etc/issue first
+  issue=$(grep -m1 "^[A-Za-z]" /etc/issue)
+  case "$issue" in
+    Ubuntu*) distro=${${${issue%%\(*}%%\\*}%% } ;;
+    Debian*) distro="Debian $(</etc/debian_version)" ;;
+    *) if [ -r /etc/SuSE-release ] ; then
+        # TODO: use ${//}
+        distro="SuSE $(fgrep VERSION /etc/SuSE-release | cut -f2 -d= | tr -d ' ').$(fgrep PATCHLEVEL /etc/SuSE-release | cut -f2 -d= | tr -d ' ')"
+      elif [ -r /etc/redhat-release ] ; then
+        distro=$(</etc/redhat-release)
+        distro=${distro/Red Hat Enterprise Linux Server/RHEL}
+        distro=${distro/ Linux/} # for CentOS
+        distro=${distro/release /}
+        distro=${distro/ \(*/}
+      elif ! which lsb_release >/dev/null 2>&1; then
+        distro=$(echo "$issue" | sed "s/ [^0-9]* / /" | awk '{print $1 " " $2}')
+      fi
+    ;;
+  esac
+fi
+
+if ! (( $+distro )) && which lsb_release >/dev/null 2>&1; then
+  # If lsb_release is available, use it
+  r=$(lsb_release -s -d)
+  case "$r" in
+    Ubuntu*.*.*)
+      # Use the -d if an Ubuntu LTS
+      distro="$r"
+    ;;
+    *)
+      # But for other distros the description
+      # is too long, so build from -i and -r
+      distro="${(f)$(lsb_release -s -i -r)}"
+      distro=${distro/RedHatEnterpriseServer/RHEL}
+    ;;
+  esac
+fi
+
+if ! (( $+distro )) && [[ -f /etc/synoinfo.conf ]]; then
+  distro=$(grep '^synobios=' /etc/synoinfo.conf | sed -nr 's/^.*"(.*)"$/\1/p')
+fi
+
+if ! (( $+distro )) && [[ -n "$OSTYPE" ]]; then
+  case "$OSTYPE" in
+    darwin11.* ) distro="MacOS Lion ${OSTYPE#darwin}" ;;
+    darwin* ) distro="MacOS ${OSTYPE#darwin}" ;;
+    *) distro=$OSTYPE ;;
+  esac
+fi
+
+(( $+distro )) || distro="unknown"
+distro+=" ($(uname -m))"
+
+echo $distro
