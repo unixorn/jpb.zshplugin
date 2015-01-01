@@ -110,6 +110,16 @@ fi
 
 alias historysummary="history | awk '{a[\$2]++} END{for(i in a){printf \"%5d\t%s\n\",a[i],i}}'| sort -rn| head -30"
 
+function historygram() {
+  history | \
+    awk '{print $2}' | \
+    sort | \
+    uniq -c | \
+    sort -rn | \
+    head -20 | \
+    awk '!max{max=$1;}{r="";i=s=60*$1/max;while(i-->0)r=r"#";printf "%15s %5d %s %s",$2,$1,r,"\n";}'
+}
+
 # Use homebrew versions if present
 if [ -x /usr/local/bin/mysql/bin/mysql ]; then
   alias mysql="/usr/local/mysql/bin/mysql"
@@ -397,7 +407,9 @@ TRAPINT() {
   return $((128+$1))
 }
 
-alias hexpass="openssl rand -hex 24"
+function hexpass() {
+  openssl rand -hex 24 $@
+}
 
 function sshaddme {
   ssh $1 "mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys" < ~/.ssh/id_?sa.pub  # '?sa' is a glob, not a typo!
@@ -445,7 +457,7 @@ fi
 
 # I use grc to colorize some command output for clarity.
 # brew install grc to check it out.
-GRC=`which grc`
+GRC=$(which grc)
 
 if [ "$TERM" != dumb ] && [ -n "$GRC" ]; then
   alias colourify="$GRC -es --colour=auto"
