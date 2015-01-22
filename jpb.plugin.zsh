@@ -45,16 +45,16 @@ if [[ "$(uname -s)" = "Darwin" ]]; then
 
   # clipboard manipulation
   alias gpaste="pbpaste | perl -pe 's/\r\n|\r/\n/g'"
-  alias pbconvert="pbpaste | perl -pe 's/\r\n|\r/\n/g' | pbcopy"
+  alias pbclean="pbpaste | perl -pe 's/\r\n|\r/\n/g' | pbcopy"
   alias pbsort="pbpaste | sort | pbcopy"
 
   # Show/hide hidden files in Finder
-  alias show_dotfiles="defaults write com.apple.Finder AppleShowAllFiles -bool true && killall Finder"
-  alias hide_dotfiles="defaults write com.apple.Finder AppleShowAllFiles -bool false && killall Finder"
+  alias show-dotfiles="defaults write com.apple.Finder AppleShowAllFiles -bool true && killall Finder"
+  alias hide-dotfiles="defaults write com.apple.Finder AppleShowAllFiles -bool false && killall Finder"
 
   # Hide/show all desktop icons for presenting
-  alias show_desktop_icons="defaults write com.apple.finder CreateDesktop -bool true && killall Finder"
-  alias hide_desktop_icons="defaults write com.apple.finder CreateDesktop -bool false && killall Finder"
+  alias show-desktop-icons="defaults write com.apple.finder CreateDesktop -bool true && killall Finder"
+  alias hide-desktop-icons="defaults write com.apple.finder CreateDesktop -bool false && killall Finder"
 
   # sound
   alias mute="osascript -e 'set volume output muted true'"
@@ -70,12 +70,20 @@ if [[ "$(uname -s)" = "Darwin" ]]; then
   fi
 
   # homebrew stuff
-  alias memcached_load="launchctl load -w /usr/local/Cellar/memcached/1.4.13/homebrew.mxcl.memcached.plist"
-  alias memcached_unload="launchctl unload -w /usr/local/Cellar/memcached/1.4.13/homebrew.mxcl.memcached.plist"
-  alias mysql_load="launchctl load -w /usr/local/Cellar/mysql/5.5.20/homebrew.mxcl.mysql.plist"
-  alias mysql_unload="launchctl unload -w /usr/local/Cellar/mysql/5.5.20/homebrew.mxcl.mysql.plist"
-  alias postgres_load="launchctl load -w /usr/local/Cellar/postgresql/9.1.3/homebrew.mxcl.postgresql.plist"
-  alias postgres_unload="launchctl unload -w /usr/local/Cellar/postgresql/9.1.3/homebrew.mxcl.postgresql.plist"
+  if [ -f /usr/local/Cellar/memcached/1.4.13/homebrew.mxcl.memcached.plist ]; then
+    alias memcached-load="launchctl load -w /usr/local/Cellar/memcached/1.4.13/homebrew.mxcl.memcached.plist"
+    alias memcached-unload="launchctl unload -w /usr/local/Cellar/memcached/1.4.13/homebrew.mxcl.memcached.plist"
+  fi
+
+  if [ -f /usr/local/Cellar/mysql/5.5.20/homebrew.mxcl.mysql.plist ]; then
+    alias mysql-load="launchctl load -w /usr/local/Cellar/mysql/5.5.20/homebrew.mxcl.mysql.plist"
+    alias mysql-unload="launchctl unload -w /usr/local/Cellar/mysql/5.5.20/homebrew.mxcl.mysql.plist"
+  fi
+
+  if [ -f /usr/local/Cellar/postgresql/9.1.3/homebrew.mxcl.postgresql.plist ]; then
+    alias postgres-load="launchctl load -w /usr/local/Cellar/postgresql/9.1.3/homebrew.mxcl.postgresql.plist"
+    alias postgres-unload="launchctl unload -w /usr/local/Cellar/postgresql/9.1.3/homebrew.mxcl.postgresql.plist"
+  fi
 
   alias -g @NDL='~/Downloads/*(.om[1])'
 
@@ -99,7 +107,7 @@ if [[ "$(uname -s)" = "Darwin" ]]; then
 fi
 
 if [[ "$(uname -s)" = "Linux"  ]]; then
-  # we're on linux
+  # We're on linux
   alias cputop="top -o cpu"
   alias l-d="ls -lFad"
   alias l="ls -la"
@@ -226,7 +234,7 @@ alias tarxvf="tar xvf"
 alias tarxvzf="tar xvzf"
 
 # Zap those damn .DS_Store files
-zap_ds_store() {
+zap-ds-store() {
   if [ -d ${1} ]; then
     find ${1} -type f -name '.DS_Store' -delete -ls
   fi
