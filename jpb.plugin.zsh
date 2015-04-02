@@ -675,3 +675,8 @@ function stopwatch(){
     echo -ne "$($DATE -u --date @$((`$DATE +%s` - $BEGIN)) +%H:%M:%S)\r";
   done
 }
+
+# lists zombie processes
+function zombie() {
+  ps aux | awk '{if ($8=="Z") { print $2 }}'
+}

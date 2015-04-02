@@ -1,13 +1,28 @@
-# jpb.zshplugin
-=============
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
 
-[Antigen](https://github.com/zsh-users/antigen) plugin to load some of my tools.
+- [jpb.zshplugin](#jpbzshplugin)
+  - [Installing](#installing)
+    - [Antigen](#antigen)
+    - [Zgen](#zgen)
+    - [Without using any frameworks](#without-using-any-frameworks)
+  - [Credits](#credits)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+# jpb.zshplugin
+
+Zsh plugin usable with [Antigen](https://github.com/zsh-users/antigen) and [Zgen](https://github.com/tarjoilija/zgen) to load some of my tools.
 
 ## Installing
 
 ### Antigen
 
 add `antigen bundle unixorn/git-extra-commands` to your .zshrc
+
+### Zgen
+
+add `zgen load unixorn/git-extra-commands` to your .zshrc with your other load commands.
 
 ### Without using any frameworks
 
@@ -19,8 +34,8 @@ git clone this repository, then add its bin directory to your $PATH. Add `source
 * clean-clipboard - Mine
 * clean-whiteboard-picture - [https://gist.github.com/lelandbatey/8677901](https://gist.github.com/lelandbatey/8677901)
 * extractFromRPM - Mine
-* finder_selection - [Stack Exchange](https://apple.stackexchange.com/questions/5435/got-any-tips-or-tricks-for-terminal-in-mac-os-x?page=3&tab=votes#tab-top)
-* get_sound_volume - Mine, I think
+* finder-selection - [Stack Exchange](https://apple.stackexchange.com/questions/5435/got-any-tips-or-tricks-for-terminal-in-mac-os-x?page=3&tab=votes#tab-top)
+* get-sound-volume - Mine, I think
 * ipaddresses - Mine
 * kick-afp - Mine
 * kick-screensharing - Mine
