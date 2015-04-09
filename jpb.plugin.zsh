@@ -680,3 +680,8 @@ function stopwatch(){
 function zombie() {
   ps aux | awk '{if ($8=="Z") { print $2 }}'
 }
+
+# strip comments from config files
+function justconfig() {
+  sed -e '/^[[:space:]]*#/d;/^[[:space:]]*;/d;s/\r//g;/^[[:space:]]*$/d' "$1"
+}
