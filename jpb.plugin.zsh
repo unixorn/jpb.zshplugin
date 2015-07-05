@@ -57,9 +57,7 @@ if [[ "$(uname -s)" = "Darwin" ]]; then
   alias hide-desktop-icons="defaults write com.apple.finder CreateDesktop -bool false && killall Finder"
 
   # sound
-  alias mute="osascript -e 'set volume output muted true'"
   alias stfu="osascript -e 'set volume output muted true'"
-  alias unmute="osascript -e 'set volume output muted false'"
 
   if [ -x '/System/Library/CoreServices/Applications/Network Utility.app/Contents/Resources/stroke' ]; then
     alias stroke='/System/Library/CoreServices/Applications/Network\ Utility.app/Contents/Resources/stroke'
@@ -471,6 +469,7 @@ fi
 GRC=$(which grc)
 
 if [ "$TERM" != dumb ] && [ -n "$GRC" ]; then
+
   alias colourify="$GRC -es --colour=auto"
 
   # Use functions so we can still take advantage of ZSH completion functions
