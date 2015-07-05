@@ -1,5 +1,6 @@
 *.*.un~
 *.pyc
+*.pyo
 *.sublime-project
 *.sublime-workspace
 .DS_Store
