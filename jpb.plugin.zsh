@@ -437,8 +437,7 @@ function mkcd {
 
 # delete .pyc and .pyo files
 function pyclean {
-  find . -name '*.pyc' -delete
-  find . -name '*.pyo' -delete
+  find -E . -type f -regex '.*\.(pyc|pyo)' -delete
 }
 
 function smite() {
