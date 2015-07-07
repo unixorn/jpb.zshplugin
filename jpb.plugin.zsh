@@ -225,6 +225,7 @@ alias sign='gpg --detach-sign --armor'
 
 # my common tyops
 alias ..="cd .."
+alias ':q'="exit"
 alias gerp='grep'
 alias grep-i='grep -i'
 alias grep='GREP_COLOR="1;37;41" LANG=C grep --color=auto'
@@ -239,6 +240,7 @@ alias tartvf="tar tvf"
 alias tartvzf="tar tvzf"
 alias tarxvf="tar xvf"
 alias tarxvzf="tar xvzf"
+alias zz="exit"
 
 # Zap those damn .DS_Store files
 zap-ds-store() {
