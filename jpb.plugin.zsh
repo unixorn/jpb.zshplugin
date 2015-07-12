@@ -685,3 +685,7 @@ function zombie() {
 function justconfig() {
   sed -e '/^[[:space:]]*#/d;/^[[:space:]]*;/d;s/\r//g;/^[[:space:]]*$/d' "$1"
 }
+
+# from: https://github.com/chilicuil/shundle-plugins/blob/master/aliazator/aliases/extra/wget.aliases
+alias test.broadband='wget -O /dev/null http://speedtest.wdc01.softlayer.com/downloads/test500.zip'
+alias wcat='wget -q -O -'
