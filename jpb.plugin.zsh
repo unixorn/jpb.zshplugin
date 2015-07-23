@@ -68,9 +68,9 @@ if [[ "$(uname -s)" = "Darwin" ]]; then
   fi
 
   # homebrew stuff
-  if [ -f /usr/local/Cellar/memcached/1.4.13/homebrew.mxcl.memcached.plist ]; then
-    alias memcached-load="launchctl load -w /usr/local/Cellar/memcached/1.4.13/homebrew.mxcl.memcached.plist"
-    alias memcached-unload="launchctl unload -w /usr/local/Cellar/memcached/1.4.13/homebrew.mxcl.memcached.plist"
+  if [ -f /usr/local/Cellar/memcached/1.4.24/homebrew.mxcl.memcached.plist ]; then
+    alias memcached-load="launchctl load -w /usr/local/Cellar/memcached/1.4.24/homebrew.mxcl.memcached.plist"
+    alias memcached-unload="launchctl unload -w /usr/local/Cellar/memcached/1.4.24/homebrew.mxcl.memcached.plist"
   fi
 
   if [ -f /usr/local/Cellar/mysql/5.5.20/homebrew.mxcl.mysql.plist ]; then
