@@ -689,3 +689,5 @@ function justconfig() {
 # from: https://github.com/chilicuil/shundle-plugins/blob/master/aliazator/aliases/extra/wget.aliases
 alias test.broadband='wget -O /dev/null http://speedtest.wdc01.softlayer.com/downloads/test500.zip'
 alias wcat='wget -q -O -'
+
+alias grepm='grep --exclude-dir={node_modules,bower_components,dist,.bzr,.cvs,.git,.hg,.svn,.tmp} --color=always'
