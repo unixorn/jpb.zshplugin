@@ -79,4 +79,3 @@ if __name__ == "__main__":
   if not sane:
     sys.exit(1)
   setupRAMdisk(args)
-
