@@ -1,3 +1,4 @@
 #!/bin/bash
 
-date +%d-%m-%Y
+# I need timestamps so many places...
+date +%Y%M%d-%H%m%S
