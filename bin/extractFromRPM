@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+rpm2cpio ${1} | cpio -iv --to-stdout ./${2}
