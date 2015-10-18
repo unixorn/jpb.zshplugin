@@ -1,5 +1,4 @@
 #!/bin/sh
-
 #
 # Open a new iTerm session with the command given
 # as argument.
@@ -19,7 +18,7 @@
 # original script by Marc Liyanage <http://www.entropy.ch>
 # 	designed to work with Mac OSX Terminal.app
 # iTerm modifications by Damon Parker <http://damonparker.org>
-# 
+#
 #
 # Version 1.2
 # 9/20/2005 damonp - make sure new session opens in current window, clear screen
@@ -72,7 +71,7 @@ tell application "iTerm"
   			set background color to "$COLOR"
   		end tell
 	end tell
-	
+
 	--set curTerminal to (make new terminal)
 end tell
 EOF

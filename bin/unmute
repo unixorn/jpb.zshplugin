@@ -3,5 +3,5 @@
 if [[ "$(uname -s)" = "Darwin" ]]; then
   osascript -e 'set volume output muted false'
 else
-  echo "$0 only supported on OS X"
+  echo "$0 is only supported on OS X"
 fi
