@@ -85,7 +85,7 @@ if [[ "$(uname -s)" = "Darwin" ]]; then
 
   alias -g @NDL='~/Downloads/*(.om[1])'
 
-  pledit() { # plist editor.
+  function pledit() { # plist editor.
     if [ $# -ne 1 ]; then
       echo -e "pledit: Edit Apple plist file\nusage: pledit plist_filename"
     else
@@ -106,6 +106,17 @@ if [[ "$(uname -s)" = "Darwin" ]]; then
   # every major rev or so. Add a helper to standardize detecting the rev
   function osx_major_version(){
     sw_vers -productVersion | awk -F '.' '{print $1 "." $2}'
+  }
+
+  # Finder-related
+  function finder_path {
+    osascript -e 'tell application "Finder"'\
+      -e "if (${1-1} <= (count Finder windows)) then"\
+      -e "get POSIX path of (target of window ${1-1} as alias)"\
+      -e 'else' \
+      -e 'get POSIX path of (desktop as alias)'\
+      -e 'end if' \
+      -e 'end tell';
   }
 
 fi
