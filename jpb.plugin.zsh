@@ -701,3 +701,6 @@ alias test.broadband='wget -O /dev/null http://speedtest.wdc01.softlayer.com/dow
 alias wcat='wget -q -O -'
 
 alias grepm='grep --exclude-dir={node_modules,bower_components,dist,.bzr,.cvs,.git,.hg,.svn,.tmp} --color=always'
+
+export BULLETTRAIN_CONTEXT_SHOW=true
+export BULLETTRAIN_IS_SSH_CLIENT=true
