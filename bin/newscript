@@ -1,0 +1,124 @@
+#!/usr/bin/env ruby
+#
+#   Copyright 2016 Joe Block <jpb@unixorn.net>
+#
+#   Licensed under the Apache License, Version 2.0 (the "License");
+#   you may not use this file except in compliance with the License.
+#   You may obtain a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#   Unless required by applicable law or agreed to in writing, software
+#   distributed under the License is distributed on an "AS IS" BASIS,
+#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#   See the License for the specific language governing permissions and
+#   limitations under the License.
+#
+
+# Got tired of 'vim foo' && chmod +x foo && cat /path/to/template > foo,
+# so made a helper to create new scripts with the base stuff I wanted in them.
+
+require 'rubygems'
+require 'pp'
+require 'trollop'
+
+def clean_name(name)
+  # get rid of toxic spaces
+  return name.gsub(' ', '_')
+end
+
+def write_script(name:, source:)
+  if File.exist?(name) then
+    puts "There's already something named #{name} here. Bailing out."
+    exit 13
+  else
+    File.open(name, "w") do |content|
+      content.write(source)
+      `chmod 755 #{name}`
+    end
+  end
+end
+
+def generate_bash_script(name:)
+  rawScript =<<"END_BASH_SCRIPT"
+#!/usr/bin/env bash
+#
+# Script skeleton
+#
+# Copyright 20XX, Your Name <yourname@yourdomain.com>
+
+set -o pipefail
+
+END_BASH_SCRIPT
+  write_script(name: name, source: rawScript)
+end
+
+def generate_python_script(name:)
+  rawScript =<<"END_PYTHON_SCRIPT"
+#!/usr/bin/env python
+#
+# Script skeleton
+#
+# Copyright 20XX, Your Name <yourname@yourdomain.com>
+
+def main:
+  """Main function"""
+
+if __name__ == '__main__':
+  main
+
+END_PYTHON_SCRIPT
+  write_script(name: name, source: rawScript)
+end
+
+def generate_ruby_script(name:)
+  rawScript =<<"END_RUBY_SCRIPT"
+#!/usr/bin/env bash
+#
+# Script skeleton
+#
+# Copyright 20XX, Your Name <yourname@yourdomain.com>
+
+require 'trollop'
+
+END_RUBY_SCRIPT
+  write_script(name: name, source: rawScript)
+end
+
+def main
+  $opts = Trollop::options do
+    version "newscript 0.1 (c) 2016 Joe Block <jpb@unixorn.net>"
+    banner <<-EOS
+  Generate a new script file from a template.
+  Usage:
+         newscript [options] name
+  where [options] are:
+  EOS
+
+    opt :debug, "Set debug level", :default => 0
+    opt :script_type, "Script type. Valid options: bash, python or ruby", :type => String, :default => 'bash'
+  end
+
+  validFlavors = ['bash', 'python', 'ruby']
+
+  # Sanity check args
+  Trollop::die :script_type, "#{$opts[:script_type]} must be in #{validFlavors}" unless validFlavors.include?($opts[:script_type])
+
+  $build_date = `date -u "+%Y-%m-%d"`.chomp
+
+  name = ARGV[0]
+
+  case $opts[:script_type]
+  when 'bash'
+    generate_bash_script(name: name)
+  when 'python'
+    generate_python_script(name: name)
+  when 'ruby'
+    generate_ruby_script(name: name)
+  else
+    puts "script type #{$opts[:script_type]} unknown"
+    exit 13
+  end
+end
+
+main
