@@ -84,6 +84,22 @@ def generate_ruby_script(name:)
 
 require 'trollop'
 
+def main
+  $opts = Trollop::options do
+    version "yourscript 0.1 (c) 2016 Your Name <yourname@yourdomain.com>"
+    banner <<-EOS
+  The quick brown fox jumped over the lazy dog.
+  Usage:
+         yourscript [options]
+  where [options] are:
+  EOS
+
+    opt :debug, "Set debug level", :default => 0
+  end
+end
+
+main
+
 END_RUBY_SCRIPT
   write_script(name: name, source: rawScript)
 end
