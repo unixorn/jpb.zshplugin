@@ -40,12 +40,13 @@ def write_script(name:, source:)
 end
 
 def generate_bash_script(name:)
+  copyright_year = `date -u "+%Y"`.chomp
   rawScript =<<"END_BASH_SCRIPT"
 #!/usr/bin/env bash
 #
 # Script skeleton
 #
-# Copyright 20XX, Your Name <yourname@yourdomain.com>
+# Copyright #{copyright_year}, Your Name <yourname@yourdomain.com>
 
 set -o pipefail
 
@@ -54,12 +55,13 @@ END_BASH_SCRIPT
 end
 
 def generate_python_script(name:)
+  copyright_year = `date -u "+%Y"`.chomp
   rawScript =<<"END_PYTHON_SCRIPT"
 #!/usr/bin/env python
 #
 # Script skeleton
 #
-# Copyright 20XX, Your Name <yourname@yourdomain.com>
+# Copyright #{copyright_year}, Your Name <yourname@yourdomain.com>
 
 def main:
   """Main function"""
@@ -72,12 +74,13 @@ END_PYTHON_SCRIPT
 end
 
 def generate_ruby_script(name:)
+  copyright_year = `date -u "+%Y"`.chomp
   rawScript =<<"END_RUBY_SCRIPT"
 #!/usr/bin/env bash
 #
 # Script skeleton
 #
-# Copyright 20XX, Your Name <yourname@yourdomain.com>
+# Copyright #{copyright_year}, Your Name <yourname@yourdomain.com>
 
 require 'trollop'
 
@@ -103,22 +106,22 @@ def main
 
   # Sanity check args
   Trollop::die :script_type, "#{$opts[:script_type]} must be in #{validFlavors}" unless validFlavors.include?($opts[:script_type])
+  Trollop::die "Specify at least one file name" unless ARGV.length > 0
 
-  $build_date = `date -u "+%Y-%m-%d"`.chomp
+  ARGV.each { |name|
+    case $opts[:script_type]
+    when 'bash'
+      generate_bash_script(name: name)
+    when 'python'
+      generate_python_script(name: name)
+    when 'ruby'
+      generate_ruby_script(name: name)
+    else
+      puts "script type #{$opts[:script_type]} unknown"
+      exit 13
+    end
+  }
 
-  name = ARGV[0]
-
-  case $opts[:script_type]
-  when 'bash'
-    generate_bash_script(name: name)
-  when 'python'
-    generate_python_script(name: name)
-  when 'ruby'
-    generate_ruby_script(name: name)
-  else
-    puts "script type #{$opts[:script_type]} unknown"
-    exit 13
-  end
 end
 
 main
