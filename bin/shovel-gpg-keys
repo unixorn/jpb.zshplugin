@@ -1,0 +1,12 @@
+#!/bin/bash
+#
+# Apache 2 license, if it matters.
+#
+# Author: Joe Block <jpb@unixorn.net>
+
+KEYSERVERS="pgp.mit.edu keyserver.ubuntu.com"
+
+for keyserver in $KEYSERVERS
+do
+  gpg --keyserver ${keyserver} --send-key $@
+done
