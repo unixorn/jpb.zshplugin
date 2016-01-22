@@ -4,7 +4,7 @@
 #
 # Author: Joe Block <jpb@unixorn.net>
 
-KEYSERVERS="pgp.mit.edu keyserver.ubuntu.com"
+KEYSERVERS="pgp.mit.edu keyserver.ubuntu.com pool.sks-keyservers.net"
 
 for keyserver in $KEYSERVERS
 do
