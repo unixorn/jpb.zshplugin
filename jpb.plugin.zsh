@@ -1,4 +1,4 @@
-# Copyright 2006-2015 Joseph Block <jpb@apesseekingknowledge.net>
+# Copyright 2006-2016 Joseph Block <jpb@apesseekingknowledge.net>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -43,18 +43,23 @@ if [[ "$(uname -s)" = "Darwin" ]]; then
   alias spotlighter='mdfind -onlyin `pwd`'
   alias top='TERM=vt100 top'
 
+  # Sublime
+  if [[ -x /usr/local/bin/subl ]]; then
+    alias s='/usr/local/bin/subl'
+  fi
+
   # clipboard manipulation
   alias gpaste="pbpaste | perl -pe 's/\r\n|\r/\n/g'"
   alias pbclean="pbpaste | perl -pe 's/\r\n|\r/\n/g' | pbcopy"
   alias pbsort="pbpaste | sort | pbcopy"
 
   # Show/hide hidden files in Finder
-  alias show-dotfiles="defaults write com.apple.Finder AppleShowAllFiles -bool true && killall Finder"
   alias hide-dotfiles="defaults write com.apple.Finder AppleShowAllFiles -bool false && killall Finder"
+  alias show-dotfiles="defaults write com.apple.Finder AppleShowAllFiles -bool true && killall Finder"
 
   # Hide/show all desktop icons for presenting
-  alias show-desktop-icons="defaults write com.apple.finder CreateDesktop -bool true && killall Finder"
   alias hide-desktop-icons="defaults write com.apple.finder CreateDesktop -bool false && killall Finder"
+  alias show-desktop-icons="defaults write com.apple.finder CreateDesktop -bool true && killall Finder"
 
   # sound
   alias stfu="osascript -e 'set volume output muted true'"
