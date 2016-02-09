@@ -29,40 +29,7 @@ export PATH=${PATH}:${PLUGIN_BIN}
 
 if [[ "$(uname -s)" = "Darwin" ]]; then
   # do OS X specific things
-  alias eject="diskutil eject"
-  alias flushds="dscacheutil -flushcache"
-  alias killSS='kill -9 `ps ww | grep ScreenSaverEngine | grep -v grep | awk "{print $1}"`'
-  alias l-d="ls -lFaGd"
-  alias l-h="ls -laFGh"
-  alias l-l="ls -laFG"
-  alias l="ls -laFG"
-  alias ll="ls -lFa | TERM=vt100 less"
-  alias mywireless="system_profiler SPAirPortDataType | awk -F\": \" '/Current Wireless Network/{print $2}'"
-  alias ql='qlmanage -p'
-  alias quicklook='qlmanage -p'
-  alias spotlighter='mdfind -onlyin `pwd`'
   alias top='TERM=vt100 top'
-
-  # Sublime
-  if [[ -x /usr/local/bin/subl ]]; then
-    alias s='/usr/local/bin/subl'
-  fi
-
-  # clipboard manipulation
-  alias gpaste="pbpaste | perl -pe 's/\r\n|\r/\n/g'"
-  alias pbclean="pbpaste | perl -pe 's/\r\n|\r/\n/g' | pbcopy"
-  alias pbsort="pbpaste | sort | pbcopy"
-
-  # Show/hide hidden files in Finder
-  alias hide-dotfiles="defaults write com.apple.Finder AppleShowAllFiles -bool false && killall Finder"
-  alias show-dotfiles="defaults write com.apple.Finder AppleShowAllFiles -bool true && killall Finder"
-
-  # Hide/show all desktop icons for presenting
-  alias hide-desktop-icons="defaults write com.apple.finder CreateDesktop -bool false && killall Finder"
-  alias show-desktop-icons="defaults write com.apple.finder CreateDesktop -bool true && killall Finder"
-
-  # sound
-  alias stfu="osascript -e 'set volume output muted true'"
 
   if [ -x '/System/Library/CoreServices/Applications/Network Utility.app/Contents/Resources/stroke' ]; then
     alias stroke='/System/Library/CoreServices/Applications/Network\ Utility.app/Contents/Resources/stroke'
