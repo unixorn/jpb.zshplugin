@@ -76,13 +76,39 @@ end
 def generate_ruby_script(name:)
   copyright_year = `date -u "+%Y"`.chomp
   rawScript =<<"END_RUBY_SCRIPT"
-#!/usr/bin/env bash
+#!/usr/bin/env ruby
 #
 # Script skeleton
 #
 # Copyright #{copyright_year}, Your Name <yourname@yourdomain.com>
 
 require 'trollop'
+require 'logger'
+
+def setup_logging
+  logger = Logger.new(STDOUT)
+  case $opts[:log_level].upcase
+  when 'DEBUG'
+    logger.level = Logger::DEBUG
+  when 'ERROR'
+    logger.level = Logger::ERROR
+  when 'FATAL'
+    logger.level = Logger::FATAL
+  when 'INFO'
+    logger.level = Logger::INFO
+  when 'WARN'
+    logger.level = Logger::WARN
+  end
+  logger.formatter = proc do |severity, datetime, progname, msg|
+    date_format = datetime.strftime("%Y-%m-%d %H:%M:%S")
+    if severity == "INFO" or severity == "WARN"
+      "[#{date_format}] #{severity}  (#{progname}): #{msg}\n"
+    else
+      "[#{date_format}] #{severity} (#{progname}): #{msg}\n"
+    end
+  end
+  return logger
+end
 
 def main
   $opts = Trollop::options do
@@ -95,7 +121,14 @@ def main
   EOS
 
     opt :debug, "Set debug level", :default => 0
+    opt :log_level, "Set log level", :default => "INFO", :type -> String
   end
+
+  validLevels = ['DEBUG', 'ERROR', 'FATAL', 'INFO', 'WARN']
+  Trollop::die :log_level, "#{$opts[:log_level]} must be in #{validLevels}" unless validLevels.include?($opts[:log_level].upcase!)
+
+  $logger = setup_logging
+
 end
 
 main
