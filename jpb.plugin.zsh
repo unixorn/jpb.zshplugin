@@ -49,14 +49,6 @@ function historygram() {
     awk '!max{max=$1;}{r="";i=s=60*$1/max;while(i-->0)r=r"#";printf "%15s %5d %s %s",$2,$1,r,"\n";}'
 }
 
-# Use homebrew versions if present
-if [ -x /usr/local/bin/mysql/bin/mysql ]; then
-  alias mysql="/usr/local/mysql/bin/mysql"
-fi
-if [ -x /usr/local/bin/mysql/bin/mysqladmin ]; then
-  alias mysqladmin="/usr/local/mysql/bin/mysqladmin"
-fi
-
 # Sue me, I like vim. Got tired of different *nix stuffing it in different
 # places, so go through the usual suspects and create an alias when we find
 # it.
