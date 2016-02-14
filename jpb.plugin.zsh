@@ -99,6 +99,7 @@ alias sshi='ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o G
 alias scpi='scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o GlobalKnownHostsFile=/dev/null'
 alias sshnohostchecks='sshi'
 
+# Strip ANSI codes out of a stream
 alias stripcolors='sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g"'
 
 alias wget="wget -c"
@@ -373,7 +374,7 @@ function 600() {
 }
 
 # Lesspipe
-LESSPIPE=`which lesspipe.sh`
+LESSPIPE=$(command -v lesspipe.sh)
 if [ -n "${LESSPIPE}" ]; then
   export LESSOPEN="| ${LESSPIPE} %s"
   export LESS=' -R '
@@ -381,7 +382,7 @@ fi
 
 # I use grc to colorize some command output for clarity.
 # brew install grc to check it out.
-GRC=$(which grc)
+GRC=$(command -v grc)
 
 if [ "$TERM" != dumb ] && [ -n "$GRC" ]; then
 
