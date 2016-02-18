@@ -34,11 +34,7 @@ git clone this repository, then add its bin directory to your $PATH. Add `source
 * clean-clipboard - Mine
 * clean-whiteboard-picture - [https://gist.github.com/lelandbatey/8677901](https://gist.github.com/lelandbatey/8677901)
 * extractFromRPM - Mine
-* finder-selection - [Stack Exchange](https://apple.stackexchange.com/questions/5435/got-any-tips-or-tricks-for-terminal-in-mac-os-x?page=3&tab=votes#tab-top)
-* get-sound-volume - Mine, I think
 * ipaddresses - Mine
-* kick-afp - Mine
-* kick-screensharing - Mine
 * local-ip-address - Mine
 * local-ipv6-address - Mine
 * markdown-open - Ryan Tomayko's [dotfiles](https://github.com/rtomayko/dotfiles)
@@ -46,7 +42,7 @@ git clone this repository, then add its bin directory to your $PATH. Add `source
 * memcached-top - [http://code.google.com/p/memcache-top/](http://code.google.com/p/memcache-top/)
 * mkdmg - Mine
 * murder - [Anonymous Gist](https://gist.github.com/anonymous/32b1e619bc9e7fbe0eaa#!/bin/bash)
-* osx_battery - Steve Losh's [My Extravagant ZSH Prompt](http://stevelosh.com/blog/2010/02/my-extravagant-zsh-prompt/) blog post
+* newscript - Mine
 * random-password - Mine
 * randsleep - Mine
 * retry - Mine
