@@ -1,0 +1,16 @@
+#!/bin/bash
+#
+# Original source: https://github.com/ludios/ubuntils/blob/master/bin/lsof-unlinked
+#
+# Original author: Ivan Kosik <ivan@ludios.org>
+
+set -e
+
+if [ "$(id -u)" -ne 0 ]; then
+	echo "Warning: not running as root, some files may be missing." >&2
+fi
+
+# list all open files (but not mapped files) that have been unlinked
+# filter out 'lsof: no pwd entry for UID ' spewed on machines with unprivileged LXC containers
+# sort by last column, the filename
+lsof +L1 2> >(grep -v "^lsof: no pwd entry for UID ") | sort -k 7n
