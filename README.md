@@ -8,6 +8,7 @@
     - [Zgen](#zgen)
     - [Without using any frameworks](#without-using-any-frameworks)
   - [Credits](#credits)
+  - [Other useful zsh plugins](#other-useful-zsh-plugins)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 # jpb.zshplugin
@@ -40,7 +41,6 @@ git clone this repository, then add its bin directory to your $PATH. Add `source
 * markdown-open - Ryan Tomayko's [dotfiles](https://github.com/rtomayko/dotfiles)
 * memcached-tool - Brad Fitzpatrick <brad@danga.com>
 * memcached-top - [http://code.google.com/p/memcache-top/](http://code.google.com/p/memcache-top/)
-* mkdmg - Mine
 * murder - [Anonymous Gist](https://gist.github.com/anonymous/32b1e619bc9e7fbe0eaa#!/bin/bash)
 * newscript - Mine
 * random-password - Mine
@@ -50,3 +50,7 @@ git clone this repository, then add its bin directory to your $PATH. Add `source
 * seq - Dave Taylor's [blog](http://www.askdavetaylor.com/step_through_count_numeric_values_bash_shell_script.html)
 * solo - Timothy Kay's [solo](http://timkay.com/solo/)
 * wifi-signal-strength - Atsushi Nagase's [dotfiles](https://github.com/ngs/dotfiles/blob/master/bin/wifi-signal-strength)
+
+## Other useful zsh plugins
+
+I also maintain the [awesome-zsh-plugins](https://github.com/unixorn/awesome-zsh-plugins) list of ZSH frameworks, plugins and themes.
