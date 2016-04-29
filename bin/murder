@@ -3,16 +3,16 @@
 # No author listed on the source git.
 #
 # https://gist.github.com/anonymous/32b1e619bc9e7fbe0eaa#!/bin/bash
- 
+
 # Signal numbers to use. Configurable, as long as the number of elements in this
 # array matches the number of elements in $delays.
 signals=(15 2 1 9)
- 
+
 # How much time processes should be given to finish their work before we try the
 # next signal. Configurable, as long as the number of elements in this array
 # matches the number of elements in $signals.
 delays=(2 3 4 0)
- 
+
 # Takes a list of PIDs and ends the processes through increasingly rude means.
 function mykill {
     # Cygwin's default ps is gimped. Use the GNU version instead.
@@ -21,13 +21,13 @@ function mykill {
         ps='procps'
     fi
     ps="$ps o pid="
- 
+
     # Figure out the names of the signals we will try.
     local names=($(kill -l ${signals[@]}))
- 
+
     local retval=0
     if [[ $# -eq 0 ]]; then
-        printf 'mykill: Too few arguments: %d\nmykill: Usage: mykill <PIDs...>\n' $#
+        printf 'murder: Too few arguments: %d\nmurder: Usage: murder <PIDs...>\n' $#
         retval=1
     else
         for pid in $@; do
@@ -42,24 +42,24 @@ function mykill {
                 sleep ${delays[$index]}
                 index=$(($index + 1))
             done
- 
+
             if [[ -z $killed ]]; then
-                printf 'mykill: Process with PID %d does not exist.\n' $pid
- 
+                printf 'murder: Process with PID %d does not exist.\n' $pid
+
             elif ! ${ps} ${pid} > /dev/null; then
                 index=$(($index - 1))
-                printf 'mykill: Killed process with PID %d with signal %s (%d).\n' $pid ${names[$index]} ${signals[$index]}
- 
+                printf 'murder: Killed process with PID %d with signal %s (%d).\n' $pid ${names[$index]} ${signals[$index]}
+
             elif [[ ${retval} -ne 0 ]]; then
-                printf 'mykill: kill failed: %s\n' $(echo ${output} | cut -d ' ' -f 5-)
- 
+                printf 'murder: kill failed: %s\n' $(echo ${output} | cut -d ' ' -f 5-)
+
             elif [[ ${index} -eq ${#signals} ]]; then
-                printf 'mykill: Failed to kill process with PID %d with signals %s\n' $pid "$(echo ${names[@]})"
+                printf 'murder: Failed to kill process with PID %d with signals %s\n' $pid "$(echo ${names[@]})"
                 retval=-1
             fi
         done
     fi
     return ${retval}
 }
- 
+
 mykill $@
