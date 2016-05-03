@@ -53,38 +53,6 @@ function historygram() {
     awk '!max{max=$1;}{r="";i=s=60*$1/max;while(i-->0)r=r"#";printf "%15s %5d %s %s",$2,$1,r,"\n";}'
 }
 
-# Sue me, I like vim. Got tired of different *nix stuffing it in different
-# places, so go through the usual suspects and create an alias when we find
-# it.
-if [ -x /bin/vim ]; then
-  alias vi="/bin/vim"
-  alias vim="/bin/vim"
-  export EDITOR='/bin/vim'
-fi
-
-if [ -x /usr/bin/vim ]; then
-  alias vi="/usr/bin/vim"
-  alias vim="/usr/bin/vim"
-  export EDITOR='/usr/bin/vim'
-fi
-
-# If there's a macports vim, it is almost certainly more current than the
-# one Apple ships
-if [ -x /opt/local/bin/vim ]; then
-  alias vim='/opt/local/bin/vim'
-  alias vi="/opt/local/bin/vim"
-  export EDITOR='/opt/local/bin/vim'
-fi
-
-# Same for homebrew.
-if [ -x /usr/local/bin/vim ]; then
-  alias vim='/usr/local/bin/vim'
-  alias vi="/usr/local/bin/vim"
-  export EDITOR="/usr/local/bin/vim"
-fi
-
-export VISUAL=${EDITOR}
-
 # Old-school OS9 Mac text files had a different line ending than *nix, deal with
 # converting back and forth.
 alias mac2unix="tr '\015' '\012'"
