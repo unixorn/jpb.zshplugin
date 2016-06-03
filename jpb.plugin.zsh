@@ -575,3 +575,32 @@ alias grepm='grep --exclude-dir={node_modules,bower_components,dist,.bzr,.cvs,.g
 
 export BULLETTRAIN_CONTEXT_SHOW=true
 export BULLETTRAIN_IS_SSH_CLIENT=true
+
+decode-cert () {
+  local cert=${1?Need cert}
+  openssl x509 -in "$cert" -text -noout
+}
+
+csr-decode () {
+  local cert=${1?Need cert}
+  openssl req -in "$cert" -text -noout
+}
+
+p7b-decode () {
+  local cert=${1?Need cert}
+  openssl pkcs7 -in "$cert" -print_certs -text -noout
+}
+
+# Calculate how many days since epoch
+epochdays() {
+  if command -v perl &>/dev/null; then
+    epoch=$(perl -e "print time")
+  elif command -v truss >/dev/null 2>&1 && [[ $(uname) = SunOS ]]; then
+    epoch=$(truss date 2>&1 | grep ^time | awk -F"= " '{print $2}')
+  elif command -v truss >/dev/null 2>&1 && [[ $(uname) = FreeBSD ]]; then
+    epoch=$(truss date 2>&1 | grep ^gettimeofday | cut -d "{" -f2 | cut -d "." -f1)
+  elif [[ $(uname) = Linux ]]; then
+    epoch=$(date +%s)
+  fi
+  printf "%s\n" "$(( epoch / 86400 ))"
+}
