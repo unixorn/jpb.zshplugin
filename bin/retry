@@ -2,6 +2,9 @@
 #
 # Run a command over and over until it exits 0. Wait $DELAY seconds between
 # attempts.
+#
+# I don't remember whether I wrote this or someone gave it to me. Call it
+# BSD licensed until/unless someone claims ownership.
 
 if [ -z $DELAY ]; then
   DELAY=5
@@ -10,7 +13,7 @@ fi
 if [ "$1" == "--help" ] ; then
   echo "$(basename $0) command"
   echo "or"
-  echo "DELAY=30 $(basename $0) command"
+  echo "MAXRETRIES=5 DELAY=30 $(basename $0) command"
   echo
   echo "Keep trying command until it succeeds. Wait DELAY seconds between attempts"
   echo
