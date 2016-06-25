@@ -6,7 +6,7 @@
 # I don't remember whether I wrote this or someone gave it to me. Call it
 # BSD licensed until/unless someone claims ownership.
 
-if [ -z $DELAY ]; then
+if [ -z "$DELAY" ]; then
   DELAY=5
 fi
 
