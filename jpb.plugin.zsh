@@ -481,3 +481,7 @@ pgs() { # [find] [replace] [filename]
 prep() { # [pattern] [filename unless STDOUT]
     perl -nle 'print if /'"$1"'/;' $2
 }
+
+function stockquote() {
+    curl -s "http://download.finance.yahoo.com/d/quotes.csv?s=$1&f=l1"
+}
