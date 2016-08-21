@@ -485,3 +485,14 @@ prep() { # [pattern] [filename unless STDOUT]
 function stockquote() {
     curl -s "http://download.finance.yahoo.com/d/quotes.csv?s=$1&f=l1"
 }
+
+# One of @janmoesen’s ProTip™s
+for method in GET HEAD POST PUT DELETE TRACE OPTIONS; do
+  alias "$method"="lwp-request -m '$method'"
+done
+
+getcert() {
+    host=${1};
+    port=${2:-443};
+    openssl s_client -connect ${host}:${port} 2> /dev/null </dev/null | sed -n '/-----BEGIN CERTIFICATE-----/,/-----END CERTIFICATE-----/p'
+}
