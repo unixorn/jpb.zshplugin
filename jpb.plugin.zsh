@@ -17,7 +17,10 @@ on_linux() { [[ "$(uname -s)" = "Linux"  ]] }
 on_osx()   { [[ "$(uname -s)" = "Darwin" ]] }
 
 # check if a command is available
-# function command_exists() { which "${1}" >/dev/null 2>/dev/null }
+
+function exists() {
+  if (( $+commands[$1] )); then return 0; else return 1;
+}
 
 # check if this is an interactive session
 # (tests if stdout is a tty)
