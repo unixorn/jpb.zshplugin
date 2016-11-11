@@ -157,10 +157,6 @@ sha512() {
 # from commandlinefu.com
 watch() { t=$1; shift; while test :; do clear; date=$(date); echo -e "Every $ts: $@ \t\t\t\t $date"; $@; sleep $t; done }
 
-cleanxmlclip() {
-  pbpaste | tidy -xml -wrap 0 | pbcopy
-}
-
 calc() {
   awk "BEGIN{ print $* }" ;
 }
