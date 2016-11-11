@@ -60,11 +60,6 @@ function historygram() {
     awk '!max{max=$1;}{r="";i=s=60*$1/max;while(i-->0)r=r"#";printf "%15s %5d %s %s",$2,$1,r,"\n";}'
 }
 
-# Old-school OS9 Mac text files had a different line ending than *nix, deal with
-# converting back and forth.
-alias mac2unix="tr '\015' '\012'"
-alias unix2mac="tr '\012' '\015'"
-
 # IP address fiddling
 alias external_ip="curl -s icanhazip.com"
 alias my_ips="ifconfig -a | perl -nle'/(\d+\.\d+\.\d+\.\d+)/ && print $1'"
@@ -129,13 +124,6 @@ alias tartvzf="tar tvzf"
 alias tarxvf="tar xvf"
 alias tarxvzf="tar xvzf"
 alias zz="exit"
-
-# Zap those damn .DS_Store files
-zap-ds-store() {
-  if [ -d ${1} ]; then
-    find ${1} -type f -name '.DS_Store' -delete -ls
-  fi
-}
 
 # from cads
 ff() { find . -type f -iname '*'$*'*' -ls ; }
