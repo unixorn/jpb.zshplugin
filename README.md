@@ -15,6 +15,9 @@
 
 Zsh plugin usable with [Antigen](https://github.com/zsh-users/antigen) and [Zgen](https://github.com/tarjoilija/zgen) to load some of my tools.
 
+## Status
+[![Build Status](https://travis-ci.org/unixorn/jpb.zshplugin.png)](https://travis-ci.org/unixorn/jpb.zshplugin)
+
 ## Installing
 
 ### Antigen
