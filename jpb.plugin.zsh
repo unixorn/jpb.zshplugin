@@ -336,6 +336,15 @@ function 600() {
   chmod 600 $@
 }
 
+function htmime {
+  if [[ -z $1 ]]; then
+    print "USAGE: htmime <URL>"
+    return 1
+  fi
+  mime=$(curl -sIX HEAD $1 | sed -nr "s/Content-Type: (.+)/\1/p")
+  print $mime
+}
+
 # Lesspipe
 LESSPIPE=$(command -v lesspipe.sh)
 if [ -n "${LESSPIPE}" ]; then
