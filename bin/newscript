@@ -121,7 +121,7 @@ def main
   EOS
 
     opt :debug, "Set debug level", :default => 0
-    opt :log_level, "Set log level", :default => "INFO", :type -> String
+    opt :log_level, "Set log level", :default => "INFO", :type => String
   end
 
   validLevels = ['DEBUG', 'ERROR', 'FATAL', 'INFO', 'WARN']
