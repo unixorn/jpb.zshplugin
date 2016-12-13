@@ -75,7 +75,7 @@ end
 
 def generate_ruby_script(name:)
   copyright_year = `date -u "+%Y"`.chomp
-  rawScript =<<"END_RUBY_SCRIPT"
+  rawScript =<<'END_RUBY_SCRIPT'
 #!/usr/bin/env ruby
 #
 # Script skeleton
