@@ -125,7 +125,7 @@ def main
   end
 
   validLevels = ['DEBUG', 'ERROR', 'FATAL', 'INFO', 'WARN']
-  Trollop::die :log_level, "#{$opts[:log_level]} must be in #{validLevels}" unless validLevels.include?($opts[:log_level].upcase!)
+  Trollop::die :log_level, "#{$opts[:log_level]} must be in #{validLevels}" unless validLevels.include?($opts[:log_level].upcase)
 
   $logger = setup_logging
 
