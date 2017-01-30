@@ -11,9 +11,8 @@ if [[ "$(uname -s)" = "Linux"  ]]; then
 fi
 
 if [[ "$(uname -s)" = "Darwin" ]]; then
-  active_interface=$(netstat -nr | awk '{ if ($1 ~/default/) { print $6} }')
+  active_interface=$(netstat -nr -f inet|awk '/default/ && !/bridge/ { print $6 }')
 
-  ifconfig ${active_interface} | \
-    grep -v inet6 | \
-    awk '{ if ($1 ~/inet/) { print $2} }'
+  ifconfig ${active_interface} inet | \
+    awk '/inet/ { print $2 }'
 fi
