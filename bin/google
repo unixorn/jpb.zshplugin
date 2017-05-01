@@ -1,0 +1,6 @@
+#!/bin/bash
+
+IFS='+'
+query="$*"
+
+open "https://www.google.com/#q=${query}"
