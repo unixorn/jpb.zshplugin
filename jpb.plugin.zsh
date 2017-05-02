@@ -32,7 +32,7 @@ function exists() {
 
 # Add our plugin's bin diretory to user's path
 PLUGIN_BIN="$(dirname $0)/bin"
-export PATH=${PATH}:${PLUGIN_BIN}
+export PATH="${PATH}:${PLUGIN_BIN}"
 
 if [[ "$(uname -s)" = "Linux"  ]]; then
   # We're on linux
