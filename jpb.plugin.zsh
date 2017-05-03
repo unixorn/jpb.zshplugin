@@ -13,8 +13,8 @@
 # limitations under the License.
 
 # What platform are we on?
-on_linux() { [[ "$(uname -s)" = "Linux"  ]] }
-on_osx()   { [[ "$(uname -s)" = "Darwin" ]] }
+on_linux() { [[ "$(uname -s)" = 'Linux'  ]] }
+on_osx()   { [[ "$(uname -s)" = 'Darwin' ]] }
 
 # check if a command is available
 
@@ -34,7 +34,7 @@ function exists() {
 PLUGIN_BIN="$(dirname $0)/bin"
 export PATH="${PATH}:${PLUGIN_BIN}"
 
-if [[ "$(uname -s)" = "Linux"  ]]; then
+if [[ "$(uname -s)" = 'Linux'  ]]; then
   # We're on linux
   alias cputop='top -o cpu'
   alias l-d='ls -lFad'
@@ -338,7 +338,7 @@ function 600() {
 
 function htmime {
   if [[ -z $1 ]]; then
-    print "USAGE: htmime <URL>"
+    print 'USAGE: htmime <URL>'
     return 1
   fi
   mime=$(curl -sIX HEAD $1 | sed -nr "s/Content-Type: (.+)/\1/p")
@@ -366,7 +366,7 @@ alias asroot='sudo $(fc -ln -1)'
 newest (){
   find . -type f -printf '%TY-%Tm-%Td %TT %p\n' | \
   grep -v cache | \
-  grep -v ".hg" | grep -v ".git" | \
+  grep -v '.hg' | grep -v '.git' | \
   sort -r | \
   less
 }
@@ -473,16 +473,16 @@ epochdays() {
 # replace pattern = 2nd arg
 # filename      = 3rd arg
 pgs() { # [find] [replace] [filename]
-    perl -i.orig -pe 's/'"$1"'/'"$2"'/g' "$3"
+  perl -i.orig -pe 's/'"$1"'/'"$2"'/g' "$3"
 }
 
 # Perl grep, because 'grep -P' is terrible. Lets you work with pipes or files.
 prep() { # [pattern] [filename unless STDOUT]
-    perl -nle 'print if /'"$1"'/;' $2
+  perl -nle 'print if /'"$1"'/;' $2
 }
 
 function stockquote() {
-    curl -s "http://download.finance.yahoo.com/d/quotes.csv?s=$1&f=l1"
+  curl -s "http://download.finance.yahoo.com/d/quotes.csv?s=$1&f=l1"
 }
 
 # One of @janmoesen’s ProTip™s
@@ -491,7 +491,7 @@ for method in GET HEAD POST PUT DELETE TRACE OPTIONS; do
 done
 
 getcert() {
-  host=${1};
-   port=${2:-443};
-   openssl s_client -connect ${host}:${port} 2> /dev/null </dev/null | sed -n '/-----BEGIN CERTIFICATE-----/,/-----END CERTIFICATE-----/p'
+  host=${1};
+  port=${2:-443};
+  openssl s_client -connect ${host}:${port} 2> /dev/null </dev/null | sed -n '/-----BEGIN CERTIFICATE-----/,/-----END CERTIFICATE-----/p'
 }
