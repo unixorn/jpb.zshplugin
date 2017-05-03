@@ -13,8 +13,8 @@
 # limitations under the License.
 
 # What platform are we on?
-on_linux() { [[ "$(uname -s)" = "Linux"  ]] }
-on_osx()   { [[ "$(uname -s)" = "Darwin" ]] }
+on_linux() { [[ "$(uname -s)" = 'Linux'  ]] }
+on_osx()   { [[ "$(uname -s)" = 'Darwin' ]] }
 
 # check if a command is available
 
@@ -32,16 +32,16 @@ function exists() {
 
 # Add our plugin's bin diretory to user's path
 PLUGIN_BIN="$(dirname $0)/bin"
-export PATH=${PATH}:${PLUGIN_BIN}
+export PATH="${PATH}:${PLUGIN_BIN}"
 
-if [[ "$(uname -s)" = "Linux"  ]]; then
+if [[ "$(uname -s)" = 'Linux'  ]]; then
   # We're on linux
-  alias cputop="top -o cpu"
-  alias l-d="ls -lFad"
-  alias l="ls -la"
-  alias l="ls -laF"
-  alias ll="ls -lFa | TERM=vt100 less"
-  alias ll="ls -la | less"
+  alias cputop='top -o cpu'
+  alias l-d='ls -lFad'
+  alias l='ls -la'
+  alias l='ls -laF'
+  alias ll='ls -lFa | TERM=vt100 less'
+  alias ll='ls -la | less'
 fi
 
 # View HTTP traffic
@@ -61,14 +61,14 @@ function historygram() {
 }
 
 # IP address fiddling
-alias external_ip="curl -s icanhazip.com"
+alias external_ip='curl -s icanhazip.com'
 alias my_ips="ifconfig -a | perl -nle'/(\d+\.\d+\.\d+\.\d+)/ && print $1'"
 alias myip="dig +short myip.opendns.com @resolver1.opendns.com"
 
 alias reattach='screen -r'
 
 # SSH stuff
-alias ssh="ssh -A"
+alias ssh='ssh -A'
 alias sshi='ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o GlobalKnownHostsFile=/dev/null'
 alias scpi='scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o GlobalKnownHostsFile=/dev/null'
 alias sshnohostchecks='sshi'
@@ -76,39 +76,39 @@ alias sshnohostchecks='sshi'
 # Strip ANSI codes out of a stream
 alias stripcolors='sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g"'
 
-alias wget="wget -c"
+alias wget='wget -c'
 
 # git aliases
-alias annotate="git annotate"
-alias blame="git blame"
-alias gadd="git add"
+alias annotate='git annotate'
+alias blame='git blame'
+alias gadd='git add'
 alias gci='git ci -v'
 alias gdiff='git diff'
-alias gitadd="git add"
+alias gitadd='git add'
 alias gitci='git ci -v'
 alias gitdiff='git diff'
 alias gitignored='git ls-files --others --i --exclude-standard'
 alias gitlgg="log --pretty=format:'%Cred%h%Creset -%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'"
-alias gitlog="git log"
-alias gitloll="git log --graph --decorate --pretty=oneline --abbrev-commit"
-alias gitmerge="git merge"
-alias gitpull="git pull"
-alias gitpus="git push"
-alias gitpush="git push"
-alias gitrebase="git rebase"
+alias gitlog='git log'
+alias gitloll='git log --graph --decorate --pretty=oneline --abbrev-commit'
+alias gitmerge='git merge'
+alias gitpull='git pull'
+alias gitpus='git push'
+alias gitpush='git push'
+alias gitrebase='git rebase'
 alias gitst='git status'
-alias glg="git log"
-alias glog="git log"
-alias gpull="git pull"
-alias gpush="git push"
-alias grebase="git rebase -i"
+alias glg='git log'
+alias glog='git log'
+alias gpull='git pull'
+alias gpush='git push'
+alias grebase='git rebase -i'
 alias hlog='git log --all --date-order --graph --date=short --format="%C(green)%H%Creset %C(yellow)%an%Creset %C(blue bold)%ad%Creset %C(red bold)%d%Creset%s"'
 
 # GPG stuff
 alias sign='gpg --detach-sign --armor'
 
 # my common tyops
-alias ..="cd .."
+alias ..='cd ..'
 alias ':q'="exit"
 alias gerp='grep'
 alias grep-i='grep -i'
@@ -119,11 +119,11 @@ alias psax='ps ax'
 alias pswax='ps wax'
 alias psxa='ps ax'
 alias raek='rake'
-alias tartvf="tar tvf"
-alias tartvzf="tar tvzf"
-alias tarxvf="tar xvf"
-alias tarxvzf="tar xvzf"
-alias zz="exit"
+alias tartvf='tar tvf'
+alias tartvzf='tar tvzf'
+alias tarxvf='tar xvf'
+alias tarxvzf='tar xvzf'
+alias zz='exit'
 
 # from cads
 ff() { find . -type f -iname '*'$*'*' -ls ; }
@@ -241,7 +241,7 @@ canhaz_script() {
 }
 
 pong() {
-    ping -c 10 "$@"
+  ping -c 10 "$@"
 }
 
 show_terminal_colors() {
@@ -265,7 +265,7 @@ man() {
     LESS_TERMCAP_so=$(printf "\e[1;44;33m") \
     LESS_TERMCAP_ue=$(printf "\e[0m") \
     LESS_TERMCAP_us=$(printf "\e[1;32m") \
-      man "$@"
+    man "$@"
 }
 
 alias zh='fc -l -d -D'
@@ -338,7 +338,7 @@ function 600() {
 
 function htmime {
   if [[ -z $1 ]]; then
-    print "USAGE: htmime <URL>"
+    print 'USAGE: htmime <URL>'
     return 1
   fi
   mime=$(curl -sIX HEAD $1 | sed -nr "s/Content-Type: (.+)/\1/p")
@@ -366,7 +366,7 @@ alias asroot='sudo $(fc -ln -1)'
 newest (){
   find . -type f -printf '%TY-%Tm-%Td %TT %p\n' | \
   grep -v cache | \
-  grep -v ".hg" | grep -v ".git" | \
+  grep -v '.hg' | grep -v '.git' | \
   sort -r | \
   less
 }
@@ -391,7 +391,7 @@ function zurl {
   fi
 
   local url=$1
-  local api="https://www.googleapis.com/urlshortener/v1/url"
+  local api='https://www.googleapis.com/urlshortener/v1/url'
   local data
 
   # Prepend "http://" to given URL where necessary for later output.
@@ -473,17 +473,16 @@ epochdays() {
 # replace pattern = 2nd arg
 # filename      = 3rd arg
 pgs() { # [find] [replace] [filename]
-    perl -i.orig -pe 's/'"$1"'/'"$2"'/g' "$3"
+  perl -i.orig -pe 's/'"$1"'/'"$2"'/g' "$3"
 }
-
 
 # Perl grep, because 'grep -P' is terrible. Lets you work with pipes or files.
 prep() { # [pattern] [filename unless STDOUT]
-    perl -nle 'print if /'"$1"'/;' $2
+  perl -nle 'print if /'"$1"'/;' $2
 }
 
 function stockquote() {
-    curl -s "http://download.finance.yahoo.com/d/quotes.csv?s=$1&f=l1"
+  curl -s "http://download.finance.yahoo.com/d/quotes.csv?s=$1&f=l1"
 }
 
 # One of @janmoesen’s ProTip™s
@@ -492,7 +491,7 @@ for method in GET HEAD POST PUT DELETE TRACE OPTIONS; do
 done
 
 getcert() {
-    host=${1};
-    port=${2:-443};
-    openssl s_client -connect ${host}:${port} 2> /dev/null </dev/null | sed -n '/-----BEGIN CERTIFICATE-----/,/-----END CERTIFICATE-----/p'
+  host=${1};
+  port=${2:-443};
+  openssl s_client -connect ${host}:${port} 2> /dev/null </dev/null | sed -n '/-----BEGIN CERTIFICATE-----/,/-----END CERTIFICATE-----/p'
 }
