@@ -495,3 +495,24 @@ getcert() {
   port=${2:-443};
   openssl s_client -connect ${host}:${port} 2> /dev/null </dev/null | sed -n '/-----BEGIN CERTIFICATE-----/,/-----END CERTIFICATE-----/p'
 }
+
+# This comes from https://stackoverflow.com/questions/17878684/best-way-to-get-file-modified-time-in-seconds
+# This works on both Linux with GNU fileutils and OS X with BSD stat.
+
+# Naturally BSD/OS X and Linux can't share the same options to stat.
+if [[ $(uname | grep -ci -e Darwin -e BSD) = 1 ]]; then
+
+  # OS X version
+  get_file_modification_time() {
+    modified_time=$(stat -f %m "$1" 2> /dev/null) || modified_time=0
+    echo "${modified_time}"
+  }
+
+elif [[ $(uname | grep -ci Linux) = 1 ]]; then
+
+  # Linux version
+  get_file_modification_time() {
+    modified_time=$(stat -c %Y "$1" 2> /dev/null) || modified_time=0
+    echo "${modified_time}"
+  }
+fi
