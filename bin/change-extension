@@ -1,0 +1,11 @@
+#!/usr/bin/env zsh
+#
+# Usage: change-extension jpeg jpg
+
+if [[ $# != 2 ]]; then
+  echo "Usage: $(basename $0) OldExtension NewExtension"
+  exit 1
+fi
+foreach f (**/*.$1)
+  mv $f $f:r.$2
+end
