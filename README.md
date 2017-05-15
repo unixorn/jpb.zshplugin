@@ -35,6 +35,7 @@ git clone this repository, then add its bin directory to your $PATH. Add `source
 ## Credits
 
 * ansi2html - Mislav Marohnić's [dotfiles](https://github.com/mislav/dotfiles)
+* change-extension - ?
 * clean-clipboard - Mine
 * clean-whiteboard-picture - [https://gist.github.com/lelandbatey/8677901](https://gist.github.com/lelandbatey/8677901)
 * extractFromRPM - Mine
