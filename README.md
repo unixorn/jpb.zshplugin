@@ -50,6 +50,7 @@ git clone this repository, then add its bin directory to your $PATH. Add `source
 * newscript - Mine
 * random-password - Mine
 * randsleep - Mine
+* relocate-virtualenv - Gary Josack's [scripts](https://github.com/gmjosack/scripts) repository
 * retry - Mine
 * running - Mine
 * seq - Dave Taylor's [blog](http://www.askdavetaylor.com/step_through_count_numeric_values_bash_shell_script.html)

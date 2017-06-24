@@ -354,7 +354,7 @@ fi
 
 # Yes, these are a pain to customize. Fortunately, Geoff Greer made an online
 # tool that makes it easy to customize your color scheme and keep them in sync
-# across Linux and OS X/*BSD at http://geoff.greer.fm/lscolors/
+# across Linux and macOS/*BSD at http://geoff.greer.fm/lscolors/
 
 export LSCOLORS=exfxcxdxbxegedAbAgacad
 export LS_COLORS="di=34;40:ln=35;40:so=32;40:pi=33;40:ex=31;40:bd=34;46:cd=34;43:su=1;;41:sg=1;;46:tw=0;42:ow=0;43:"
@@ -497,12 +497,12 @@ getcert() {
 }
 
 # This comes from https://stackoverflow.com/questions/17878684/best-way-to-get-file-modified-time-in-seconds
-# This works on both Linux with GNU fileutils and OS X with BSD stat.
+# This works on both Linux with GNU fileutils and macOS with BSD stat.
 
-# Naturally BSD/OS X and Linux can't share the same options to stat.
+# Naturally BSD/macOS and Linux can't share the same options to stat.
 if [[ $(uname | grep -ci -e Darwin -e BSD) = 1 ]]; then
 
-  # OS X version
+  # macOS version
   get_file_modification_time() {
     modified_time=$(stat -f %m "$1" 2> /dev/null) || modified_time=0
     echo "${modified_time}"
