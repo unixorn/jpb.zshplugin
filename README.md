@@ -40,6 +40,7 @@ git clone this repository, then add its bin directory to your $PATH. Add `source
 * clean-whiteboard-picture - [https://gist.github.com/lelandbatey/8677901](https://gist.github.com/lelandbatey/8677901)
 * extractFromRPM - Mine
 * google - ?
+* headers - Zach Holman's [dotfiles](https://github.com/holman/dotfiles/blob/master/bin/headers)
 * ipaddresses - Mine
 * local-ip-address - Mine
 * local-ipv6-address - Mine
