@@ -137,6 +137,17 @@ hgrep() {
   history | grep -i "$@" | tail -20
 }
 
+# Syntax-highlight JSON strings or files
+# Usage: `json '{"foo":42}'` or `echo '{"foo":42}' | json`
+# From https://github.com/yramagicman/zsh-aliases/blob/master/functions/functions.plugin.zsh
+function json() {
+  if [ -t 0 ]; then # argument
+    python -mjson.tool <<<"$*" | pygmentize -l javascript
+  else # pipe
+    python -mjson.tool | pygmentize -l javascript
+  fi
+}
+
 rot13() {
   echo $1 | tr "A-Za-z" "N-ZA-Mn-za-m"
 }
@@ -222,7 +233,7 @@ authme() {
 }
 
 mtr_url() {
-  host=`ruby -ruri -e "puts (URI.parse('$1').host or '$1')"`
+  host=$(ruby -ruri -e "puts (URI.parse('$1').host or '$1')")
   sudo mtr -t $host
 }
 
