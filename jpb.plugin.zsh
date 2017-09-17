@@ -262,9 +262,13 @@ show_terminal_colors() {
 }
 
 # batch change extension
-chgext() {
-  for file in *.$1 ; do mv $file `echo $file | sed "s/\(.*\.\)$1/\1$2/"` ; done
+#   change-extension erb haml
+function change-extension() {
+  foreach f (**/*.$1)
+    mv $f $f:r.$2
+  end
 }
+alias chgext='change-extension'
 
 # From Dan Ryan's blog - http://danryan.co/using-antigen-for-zsh.html
 man() {
