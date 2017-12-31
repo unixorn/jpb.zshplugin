@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+#
+# Find the pwd of a given pid. Only works on linux since it requires
+# /proc
+#
+# Copyright 2017, Joe Block <jpb@unixorn.net>
+
+set -o pipefail
+
+if [[ "$(uname -s)" = 'Linux'  ]]; then
+  # We're on linux
+  exec ls -d  /proc/$1/cwd
+else
+  exit 1
+fi

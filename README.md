@@ -49,6 +49,7 @@ git clone this repository, then add its bin directory to your $PATH. Add `source
 * memcached-top - [http://code.google.com/p/memcache-top/](http://code.google.com/p/memcache-top/)
 * murder - [Anonymous Gist](https://gist.github.com/anonymous/32b1e619bc9e7fbe0eaa#!/bin/bash)
 * newscript - Mine
+* pidpwd - Mine
 * random-password - Mine
 * randsleep - Mine
 * relocate-virtualenv - Gary Josack's [scripts](https://github.com/gmjosack/scripts) repository
