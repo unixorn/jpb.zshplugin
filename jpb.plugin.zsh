@@ -41,7 +41,10 @@ if [[ "$(uname -s)" = 'Linux'  ]]; then
   alias l='ls -la'
   alias l='ls -laF'
   alias ll='ls -lFa | TERM=vt100 less'
-  alias ll='ls -la | less'
+
+  # Simulate OSX's pbcopy and pbpaste on Linux
+  alias pbcopy='xsel --clipboard --input'
+  alias pbpaste='xsel --clipboard --output'
 fi
 
 # View HTTP traffic
