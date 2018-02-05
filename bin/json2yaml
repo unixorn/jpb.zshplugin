@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+#
+# Convert JSON to YAML
+
+$stdout.write(YAML.dump(JSON[$stdin.read]))
