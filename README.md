@@ -22,11 +22,11 @@ Zsh plugin usable with [Antigen](https://github.com/zsh-users/antigen) and [Zgen
 
 ### Antigen
 
-add `antigen bundle unixorn/git-extra-commands` to your .zshrc
+add `antigen bundle unixorn/jpb.zshplugin` to your .zshrc
 
 ### Zgen
 
-add `zgen load unixorn/git-extra-commands` to your .zshrc with your other load commands.
+add `zgen load unixorn/jpb.zshplugin` to your .zshrc with your other load commands.
 
 ### Without using any frameworks
 
