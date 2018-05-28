@@ -13,7 +13,7 @@
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 # jpb.zshplugin
 
-Zsh plugin usable with [Antigen](https://github.com/zsh-users/antigen) and [Zgen](https://github.com/tarjoilija/zgen) to load some of my tools.
+This is a ZSH plugin usable with [Antigen](https://github.com/zsh-users/antigen) and [Zgen](https://github.com/tarjoilija/zgen) to load some of my tools. This contains tool scripts and aliases that are not specific enough for one of my more targeted ZSH plugins.
 
 ## Status
 [![Build Status](https://travis-ci.org/unixorn/jpb.zshplugin.png)](https://travis-ci.org/unixorn/jpb.zshplugin)
@@ -59,6 +59,6 @@ git clone this repository, then add its bin directory to your $PATH. Add `source
 * solo - Timothy Kay's [solo](http://timkay.com/solo/)
 * wifi-signal-strength - Atsushi Nagase's [dotfiles](https://github.com/ngs/dotfiles/blob/master/bin/wifi-signal-strength)
 
-## Other useful zsh plugins
+## Other useful ZSH plugins
 
 I also maintain the [awesome-zsh-plugins](https://github.com/unixorn/awesome-zsh-plugins) list of ZSH frameworks, plugins and themes.
