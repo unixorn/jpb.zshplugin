@@ -1,14 +1,15 @@
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+**Table of Contents**
 
 - [jpb.zshplugin](#jpbzshplugin)
+  - [Status](#status)
   - [Installing](#installing)
     - [Antigen](#antigen)
     - [Zgen](#zgen)
     - [Without using any frameworks](#without-using-any-frameworks)
   - [Credits](#credits)
-  - [Other useful zsh plugins](#other-useful-zsh-plugins)
+  - [Other useful ZSH plugins](#other-useful-zsh-plugins)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 # jpb.zshplugin
