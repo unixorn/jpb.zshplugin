@@ -13,7 +13,9 @@
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 # jpb.zshplugin
 
-This is a ZSH plugin usable with [Antigen](https://github.com/zsh-users/antigen) and [Zgen](https://github.com/tarjoilija/zgen) to load some of my tools. This contains tool scripts and aliases that are not specific enough for one of my more targeted ZSH plugins.
+This is a ZSH plugin usable with [Zgen](https://github.com/tarjoilija/zgen) and other [oh-my-zsh](https://github.com/robbyrussell/oh-my-zsh)-compatible frameworks to easily load some of my tool scripts. 
+
+This contains miscellaneous tool scripts and aliases that are not specific enough for one of my more targeted ZSH plugins.
 
 ## Status
 [![Build Status](https://travis-ci.org/unixorn/jpb.zshplugin.png)](https://travis-ci.org/unixorn/jpb.zshplugin)
@@ -30,7 +32,10 @@ add `zgen load unixorn/jpb.zshplugin` to your .zshrc with your other load comman
 
 ### Without using any frameworks
 
-git clone this repository, then add its bin directory to your $PATH. Add `source /path/to/here/jpb.plugin.zsh` to your `.zshrc` file. The scripts in here don't actually require you to be using ZSH as your login shell, they're being distributed as an [antigen](https://github.com/zsh-users/antigen) plugin because it's convenient.
+1. git clone this repository, then add its bin directory to your `$PATH`.
+2. Add `source /path/to/here/jpb.plugin.zsh` to your `.zshrc` file.
+
+The scripts in this collection don't actually require you to be using ZSH as your login shell, they're being distributed as an [oh-my-zsh](https://github.com/robbyrussell/oh-my-zsh)-compatible plugin because it's convenient for me.
 
 ## Credits
 
