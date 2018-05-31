@@ -1,19 +1,22 @@
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+**Table of Contents**
 
 - [jpb.zshplugin](#jpbzshplugin)
+  - [Status](#status)
   - [Installing](#installing)
     - [Antigen](#antigen)
     - [Zgen](#zgen)
     - [Without using any frameworks](#without-using-any-frameworks)
   - [Credits](#credits)
-  - [Other useful zsh plugins](#other-useful-zsh-plugins)
+  - [Other useful ZSH plugins](#other-useful-zsh-plugins)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 # jpb.zshplugin
 
-Zsh plugin usable with [Antigen](https://github.com/zsh-users/antigen) and [Zgen](https://github.com/tarjoilija/zgen) to load some of my tools.
+This is a ZSH plugin usable with [Zgen](https://github.com/tarjoilija/zgen) and other [oh-my-zsh](https://github.com/robbyrussell/oh-my-zsh)-compatible frameworks to easily load some of my tool scripts. 
+
+This contains miscellaneous tool scripts and aliases that are not specific enough for one of my more targeted ZSH plugins.
 
 ## Status
 [![Build Status](https://travis-ci.org/unixorn/jpb.zshplugin.png)](https://travis-ci.org/unixorn/jpb.zshplugin)
@@ -22,15 +25,18 @@ Zsh plugin usable with [Antigen](https://github.com/zsh-users/antigen) and [Zgen
 
 ### Antigen
 
-add `antigen bundle unixorn/git-extra-commands` to your .zshrc
+add `antigen bundle unixorn/jpb.zshplugin` to your .zshrc
 
 ### Zgen
 
-add `zgen load unixorn/git-extra-commands` to your .zshrc with your other load commands.
+add `zgen load unixorn/jpb.zshplugin` to your .zshrc with your other load commands.
 
 ### Without using any frameworks
 
-git clone this repository, then add its bin directory to your $PATH. Add `source /path/to/here/jpb.plugin.zsh` to your `.zshrc` file. The scripts in here don't actually require you to be using ZSH as your login shell, they're being distributed as an [antigen](https://github.com/zsh-users/antigen) plugin because it's convenient.
+1. git clone this repository, then add its bin directory to your `$PATH`.
+2. Add `source /path/to/here/jpb.plugin.zsh` to your `.zshrc` file.
+
+The scripts in this collection don't actually require you to be using ZSH as your login shell, they're being distributed as an [oh-my-zsh](https://github.com/robbyrussell/oh-my-zsh)-compatible plugin because it's convenient for me.
 
 ## Credits
 
@@ -59,6 +65,6 @@ git clone this repository, then add its bin directory to your $PATH. Add `source
 * solo - Timothy Kay's [solo](http://timkay.com/solo/)
 * wifi-signal-strength - Atsushi Nagase's [dotfiles](https://github.com/ngs/dotfiles/blob/master/bin/wifi-signal-strength)
 
-## Other useful zsh plugins
+## Other useful ZSH plugins
 
 I also maintain the [awesome-zsh-plugins](https://github.com/unixorn/awesome-zsh-plugins) list of ZSH frameworks, plugins and themes.
