@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+#
+# Steal ownership of a file so I don't have to keep remembering to sudo it
+#
+# Copyright 2018 Joe Block <jpb@unixorn.net>
+#
+# This is released under the Apache 2.0 license
+
+set -o pipefail
+
+if [[ -n "${SUDO_USER}" ]]; then
+	NEW_OWNER="${SUDO_USER}"
+else
+	NEW_OWNER="${USER}"
+fi
+
+sudo chown "${NEW_OWNER}" "$@"

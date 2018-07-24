@@ -14,7 +14,7 @@
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 # jpb.zshplugin
 
-This is a ZSH plugin usable with [Zgen](https://github.com/tarjoilija/zgen) and other [oh-my-zsh](https://github.com/robbyrussell/oh-my-zsh)-compatible frameworks to easily load some of my tool scripts. 
+This is a ZSH plugin usable with [Zgen](https://github.com/tarjoilija/zgen) and other [oh-my-zsh](https://github.com/robbyrussell/oh-my-zsh)-compatible frameworks to easily load some of my tool scripts.
 
 This contains miscellaneous tool scripts and aliases that are not specific enough for one of my more targeted ZSH plugins.
 
