@@ -63,6 +63,7 @@ The scripts in this collection don't actually require you to be using ZSH as you
 * running - Mine
 * seq - Dave Taylor's [blog](http://www.askdavetaylor.com/step_through_count_numeric_values_bash_shell_script.html)
 * solo - Timothy Kay's [solo](http://timkay.com/solo/)
+* tableflip - [hangops](https://hangops.slack.com) slack
 * wifi-signal-strength - Atsushi Nagase's [dotfiles](https://github.com/ngs/dotfiles/blob/master/bin/wifi-signal-strength)
 
 ## Other useful ZSH plugins
