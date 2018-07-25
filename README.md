@@ -14,7 +14,7 @@
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 # jpb.zshplugin
 
-This is a ZSH plugin usable with [Zgen](https://github.com/tarjoilija/zgen) and other [oh-my-zsh](https://github.com/robbyrussell/oh-my-zsh)-compatible frameworks to easily load some of my tool scripts. 
+This is a ZSH plugin usable with [Zgen](https://github.com/tarjoilija/zgen) and other [oh-my-zsh](https://github.com/robbyrussell/oh-my-zsh)-compatible frameworks to easily load some of my tool scripts.
 
 This contains miscellaneous tool scripts and aliases that are not specific enough for one of my more targeted ZSH plugins.
 
@@ -64,6 +64,7 @@ The scripts in this collection don't actually require you to be using ZSH as you
 * seq - Dave Taylor's [blog](http://www.askdavetaylor.com/step_through_count_numeric_values_bash_shell_script.html)
 * solo - Timothy Kay's [solo](http://timkay.com/solo/)
 * tableflip - [hangops](https://hangops.slack.com) slack
+* vbox - ?
 * wifi-signal-strength - Atsushi Nagase's [dotfiles](https://github.com/ngs/dotfiles/blob/master/bin/wifi-signal-strength)
 
 ## Other useful ZSH plugins
