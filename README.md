@@ -61,7 +61,7 @@ The scripts in this collection don't actually require you to be using ZSH as you
 * relocate-virtualenv - Gary Josack's [scripts](https://github.com/gmjosack/scripts) repository
 * retry - Mine
 * running - Mine
-* seq - Dave Taylor's [blog](http://www.askdavetaylor.com/step_through_count_numeric_values_bash_shell_script.html)
+* seq - Dave Taylor's [blog](https://www.askdavetaylor.com/step_through_count_numeric_values_bash_shell_script/)
 * solo - Timothy Kay's [solo](http://timkay.com/solo/)
 * tableflip - [hangops](https://hangops.slack.com) slack
 * title-text - Set the terminal title in any application (like iTerm 2 or Terminal on macOS) that supports VT100 escape sequences. Mine
