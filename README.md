@@ -46,6 +46,7 @@ The scripts in this collection don't actually require you to be using ZSH as you
 * clean-whiteboard-picture - [https://gist.github.com/lelandbatey/8677901](https://gist.github.com/lelandbatey/8677901)
 * extractFromRPM - Mine
 * google - ?
+* gxpr - [brutasse's dotfiles](https://github.com/brutasse/dotfiles/blob/master/bin/gxpr)
 * headers - Zach Holman's [dotfiles](https://github.com/holman/dotfiles/blob/master/bin/headers)
 * ipaddresses - Mine
 * local-ip-address - Mine
