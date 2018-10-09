@@ -91,7 +91,7 @@ alias gitadd='git add'
 alias gitci='git ci -v'
 alias gitdiff='git diff'
 alias gitignored='git ls-files --others --i --exclude-standard'
-alias gitlgg="log --pretty=format:'%Cred%h%Creset -%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'"
+alias gitlgg="git log --pretty=format:'%Cred%h%Creset -%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'"
 alias gitlog='git log'
 alias gitloll='git log --graph --decorate --pretty=oneline --abbrev-commit'
 alias gitmerge='git merge'
