@@ -1,3 +1,7 @@
+#!/usr/bin/env bash
+#
+# push notification to a device
+
 function pushover {
   # pipe text to send a notification to a device
   local token msg title device user
@@ -14,3 +18,5 @@ function pushover {
   -F "title=$title" \
   -F "message=$msg"
 }
+
+pushover $@
