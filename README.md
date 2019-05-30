@@ -44,6 +44,7 @@ The scripts in this collection don't actually require you to be using ZSH as you
 * change-extension - ?
 * clean-clipboard - Mine
 * clean-whiteboard-picture - [https://gist.github.com/lelandbatey/8677901](https://gist.github.com/lelandbatey/8677901)
+* dedupe-in-order - `awk` oneliner
 * dumpdns - Dump DNS records for a domain
 * extractFromRPM - Mine
 * google - ?

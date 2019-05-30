@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+#
+# Use awk to dedupe a file, outputting the lines in order
+#
+# Does _not_ just dedupe adjacent lines like uniq does
+
+exec awk '!dupelines[$0]++' < $@
