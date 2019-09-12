@@ -20,7 +20,7 @@
 
 require 'rubygems'
 require 'pp'
-require 'trollop'
+require 'optimist'
 
 def clean_name(name)
   # get rid of toxic spaces
@@ -57,14 +57,45 @@ end
 def generate_python_script(name:)
   copyright_year = `date -u "+%Y"`.chomp
   rawScript =<<"END_PYTHON_SCRIPT"
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #
 # Script skeleton
 #
 # Copyright #{copyright_year}, Your Name <yourname@yourdomain.com>
 
+import argparse
+import logging
+import os
+import sys
+
+
+def parseCLI():
+  '''
+  Parse the command line options
+  '''
+  parser = argparse.ArgumentParser()
+  parser.add_argument('-d', '--debug',
+                      help='Debug setting',
+                      action='store_true')
+  parser.add_argument('-l', '--log-level',
+                      help='Log level -set to DEBUG, INFO, ERROR, WARNING or CRITICAL',
+                      default='INFO')
+
+  cliArgs = parser.parse_args()
+  loglevel = getattr(logging, cliArgs.log_level.upper(), None)
+  if not isinstance(loglevel, int):
+    raise ValueError('Invalid log level: %s', cliArgs.log_level)
+  logging.basicConfig(level=loglevel)
+  logging.info('Set log level to %s', cliArgs.log_level.upper())
+  return cliArgs
+
+
 def main:
-  """Main function"""
+  '''
+  Main program driver
+  '''
+  cliArgs = parseCLI()
+
 
 if __name__ == '__main__':
   main
@@ -138,7 +169,7 @@ END_RUBY_SCRIPT
 end
 
 def main
-  $opts = Trollop::options do
+  $opts = Optimist::options do
     version "newscript 0.1 (c) 2016 Joe Block <jpb@unixorn.net>"
     banner <<-EOS
   Generate a new script file from a template.
@@ -154,8 +185,8 @@ def main
   validFlavors = ['bash', 'python', 'ruby']
 
   # Sanity check args
-  Trollop::die :script_type, "#{$opts[:script_type]} must be in #{validFlavors}" unless validFlavors.include?($opts[:script_type])
-  Trollop::die "Specify at least one file name" unless ARGV.length > 0
+  Optimist::die :script_type, "#{$opts[:script_type]} must be in #{validFlavors}" unless validFlavors.include?($opts[:script_type])
+  Optimist::die "Specify at least one file name" unless ARGV.length > 0
 
   ARGV.each { |name|
     case $opts[:script_type]
