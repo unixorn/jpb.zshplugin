@@ -538,3 +538,13 @@ elif [[ $(uname | grep -ci Linux) = 1 ]]; then
     echo "${modified_time}"
   }
 fi
+
+# Lazy enough to not want to hit the shift key
+alias get-file-modification-time=get_file_modification_time
+
+repair-zsh-history() {
+    local TEMP_REPAIR_D=$(mktemp -d)
+    cp ~/.zsh_history "$TEMP_REPAIR_D"
+    strings "$TEMP_REPAIR_D/.zsh_history" > ~/.zsh_history
+    rm -fr "$TEMP_REPAIR_D"
+}
