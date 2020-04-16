@@ -65,6 +65,7 @@ The scripts in this collection don't actually require you to be using ZSH as you
 * retry - Mine
 * running - Mine
 * seq - Dave Taylor's [blog](https://www.askdavetaylor.com/step_through_count_numeric_values_bash_shell_script/)
+* snag-dl - Move the most recent file in `~/Downloads` into the current directory
 * solo - Timothy Kay's [solo](http://timkay.com/solo/)
 * tableflip - [hangops](https://hangops.slack.com) slack
 * title-text - Set the terminal title in any application (like iTerm 2 or Terminal on macOS) that supports VT100 escape sequences. Mine
