@@ -337,22 +337,6 @@ function smite() {
 
 alias python_module_path="echo 'import sys; t=__import__(sys.argv[1],fromlist=[\".\"]); print(t.__file__)'  | python - "
 
-function 755() {
-  chmod 755 $@
-}
-
-function 700() {
-  chmod 700 $@
-}
-
-function 644() {
-  chmod 644 $@
-}
-
-function 600() {
-  chmod 600 $@
-}
-
 function htmime {
   if [[ -z $1 ]]; then
     print 'USAGE: htmime <URL>'
