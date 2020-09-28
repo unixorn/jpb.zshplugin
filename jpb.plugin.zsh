@@ -239,11 +239,6 @@ authme() {
   < ~/.ssh/id_dsa.pub
 }
 
-mtr_url() {
-  host=$(ruby -ruri -e "puts (URI.parse('$1').host or '$1')")
-  sudo mtr -t $host
-}
-
 jsoncurl() {
   curl "$@" | python -m json.tool
 }
