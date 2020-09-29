@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 # https://github.com/rtomayko/dotfiles/blob/rtomayko/bin/markdown-open
 

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 # Block until a network connection is obtained.
 # https://github.com/bamos/dotfiles/blob/master/.funcs

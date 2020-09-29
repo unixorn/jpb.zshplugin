@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 # Burst an rpm. Does it in the current directory, so look out.
 
@@ -7,4 +7,4 @@ if [ ! -f "${1}" ]; then
   exit 1
 fi
 
-rpm2cpio "${1}" | cpio -idmv
+exec rpm2cpio "${1}" | cpio -idmv

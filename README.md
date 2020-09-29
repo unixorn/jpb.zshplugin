@@ -31,7 +31,7 @@ add `antigen bundle unixorn/jpb.zshplugin` to your .zshrc
 
 add `zgen load unixorn/jpb.zshplugin` to your .zshrc with your other load commands.
 
-### Without using any frameworks
+### Without using a framework
 
 1. git clone this repository, then add its bin directory to your `$PATH`.
 2. Add `source /path/to/here/jpb.plugin.zsh` to your `.zshrc` file.
