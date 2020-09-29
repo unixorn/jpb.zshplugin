@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 PS_ARGS='wax'
 
@@ -12,7 +12,6 @@ if [ -f /etc/debian_version ];then
       ;;
   esac
 fi
-
 
 if [ ! -z $1 ] ; then
   ps ${PS_ARGS} | grep $* | grep -ve grep -ve ${0}

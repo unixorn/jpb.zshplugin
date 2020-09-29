@@ -1,3 +1,4 @@
+#!/usr/bin/env python2
 """Show the text behind commands
 
 This script is intended to replace the standard which command

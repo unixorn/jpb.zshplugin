@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 # http://www.askdavetaylor.com/step_through_count_numeric_values_bash_shell_script.html
 # count - step through numeric values until you get to the max value

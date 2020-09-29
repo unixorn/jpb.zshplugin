@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 if [[ "$(uname -s)" = "Linux"  ]]; then
   active_interface=$(route | awk '{ if ($1 ~/default/) { print $8} }')
