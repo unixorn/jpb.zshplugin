@@ -78,7 +78,9 @@ def parseCLI():
                       help='Debug setting',
                       action='store_true')
   parser.add_argument('-l', '--log-level',
-                      help='Log level -set to DEBUG, INFO, ERROR, WARNING or CRITICAL',
+                      type=str.upper,
+                      help='set log level',
+                      choices=['DEBUG','INFO','ERROR','WARNING','CRITICAL'],
                       default='INFO')
 
   cliArgs = parser.parse_args()
@@ -90,7 +92,7 @@ def parseCLI():
   return cliArgs
 
 
-def main:
+def main():
   '''
   Main program driver
   '''
@@ -98,7 +100,7 @@ def main:
 
 
 if __name__ == '__main__':
-  main
+  main()
 
 END_PYTHON_SCRIPT
   write_script(name: name, source: rawScript)
