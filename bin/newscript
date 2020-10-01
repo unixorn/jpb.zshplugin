@@ -90,7 +90,7 @@ def parseCLI():
   return cliArgs
 
 
-def main:
+def main():
   '''
   Main program driver
   '''
@@ -98,7 +98,7 @@ def main:
 
 
 if __name__ == '__main__':
-  main
+  main()
 
 END_PYTHON_SCRIPT
   write_script(name: name, source: rawScript)
