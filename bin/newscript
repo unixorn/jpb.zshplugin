@@ -78,7 +78,9 @@ def parseCLI():
                       help='Debug setting',
                       action='store_true')
   parser.add_argument('-l', '--log-level',
-                      help='Log level -set to DEBUG, INFO, ERROR, WARNING or CRITICAL',
+                      type=str.upper,
+                      help='set log level',
+                      choices=['DEBUG','INFO','ERROR','WARNING','CRITICAL'],
                       default='INFO')
 
   cliArgs = parser.parse_args()
