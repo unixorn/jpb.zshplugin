@@ -47,6 +47,7 @@ The scripts in this collection don't actually require you to be using ZSH as you
 * dedupe-in-order - `awk` oneliner
 * dumpdns - Dump DNS records for a domain
 * extractFromRPM - Mine
+* fix-zsh-history - Mine
 * google - ?
 * gxpr - [brutasse's dotfiles](https://github.com/brutasse/dotfiles/blob/master/bin/gxpr). Requires URI::Escape to be installed with `cpan`
 * headers - Zach Holman's [dotfiles](https://github.com/holman/dotfiles/blob/master/bin/headers)

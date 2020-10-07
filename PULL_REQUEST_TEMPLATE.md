@@ -19,7 +19,7 @@
 # Types of changes
 <!--- What types of changes does your code introduce? Put an `x` in all the boxes that apply: -->
 - [ ] Adding utility script(s)
-- [ ] Add/update function in `jpb.pluginn.zsh`
+- [ ] Add/update function in `jpb.plugin.zsh`
 - [ ] Adding link(s) to external resources
 - [ ] Breaking change (fix or feature that would cause existing functionality to change)
 - [ ] Bug fix (non-breaking change which fixes an issue)
@@ -42,5 +42,5 @@
 - [ ] I have run `pylint` on all python files touched in my branch.
 - [ ] I have run `rubocop` on all ruby files touched in my branch.
 - [ ] I have run `shellcheck` on all shell scripts touched in my branch.
-- [ ] All scripts touched/added in this PR have valid shebang lines and are marked executable. 
+- [ ] All scripts touched/added in this PR have valid shebang lines and are marked executable.
 - [ ] Any scripts added in my PR do not include language extensions in their names - no `foo.sh`, `foo.rb` or `foo.py`. We do not want to have to change other scripts just because something gets rewritten in a better fitting language.
