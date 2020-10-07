@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+#
+# Fix a corrupt zsh history
+#
+# Copyright 2020, Joe Block <jpb@unixorn.net>
+
+set -o pipefail
+
+WORK_D=$(mktemp -d)
+
+if [[ ! "$WORK_D" || ! -d "$WORK_D" ]]; then
+  echo "Could not create temp dir"
+  exit 1
+fi
+
+cleanup() {
+  if [[ -d "$WORK_D" ]]; then
+    rm -fr "$WORK_D"
+  fi
+}
+
+trap cleanup EXIT
+
+cp ~/.zsh_history "${WORK_D}/bad_history"
+strings "${WORK_D}/bad_history" > ~/.zsh_history
+fc -R .zsh_history
