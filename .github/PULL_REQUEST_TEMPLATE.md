@@ -18,7 +18,7 @@
 
 # Types of changes
 <!--- What types of changes does your code introduce? Put an `x` in all the boxes that apply: -->
-- [ ] Adding utility script(s)
+- [ ] Adding or updating utility script(s)
 - [ ] Add/update function in `jpb.plugin.zsh`
 - [ ] Adding link(s) to external resources
 - [ ] Breaking change (fix or feature that would cause existing functionality to change)
