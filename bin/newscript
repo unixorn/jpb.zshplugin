@@ -101,7 +101,7 @@ def parseCLI():
   loglevel = getattr(logging, cliArgs.log_level.upper(), None)
   if not isinstance(loglevel, int):
     raise ValueError('Invalid log level: %s', cliArgs.log_level)
-  logFormat = "[%(filename)s:%(lineno)s - %(funcName)20s() ] %(message)s"
+  logFormat = "[%(levelname)8s][%(filename)s:%(lineno)s - %(funcName)20s() ] %(message)s"
   logging.basicConfig(level=loglevel, format=logFormat)
   logging.info('Set log level to %s', cliArgs.log_level.upper())
   return cliArgs
