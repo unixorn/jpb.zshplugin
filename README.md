@@ -51,6 +51,8 @@ The scripts in this collection don't actually require you to be using ZSH as you
 * google - ?
 * gxpr - [brutasse's dotfiles](https://github.com/brutasse/dotfiles/blob/master/bin/gxpr). Requires URI::Escape to be installed with `cpan`
 * headers - Zach Holman's [dotfiles](https://github.com/holman/dotfiles/blob/master/bin/headers)
+* http_debug - Dump debug info for an url
+* http_headers - Dump http headers for an url
 * ipaddresses - Mine
 * local-ip-address - Mine
 * local-ipv6-address - Mine
