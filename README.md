@@ -19,7 +19,7 @@ This is a ZSH plugin usable with [Zgen](https://github.com/tarjoilija/zgen) and 
 This contains miscellaneous tool scripts and aliases that are not specific enough for one of my more targeted ZSH plugins.
 
 ## Status
-[![Build Status](https://travis-ci.org/unixorn/jpb.zshplugin.png)](https://travis-ci.org/unixorn/jpb.zshplugin)
+[![Build Status](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2Funixorn%2Fjpb.zshplugin%2Fbadge&style=plastic)](https://actions-badge.atrox.dev/unixorn/jpb.zshplugin/goto)
 
 ## Installing
 
