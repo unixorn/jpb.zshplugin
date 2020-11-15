@@ -56,7 +56,7 @@ The scripts in this collection don't actually require you to be using ZSH as you
 * ipaddresses - Mine
 * local-ip-address - Mine
 * local-ipv6-address - Mine
-* markdown-open - Ryan Tomayko's [dotfiles](https://github.com/rtomayko/dotfiles)
+* markdown-open - Ryan Tomayko's dotfiles
 * memcached-tool - Brad Fitzpatrick <brad@danga.com>
 * memcached-top - [http://code.google.com/p/memcache-top/](http://code.google.com/p/memcache-top/)
 * murder - [Anonymous Gist](https://gist.github.com/anonymous/32b1e619bc9e7fbe0eaa#!/bin/bash)
