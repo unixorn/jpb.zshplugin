@@ -1,20 +1,20 @@
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-**Table of Contents**
+## Table of Contents
 
 - [jpb.zshplugin](#jpbzshplugin)
   - [Status](#status)
   - [Installing](#installing)
     - [Antigen](#antigen)
-    - [Zgen](#zgen)
-    - [Without using any frameworks](#without-using-any-frameworks)
+    - [Zgen/Zgenom](#zgenzgenom)
+    - [Without using a framework](#without-using-a-framework)
   - [Credits](#credits)
   - [Other useful ZSH plugins](#other-useful-zsh-plugins)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 # jpb.zshplugin
 
-This is a ZSH plugin usable with [Zgen](https://github.com/tarjoilija/zgen) and other [oh-my-zsh](https://github.com/ohmyzsh/ohmyzsh)-compatible frameworks to easily load some of my tool scripts.
+This is a ZSH plugin usable with [zgenom](https://github.com/jandamm/zgenom) and other [oh-my-zsh](https://github.com/ohmyzsh/ohmyzsh)-compatible frameworks to easily load some of my tool scripts.
 
 This contains miscellaneous tool scripts and aliases that are not specific enough for one of my more targeted ZSH plugins.
 
@@ -25,11 +25,11 @@ This contains miscellaneous tool scripts and aliases that are not specific enoug
 
 ### Antigen
 
-add `antigen bundle unixorn/jpb.zshplugin` to your .zshrc
+add `antigen bundle unixorn/jpb.zshplugin` to your `.zshrc`
 
-### Zgen
+### Zgen/Zgenom
 
-add `zgen load unixorn/jpb.zshplugin` to your .zshrc with your other load commands.
+add `zgen load unixorn/jpb.zshplugin` to your `.zshrc` with your other load commands.
 
 ### Without using a framework
 
