@@ -285,20 +285,6 @@ alias -s pdf=open
 alias edit="$EDITOR"' $(eval ${$(fc -l -1)[2,-1]} -l)'
 alias knife='nocorrect knife'
 
-# from: https://coderwall.com/p/hwu5uq?i=9&p=1&q=sort%3Ascore+desc&t%5B%5D=zsh
-pjson() {
-  if [ $# -gt 0 ]; then
-    for arg in $@
-    do
-      if [ -f $arg ]; then
-        cat $arg | python -m json.tool
-      else
-        echo "$arg" | python -m json.tool
-      fi
-    done
-  fi
-}
-
 # from: https://vinipsmaker.wordpress.com/2014/02/23/my-zsh-config/
 # bash prints ^C when you're typing a command and control-c to cancel, so it
 # is easy to see it wasn't executed. By default, zsh doesn't print the ^C.
