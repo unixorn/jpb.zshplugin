@@ -1,4 +1,4 @@
-# Copyright 2006-2016 Joseph Block <jpb@apesseekingknowledge.net>
+# Copyright 2006-2020 Joseph Block <jpb@apesseekingknowledge.net>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -179,12 +179,7 @@ calc() {
   awk "BEGIN{ print $* }" ;
 }
 
-procs_for_path() {
-  for pid in $(lsof "$*" | cut -d' ' -f 3 | sort | uniq)
-  do
-    ps -f -p $pid
-  done
-}
+alias procs_for_path='procs-for-path'
 
 # begin sysadvent2011 functions
 _awk_col() {
