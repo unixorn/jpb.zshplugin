@@ -1,4 +1,4 @@
-# Copyright 2006-2016 Joseph Block <jpb@apesseekingknowledge.net>
+# Copyright 2006-2020 Joseph Block <jpb@apesseekingknowledge.net>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -179,12 +179,7 @@ calc() {
   awk "BEGIN{ print $* }" ;
 }
 
-procs_for_path() {
-  for pid in $(lsof "$*" | cut -d' ' -f 3 | sort | uniq)
-  do
-    ps -f -p $pid
-  done
-}
+alias procs_for_path='procs-for-path'
 
 # begin sysadvent2011 functions
 _awk_col() {
@@ -289,20 +284,6 @@ alias zh='fc -l -d -D'
 alias -s pdf=open
 alias edit="$EDITOR"' $(eval ${$(fc -l -1)[2,-1]} -l)'
 alias knife='nocorrect knife'
-
-# from: https://coderwall.com/p/hwu5uq?i=9&p=1&q=sort%3Ascore+desc&t%5B%5D=zsh
-pjson() {
-  if [ $# -gt 0 ]; then
-    for arg in $@
-    do
-      if [ -f $arg ]; then
-        cat $arg | python -m json.tool
-      else
-        echo "$arg" | python -m json.tool
-      fi
-    done
-  fi
-}
 
 # from: https://vinipsmaker.wordpress.com/2014/02/23/my-zsh-config/
 # bash prints ^C when you're typing a command and control-c to cancel, so it
