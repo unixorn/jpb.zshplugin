@@ -7,7 +7,7 @@
 set -o pipefail
 
 if [ $# -gt 0 ]; then
-  for arg in $@
+  for arg in "$@"
   do
     if [ -f "$arg" ]; then
       python -m json.tool < "$arg"

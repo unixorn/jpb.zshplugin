@@ -8,5 +8,5 @@ set -o pipefail
 
 for pid in $(lsof "$*" | cut -d' ' -f 3 | sort | uniq)
 do
-  ps -f -p $pid
+  ps -f -p "$pid"
 done
