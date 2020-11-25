@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+#
+# Decode a CSR
+#
+# Copyright 2020, Joe Block <jpb@unixorn.net>
+
+set -o pipefail
+
+cert=${1?Need cert}
+exec openssl req -in "$cert" -text -noout
