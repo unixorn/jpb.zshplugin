@@ -419,21 +419,6 @@ alias grepm='grep --exclude-dir={node_modules,bower_components,dist,.bzr,.cvs,.g
 export BULLETTRAIN_CONTEXT_SHOW=true
 export BULLETTRAIN_IS_SSH_CLIENT=true
 
-decode-cert () {
-  local cert=${1?Need cert}
-  openssl x509 -in "$cert" -text -noout
-}
-
-csr-decode () {
-  local cert=${1?Need cert}
-  openssl req -in "$cert" -text -noout
-}
-
-p7b-decode () {
-  local cert=${1?Need cert}
-  openssl pkcs7 -in "$cert" -print_certs -text -noout
-}
-
 # Calculate how many days since epoch
 epochdays() {
   if command -v perl &>/dev/null; then

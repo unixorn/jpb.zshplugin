@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+#
+# Decode an SSL certificate
+#
+# Copyright 2020, Joe Block <jpb@unixorn.net>
+
+set -o pipefail
+
+cert=${1?Need cert}
+exec openssl x509 -in "$cert" -text -noout
