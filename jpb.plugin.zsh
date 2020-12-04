@@ -39,6 +39,11 @@ function \$() {
   "$@"
 }
 
+# Find an environment variable in all processes and show the unique values
+function findenv() {
+  ps aexww | sed -ne "/$1/ { s/.*\($1[^ ]*\).*/\1/; p; }" | sort | uniq -c $2
+}
+
 # check if this is an interactive session
 # (tests if stdout is a tty)
 # function is_interactive() { [ -t 1 ] }
