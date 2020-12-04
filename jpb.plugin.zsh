@@ -26,6 +26,19 @@ function exists() {
   fi
 }
 
+# From: https://github.com/jordansissel/dotfiles/blob/master/.zshrc
+# Lots of command examples (especially heroku) lead command docs with '$' which
+# make it kind of annoying to copy/paste, especially when there's multiple
+# commands to copy.
+#
+# This hacks around the problem by making a '$' command that simply runs
+# whatever arguments are passed to it. So you can copy
+#   '$ echo hello world'
+# and it will run 'echo hello world'
+function \$() {
+  "$@"
+}
+
 # check if this is an interactive session
 # (tests if stdout is a tty)
 # function is_interactive() { [ -t 1 ] }
