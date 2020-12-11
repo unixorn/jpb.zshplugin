@@ -1,17 +1,3 @@
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-## Table of Contents
-
-- [jpb.zshplugin](#jpbzshplugin)
-  - [Status](#status)
-  - [Installing](#installing)
-    - [Antigen](#antigen)
-    - [Zgen/Zgenom](#zgenzgenom)
-    - [Without using a framework](#without-using-a-framework)
-  - [Credits](#credits)
-  - [Other useful ZSH plugins](#other-useful-zsh-plugins)
-
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 # jpb.zshplugin
 
 This is a ZSH plugin usable with [zgenom](https://github.com/jandamm/zgenom) and other [oh-my-zsh](https://github.com/ohmyzsh/ohmyzsh)-compatible frameworks to easily load some of my tool scripts.
@@ -20,6 +6,19 @@ This contains miscellaneous tool scripts and aliases that are not specific enoug
 
 ## Status
 [![Build Status](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2Funixorn%2Fjpb.zshplugin%2Fbadge&style=plastic)](https://actions-badge.atrox.dev/unixorn/jpb.zshplugin/goto)
+
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+## Table of Contents
+
+- [Installing](#installing)
+  - [Antigen](#antigen)
+  - [Zgen/Zgenom](#zgenzgenom)
+  - [Without using a framework](#without-using-a-framework)
+- [Credits](#credits)
+- [Other useful ZSH plugins](#other-useful-zsh-plugins)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## Installing
 
