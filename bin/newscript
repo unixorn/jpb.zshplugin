@@ -64,6 +64,8 @@ cleanup() {
   fi
 }
 
+trap cleanup EXIT
+
 END_BASH_SCRIPT
   write_script(name: name, source: rawScript)
 end
