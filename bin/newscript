@@ -49,6 +49,9 @@ def generate_bash_script(name:)
 # Copyright #{copyright_year}, Your Name <yourname@yourdomain.com>
 
 set -o pipefail
+if [[ -n "$DEBUG" ]]; then
+  set -x
+fi
 
 # Set up a working scratch directory
 SCRATCH_D=$(mktemp -d)

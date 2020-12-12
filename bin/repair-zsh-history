@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+#
+# Repair your ZSH history
+#
+# Copyright 2020, Joe Block <jpb@unixorn.net>
+
+if [[ -n "$DEBUG" ]]; then
+  set -x
+fi
+
+# Set up a working scratch directory
+TEMP_REPAIR_D=$(mktemp -d)
+
+if [[ ! "$TEMP_REPAIR_D" || ! -d "$TEMP_REPAIR_D" ]]; then
+  echo "Could not create temp dir"
+  exit 1
+fi
+
+cleanup() {
+  if [[ -d "$TEMP_REPAIR_D" ]]; then
+    rm -fr "$TEMP_REPAIR_D"
+  fi
+}
+
+fail() {
+  echo "$@"
+  cleanup
+  exit 1
+}
+
+strings ~/.zsh_history > "$TEMP_REPAIR_D"/.zsh_history || fail "Couldn't run strings on ~/.zsh_history, sorry"
+cat "$TEMP_REPAIR_D"/.zsh_history > ~/.zsh_history
+cleanup
