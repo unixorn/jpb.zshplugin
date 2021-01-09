@@ -499,3 +499,12 @@ fi
 
 # Lazy enough to not want to hit the shift key
 alias get-file-modification-time=get_file_modification_time
+
+# VSCode stuff
+alias cadd='code -a'
+alias cdiff='code -d'
+alias cnew='code -n'
+alias code-install='code --install-extension'
+alias code-uninstall='code --uninstall-extension'
+alias vs-code='code'
+alias vscode='code'
