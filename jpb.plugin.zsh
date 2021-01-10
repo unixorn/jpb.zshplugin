@@ -580,3 +580,13 @@ gostatic(){
 	esac
 	)
 }
+
+golistdeps(){
+	(
+	if [[ -n "$1" ]]; then
+		gogo "$@"
+	fi
+
+	go list -e -f '{{join .Deps "\n"}}' ./... | xargs go list -e -f '{{if not .Standard}}{{.ImportPath}}{{end}}'
+	)
+}
