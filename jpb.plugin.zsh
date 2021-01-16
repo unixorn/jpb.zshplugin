@@ -25,6 +25,8 @@ function exists() {
     return 1
   fi
 }
+#
+alias dmesg='sudo dmesg'
 
 # From: https://github.com/jordansissel/dotfiles/blob/master/.zshrc
 # Lots of command examples (especially heroku) lead command docs with '$' which
