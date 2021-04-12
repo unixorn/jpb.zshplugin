@@ -9,9 +9,11 @@ if [[ ! -r "${1}" ]]; then
   echo "Can't read ${1}"
   exit 1
 fi
+
 if [[ ! -r "${2}" ]]; then
   echo "Can't read ${2}"
   exit 1
 fi
 
+# shellcheck disable=SC2002
 diff -B <( cat "${1}" | python -m json.tool ) <( cat "${2}" | python -m json.tool )

@@ -39,41 +39,46 @@ The scripts in this collection don't actually require you to be using ZSH as you
 
 ## Credits
 
-* ansi2html - Mislav Marohnić's [dotfiles](https://github.com/mislav/dotfiles)
-* change-extension - ?
-* clean-clipboard - Mine
-* clean-whiteboard-picture - [https://gist.github.com/lelandbatey/8677901](https://gist.github.com/lelandbatey/8677901)
-* dedupe-in-order - `awk` oneliner
-* dumpdns - Dump DNS records for a domain
-* extractFromRPM - Mine
-* find-in-files - [Boost Your Command Line Productivity With fzf](https://betterprogramming.pub/boost-your-command-line-productivity-with-fuzzy-finder-985aa162ba5d)
-* fix-zsh-history - Mine
-* google - ?
-* gxpr - [brutasse's dotfiles](https://github.com/brutasse/dotfiles/blob/master/bin/gxpr). Requires URI::Escape to be installed with `cpan`
-* headers - Zach Holman's [dotfiles](https://github.com/holman/dotfiles/blob/master/bin/headers)
-* http_debug - Dump debug info for an url
-* http_headers - Dump http headers for an url
-* ipaddresses - Mine
-* local-ip-address - Mine
-* local-ipv6-address - Mine
-* markdown-open - Ryan Tomayko's dotfiles
-* memcached-tool - Brad Fitzpatrick <brad@danga.com>
-* memcached-top - [http://code.google.com/p/memcache-top/](http://code.google.com/p/memcache-top/)
-* murder - [Anonymous Gist](https://gist.github.com/anonymous/32b1e619bc9e7fbe0eaa#!/bin/bash)
-* newscript - Mine
-* pidpwd - Mine
-* random-password - Mine
-* randsleep - Mine
-* relocate-virtualenv - Gary Josack's [scripts](https://github.com/gmjosack/scripts) repository
-* retry - Mine
-* running - Mine
-* seq - Dave Taylor's [blog](https://www.askdavetaylor.com/step_through_count_numeric_values_bash_shell_script/)
-* snag-dl - Move the most recent file in `~/Downloads` into the current directory
-* solo - Timothy Kay's [solo](http://timkay.com/solo/)
-* tableflip - [hangops](https://hangops.slack.com) slack
-* title-text - Set the terminal title in any application (like iTerm 2 or Terminal on macOS) that supports VT100 escape sequences. Mine
-* vbox - ?
-* wifi-signal-strength - Atsushi Nagase's [dotfiles](https://github.com/ngs/dotfiles/blob/master/bin/wifi-signal-strength)
+| Script | Original Source | Description |
+| ------ | --------------- | ----------- |
+  `ansi2html` | Mislav Marohnić's [dotfiles](https://github.com/mislav/dotfiles) | Convert terminal color ANSI escape sequences to HTML. |
+| `change-extension` | ? | Changes file extentions |
+| `clean-clipboard` | Mine | Cleans the macOs clipboard |
+| `clean-whiteboard-picture` | [https://gist.github.com/lelandbatey/8677901](https://gist.github.com/lelandbatey/8677901) | Cleans up pictures of whiteboards and pumps up contrast |
+| `dedupe-in-order` | `awk` oneliner |
+| `dumpdns` | | Dump DNS records for a domain |
+| `extractFromRPM` | Mine | Extracts files from an rpm |
+| `find-in-files` | [Boost Your Command Line Productivity With fzf](https://betterprogramming.pub/boost-your-command-line-productivity-with-fuzzy-finder-985aa162ba5d) | Combines `ripgrep` and `fzf` |
+| `fix-zsh-history` | Mine | Fixes a corrupted `.zsh_history` file |
+| `get-distro` | [https://github.com/blueyed/dotfiles/](https://github.com/blueyed/dotfiles/blob/master/usr/bin/get_distro) | Dumps info about the distro of the linux system you're on |
+| `gxpr` | [brutasse's dotfiles](https://github.com/brutasse/dotfiles/blob/master/bin/gxpr). | Uses Google and or Wolfram Alpha to evaluate expressions. Requires `URI::Escape` to be installed with `cpan`. |
+| `headers` | Zach Holman's [dotfiles](https://github.com/holman/dotfiles/blob/master/bin/headers) | Gets the HTTP headers from a server |
+| `http_debug` | | Dump debug info for an url |
+| `http_headers` | | Dump http headers for an url |
+| `html2markdown` | [https://github.com/realpython/python-scripts/](https://github.com/realpython/python-scripts/blob/master/14_html_to_markdown.sh) | Convert all html files in a single directory to markdown |
+| `ipaddresses` | Mine | Dumps all the ip addresses for the host |
+| `json2yaml` | ? | Converts JSON to YAML |
+| `jsondiff` | ? | Diff JSON files and cope with key-order differences by processing with json.tool |
+| `local-ip-address` | Mine | Print local IP v4 address |
+| `local-ipv6-address` | Mine | Print local IP v6 address |
+| `lsof-unlinked` | [https://github.com/ludios/ubuntils/](https://github.com/ludios/ubuntils/blob/master/bin/)lsof-unlinked | List all open files (but not mapped files) that have been unlinked. |
+| `memcached-tool` | Brad Fitzpatrick <brad@danga.com> | stats/management tool for memcached |
+| `memcached-top` | [http://code.google.com/p/memcache-top/](http://code.google.com/p/memcache-top/) | Dumps basic `memcached` stats similarly to `top` |
+| `mtr-url` | ? | Parses hostname from an URL, then does a `mtr` to it. |
+| `murder` | [Anonymous Gist](https://gist.github.com/anonymous/32b1e619bc9e7fbe0eaa#!/bin/bash) | Takes a list of PIDs and ends the processes through increasingly rude means. |
+| `newscript` | Mine | Creates a new script from a template and does `chmod 755` on it. |
+| `pidpwd` | Mine | Find the pwd of a given pid. Only works on linux since it requires `/proc` |
+| `pjson` | [https://coderwall.com/](https://coderwall.com/p/hwu5uq?i=9&p=1&q=sort%3Ascore+desc&t%5B%5D=zsh) | Prettify json files |
+| `random-password` | Mine | Generate a random password. If no argument, assume 32 character length |
+| `randsleep` | Mine | Sleep a random number of seconds |
+| `relocate-virtualenv` | Gary Josack's [scripts](https://github.com/gmjosack/scripts) repository | This is a simple script to clean up links and references in a python virtualenv that has been relocated. |
+| `retry` | Mine | Re-run a command until it exits successfully. Waits `$DELAY` seconds between attempts. |
+| `seq` | Dave Taylor's [blog](https://www.askdavetaylor.com/step_through_count_numeric_values_bash_shell_script/) | Generates integer values from low...high similar to `range` in better programming languages |
+| `snag-dl` | ? | Moves the most recent file in `~/Downloads` into the current directory |
+| `solo` | Timothy Kay's [solo](http://timkay.com/solo/) | Prevents a program from running more than one copy at a time. |
+| `tableflip` | [hangops](https://hangops.slack.com) slack | Prints a tableflip animation. |
+| `title-text` | Mine | Set the terminal title in any application (like iTerm 2 or Terminal on macOS) that supports VT100 escape sequences. |
+| `vbox` | Mine | Opens VirtualBox |
 
 ## Other useful ZSH plugins
 
