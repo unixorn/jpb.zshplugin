@@ -20,6 +20,7 @@ fi
 
 while [ "$counter" -le "$max" ] ; do
   echo "$counter"
+  # shellcheck disable=SC2003
   counter=$( expr "$counter" + "$step" )
 done
 
