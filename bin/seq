@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 #
 # http://www.askdavetaylor.com/step_through_count_numeric_values_bash_shell_script.html
-# count - step through numeric values until you get to the max value
+# seq - step through numeric values until you get to the max value
 
 if [ "$#" -lt 2 ] ; then
-  echo "Usage: count {increment}"
+  echo "Usage: seq low high - generate list of integers from low to high"
+  echo "Usage: seq low high increment - Generate list of integers from low to high, bumping by interval"
   exit 1
 fi
 
@@ -14,12 +15,12 @@ max="$2"
 if [ "$#" -eq 2 ] ; then
   step=1
 else
-  step=$3
+  step="$3"
 fi
 
-while [ $counter -le $max ] ; do
-  echo $counter
-  counter=$( expr $counter + $step )
+while [ "$counter" -le "$max" ] ; do
+  echo "$counter"
+  counter=$( expr "$counter" + "$step" )
 done
 
 exit 0
