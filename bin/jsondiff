@@ -15,4 +15,5 @@ if [[ ! -r "${2}" ]]; then
   exit 1
 fi
 
+# shellcheck disable=SC2002
 diff -B <( cat "${1}" | python -m json.tool ) <( cat "${2}" | python -m json.tool )
