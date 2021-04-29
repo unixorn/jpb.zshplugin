@@ -55,7 +55,7 @@ The scripts in this collection don't actually require you to be using ZSH as you
 | `headers` | Zach Holman's [dotfiles](https://github.com/holman/dotfiles/blob/master/bin/headers) | Gets the HTTP headers from a server |
 | `http_debug` | | Dump debug info for an url |
 | `http_headers` | | Dump http headers for an url |
-| `html2markdown` | [https://github.com/realpython/python-scripts/](https://github.com/realpython/python-scripts/blob/master/14_html_to_markdown.sh) | Convert all html files in a single directory to markdown |
+| `html2markdown` | [https://github.com/realpython/python-scripts/](https://github.com/realpython/python-scripts/blob/master/scripts/14_html_to_markdown.sh) | Convert all html files in a single directory to markdown |
 | `ipaddresses` | Mine | Dumps all the ip addresses for the host |
 | `json2yaml` | ? | Converts JSON to YAML |
 | `jsondiff` | ? | Diff JSON files and cope with key-order differences by processing with json.tool |
