@@ -18,6 +18,7 @@
 
 # Types of changes
 <!--- What types of changes does your code introduce? Put an `x` in all the boxes that apply: -->
+
 - [ ] Adding or updating utility script(s)
 - [ ] Add/update function in `jpb.plugin.zsh`
 - [ ] Adding link(s) to external resources
@@ -31,6 +32,7 @@
 <!--- If you're unsure about any of these, don't hesitate to ask on Slack -->
 
 ## General
+
 - [ ] All new and existing tests passed.
 - [ ] I have added tests to cover my changes.
 - [ ] My change requires a change to the documentation.
@@ -39,6 +41,7 @@
 - [ ] If a new script is not using an Apache 2.0 license, there's a link in the script source saying what license it _is_ under.
 
 ## Scripts
+
 - [ ] I have run `pylint` on all python files touched in my branch.
 - [ ] I have run `rubocop` on all ruby files touched in my branch.
 - [ ] I have run `shellcheck` on all shell scripts touched in my branch.
