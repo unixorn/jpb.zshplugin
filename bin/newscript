@@ -18,18 +18,18 @@
 # Got tired of 'vim foo' && chmod +x foo && cat /path/to/template > foo,
 # so made a helper to create new scripts with the base stuff I wanted in them.
 
-require 'rubygems'
-require 'pp'
-require 'optimist'
+require "rubygems"
+require "pp"
+require "optimist"
 
 def clean_name(name)
   # get rid of toxic spaces
-  return name.gsub(' ', '_')
+  return name.gsub(" ", "_")
 end
 
 def write_script(name:, source:)
-  if File.exist?(name) then
-    puts "There's already something named #{name} here. Bailing out."
+  if File.exist?(name)
+    puts "There's already a file at #{name}. Bailing out."
     exit 13
   else
     File.open(name, "w") do |content|
@@ -209,11 +209,11 @@ def main
   where [options] are:
   EOS
 
-    opt :debug, "Set debug level", :default => 0
-    opt :script_type, "Script type. Valid options: bash, python or ruby", :type => String, :default => 'bash'
+    opt :debug, "Set debug level", default: 0
+    opt :script_type, "Script type. Valid options: bash, python or ruby", type: String, default: "bash"
   end
 
-  validFlavors = ['bash', 'python', 'ruby']
+  validFlavors = ["bash", "python", "ruby"]
 
   # Sanity check args
   Optimist::die :script_type, "#{$opts[:script_type]} must be in #{validFlavors}" unless validFlavors.include?($opts[:script_type])
@@ -221,11 +221,11 @@ def main
 
   ARGV.each { |name|
     case $opts[:script_type]
-    when 'bash'
+    when "bash"
       generate_bash_script(name: name)
-    when 'python'
+    when "python"
       generate_python_script(name: name)
-    when 'ruby'
+    when "ruby"
       generate_ruby_script(name: name)
     else
       puts "script type #{$opts[:script_type]} unknown"
