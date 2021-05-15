@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 #
-#   Copyright 2016-2020 Joe Block <jpb@unixorn.net>
+#   Copyright 2016-2021 Joe Block <jpb@unixorn.net>
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -53,7 +53,19 @@ if [[ -n "$DEBUG" ]]; then
   set -x
 fi
 
-fail() {
+function cleanup() {
+  if [[ -d "$SCRATCH_D" ]]; then
+    rm -fr "$SCRATCH_D"
+  fi
+}
+
+function debug() {
+  if [[ -n "$DEBUG" ]]; then
+    echo "$@"
+  fi
+}
+
+function fail() {
   printf '%s\\n' "$1" >&2  ## Send message to stderr. Exclude >&2 if you don't want it that way.
   exit "${2-1}"  ## Return a code specified by $2 or 1 by default.
 }
@@ -65,12 +77,6 @@ if [[ ! "$SCRATCH_D" || ! -d "$SCRATCH_D" ]]; then
   echo "Could not create temp dir"
   exit 1
 fi
-
-cleanup() {
-  if [[ -d "$SCRATCH_D" ]]; then
-    rm -fr "$SCRATCH_D"
-  fi
-}
 
 trap cleanup EXIT
 
