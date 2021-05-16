@@ -70,6 +70,11 @@ function fail() {
   exit "${2-1}"  ## Return a code specified by $2 or 1 by default.
 }
 
+function has() {
+  # Check if a command is in $PATH
+  which "$@" > /dev/null 2>&1
+}
+
 # Set up a working scratch directory
 SCRATCH_D=$(mktemp -d)
 
