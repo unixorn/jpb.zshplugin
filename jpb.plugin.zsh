@@ -300,15 +300,6 @@ alias -s pdf=open
 alias edit="$EDITOR"' $(eval ${$(fc -l -1)[2,-1]} -l)'
 alias knife='nocorrect knife'
 
-# from: https://vinipsmaker.wordpress.com/2014/02/23/my-zsh-config/
-# bash prints ^C when you're typing a command and control-c to cancel, so it
-# is easy to see it wasn't executed. By default, zsh doesn't print the ^C.
-# Fortunately, it is easy to trap SIGINT.
-TRAPINT() {
-  print -n -u2 '^C'
-  return $((128+$1))
-}
-
 function hexpass() {
   openssl rand -hex 24 $@
 }
