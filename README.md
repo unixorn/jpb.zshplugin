@@ -56,6 +56,7 @@ The scripts in this collection don't actually require you to be using ZSH as you
 | `http_debug` | | Dump debug info for an url |
 | `http_headers` | | Dump http headers for an url |
 | `html2markdown` | [https://github.com/realpython/python-scripts/](https://github.com/realpython/python-scripts/blob/master/scripts/14_html_to_markdown.sh) | Convert all html files in a single directory to markdown |
+| `iflip` | [twirrim/iflip](https://github.com/twirrim/iflip/blob/master/iflip) | Tableflips a text string |
 | `ipaddresses` | Mine | Dumps all the ip addresses for the host |
 | `json2yaml` | ? | Converts JSON to YAML |
 | `jsondiff` | ? | Diff JSON files and cope with key-order differences by processing with json.tool |
