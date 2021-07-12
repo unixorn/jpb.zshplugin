@@ -70,6 +70,7 @@ The scripts in this collection don't actually require you to be using ZSH as you
 | `newscript` | Mine | Creates a new script from a template and does `chmod 755` on it. |
 | `pidpwd` | Mine | Find the pwd of a given pid. Only works on linux since it requires `/proc` |
 | `pjson` | [https://coderwall.com/](https://coderwall.com/p/hwu5uq?i=9&p=1&q=sort%3Ascore+desc&t%5B%5D=zsh) | Prettify json files |
+| `plot` | katef's [gist](https://gist.github.com/katef/fb4cb6d47decd8052bd0e8d88c03a102) | Draw a graph in the terminal |
 | `random-password` | Mine | Generate a random password. If no argument, assume 32 character length |
 | `randsleep` | Mine | Sleep a random number of seconds |
 | `relocate-virtualenv` | Gary Josack's [scripts](https://github.com/gmjosack/scripts) repository | This is a simple script to clean up links and references in a python virtualenv that has been relocated. |
