@@ -81,6 +81,7 @@ The scripts in this collection don't actually require you to be using ZSH as you
 | `tableflip` | [hangops](https://hangops.slack.com) slack | Prints a tableflip animation. |
 | `title-text` | Mine | Set the terminal title in any application (like iTerm 2 or Terminal on macOS) that supports VT100 escape sequences. |
 | `vbox` | Mine | Opens VirtualBox |
+| `wtfis` | jpb@unixorn.net | Looks something up on [cheat.sh](http://cheat.sh) |
 
 ## Other useful ZSH plugins
 
