@@ -53,12 +53,6 @@ if [[ -n "$DEBUG" ]]; then
   set -x
 fi
 
-function cleanup() {
-  if [[ -d "$SCRATCH_D" ]]; then
-    rm -fr "$SCRATCH_D"
-  fi
-}
-
 function debug() {
   if [[ -n "$DEBUG" ]]; then
     echo "$@"
@@ -75,13 +69,19 @@ function has() {
   which "$@" > /dev/null 2>&1
 }
 
+function cleanup() {
+  if [[ -d "$SCRATCH_D" ]]; then
+    rm -fr "$SCRATCH_D"
+  fi  
+}  
+
 # Set up a working scratch directory
 SCRATCH_D=$(mktemp -d)
 
 if [[ ! "$SCRATCH_D" || ! -d "$SCRATCH_D" ]]; then
   echo "Could not create temp dir"
   exit 1
-fi
+fi  
 
 trap cleanup EXIT
 
