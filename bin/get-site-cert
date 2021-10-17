@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+#
+# Get the cert for a site
+#
+# Copyright 2021, Joe Block <jpb@unixorn.net>
+
+echo -n | \
+  openssl s_client -connect "$1" 2>/dev/null | \
+  sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | \
+  openssl x509 -text -noout
+exit $?
