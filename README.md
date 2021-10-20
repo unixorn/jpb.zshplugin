@@ -46,6 +46,7 @@ The scripts in this collection don't actually require you to be using ZSH as you
 | `clean-clipboard` | Mine | Cleans the macOs clipboard |
 | `clean-whiteboard-picture` | [https://gist.github.com/lelandbatey/8677901](https://gist.github.com/lelandbatey/8677901) | Cleans up pictures of whiteboards and pumps up contrast |
 | `dedupe-in-order` | `awk` oneliner |
+| `diff-summary` | Gary Bernhardt's [dotfiles](https://github.com/garybernhardt/dotfiles/blob/main/bin/gn) |Prints a summary of piped diff files or `git diff` output |
 | `dumpdns` | | Dump DNS records for a domain |
 | `extractFromRPM` | Mine | Extracts files from an rpm |
 | `find-in-files` | [Boost Your Command Line Productivity With fzf](https://betterprogramming.pub/boost-your-command-line-productivity-with-fuzzy-finder-985aa162ba5d) | Combines `ripgrep` and `fzf` |
