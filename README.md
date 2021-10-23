@@ -61,6 +61,7 @@ The scripts in this collection don't actually require you to be using ZSH as you
 | `human-time` | | Converts integer seconds into human-understandable time. `human-time 88000` will print `1d 26m 40s` |
 | `iflip` | [twirrim/iflip](https://github.com/twirrim/iflip/blob/master/iflip) | Tableflips a text string |
 | `ipaddresses` | Mine | Dumps all the ip addresses for the host |
+| `jmemstat` | [majk1's shellrc](https://github.com/majk1/shellrc/blob/master/utils/jmemstat.sh) | Displays a memory information summary for a java process |
 | `json2yaml` | ? | Converts JSON to YAML |
 | `jsondiff` | ? | Diff JSON files and cope with key-order differences by processing with json.tool |
 | `local-ip-address` | Mine | Print local IP v4 address |
