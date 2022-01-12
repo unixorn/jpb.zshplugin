@@ -44,7 +44,7 @@ The scripts in this collection don't actually require you to be using ZSH as you
 | `$` | Jordan Sissel's [dotfiles](https://github.com/jordansissel/dotfiles/blob/master/.zshrc) | A shim so that when you're pasting a command example with a leading `$` it will just work. |
 |  `ansi2html` | Mislav Marohnić's [dotfiles](https://github.com/mislav/dotfiles) | Convert terminal color ANSI escape sequences to HTML. |
 | `change-extension` | ? | Changes file extentions |
-| `clean-clipboard` | Mine | Cleans the macOs clipboard |
+| `clean-clipboard` | Mine | Cleans the macOS clipboard |
 | `clean-whiteboard-picture` | [https://gist.github.com/lelandbatey/8677901](https://gist.github.com/lelandbatey/8677901) | Cleans up pictures of whiteboards and pumps up contrast |
 | `dedupe-in-order` | `awk` oneliner |
 | `diff-summary` | Gary Bernhardt's [dotfiles](https://github.com/garybernhardt/dotfiles/blob/main/bin/gn) |Prints a summary of piped diff files or `git diff` output |
@@ -56,13 +56,13 @@ The scripts in this collection don't actually require you to be using ZSH as you
 | `get-site-cert` | ? | Download the SSL cert from a site |
 | `gxpr` | [brutasse's dotfiles](https://github.com/brutasse/dotfiles/blob/master/bin/gxpr). | Uses Google and or Wolfram Alpha to evaluate expressions. Requires `URI::Escape` to be installed with `cpan`. |
 | `headers` | Zach Holman's [dotfiles](https://github.com/holman/dotfiles/blob/master/bin/headers) | Gets the HTTP headers from a server |
-| `http_debug` | | Dump debug info for an url |
-| `http_headers` | | Dump http headers for an url |
-| `html2markdown` | [https://github.com/realpython/python-scripts/](https://github.com/realpython/python-scripts/blob/master/scripts/14_html_to_markdown.sh) | Convert all html files in a single directory to markdown |
+| `http_debug` | | Dump debug info for a URL |
+| `http_headers` | | Dump http headers for a URL |
+| `html2markdown` | [https://github.com/realpython/python-scripts/](https://github.com/realpython/python-scripts/blob/master/scripts/14_html_to_markdown.sh) | Convert all HTML files in a single directory to Markdown |
 | `human-time` | | Converts integer seconds into human-understandable time. `human-time 88000` will print `1d 26m 40s` |
 | `iflip` | [twirrim/iflip](https://github.com/twirrim/iflip/blob/master/iflip) | Tableflips a text string |
 | `ipaddresses` | Mine | Dumps all the ip addresses for the host |
-| `jira` | Mine | Opens a jira ticket from the command line |
+| `jira` | Mine | Opens a jira ticket from the command-line |
 | `jmemstat` | [majk1's shellrc](https://github.com/majk1/shellrc/blob/master/utils/jmemstat.sh) | Displays a memory information summary for a java process |
 | `json2yaml` | ? | Converts JSON to YAML |
 | `jsondiff` | ? | Diff JSON files and cope with key-order differences by processing with json.tool |
@@ -71,7 +71,7 @@ The scripts in this collection don't actually require you to be using ZSH as you
 | `lsof-unlinked` | [https://github.com/ludios/ubuntils/](https://github.com/ludios/ubuntils/blob/master/bin/)lsof-unlinked | List all open files (but not mapped files) that have been unlinked. |
 | `memcached-tool` | Brad Fitzpatrick <brad@danga.com> | stats/management tool for memcached |
 | `memcached-top` | [http://code.google.com/p/memcache-top/](http://code.google.com/p/memcache-top/) | Dumps basic `memcached` stats similarly to `top` |
-| `mtr-url` | ? | Parses hostname from an URL, then does a `mtr` to it. |
+| `mtr-url` | ? | Parses hostname from a URL, then does a `mtr` to it. |
 | `murder` | [Anonymous Gist](https://gist.github.com/anonymous/32b1e619bc9e7fbe0eaa#!/bin/bash) | Takes a list of PIDs and ends the processes through increasingly rude means. |
 | `name-window` | Mine | Names a terminal window/tab by sending escape codes. |
 | `newscript` | Mine | Creates a new script from a template and does `chmod 755` on it. |
