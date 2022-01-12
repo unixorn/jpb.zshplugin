@@ -5,7 +5,7 @@ This is a ZSH plugin usable with [zgenom](https://github.com/jandamm/zgenom) and
 This contains miscellaneous tool scripts and aliases that are not specific enough for one of my more targeted ZSH plugins.
 
 ## Status
-[![Build Status](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2Funixorn%2Fjpb.zshplugin%2Fbadge&style=plastic)](https://actions-badge.atrox.dev/unixorn/jpb.zshplugin/goto)
+[![Build Status](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2Funixorn%2Fjpb.zshplugin%2Fbadge%3Fref%3Dmain&style=plastic)](https://actions-badge.atrox.dev/unixorn/jpb.zshplugin/goto?ref=main)
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
