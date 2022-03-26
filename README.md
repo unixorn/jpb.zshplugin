@@ -6,6 +6,8 @@ This contains miscellaneous tool scripts and aliases that are not specific enoug
 
 ## Status
 [![Build Status](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2Funixorn%2Fjpb.zshplugin%2Fbadge%3Fref%3Dmain&style=plastic)](https://actions-badge.atrox.dev/unixorn/jpb.zshplugin/goto?ref=main)
+![Awesomebot](https://github.com/unixorn/jpb.zshplugin/actions/workflows/awesomebot.yml/badge.svg)
+![Mega-Linter](https://github.com/unixorn/jpb.zshplugin/actions/workflows/mega-linter.yml/badge.svg)
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
@@ -43,7 +45,7 @@ The scripts in this collection don't actually require you to be using ZSH as you
 | ------ | --------------- | ----------- |
 | `$` | Jordan Sissel's [dotfiles](https://github.com/jordansissel/dotfiles/blob/master/.zshrc) | A shim so that when you're pasting a command example with a leading `$` it will just work. |
 |  `ansi2html` | Mislav Marohnić's [dotfiles](https://github.com/mislav/dotfiles) | Convert terminal color ANSI escape sequences to HTML. |
-| `change-extension` | ? | Changes file extentions |
+| `change-extension` | ? | Changes file extensions |
 | `clean-clipboard` | Mine | Cleans the macOS clipboard |
 | `clean-whiteboard-picture` | [https://gist.github.com/lelandbatey/8677901](https://gist.github.com/lelandbatey/8677901) | Cleans up pictures of whiteboards and pumps up contrast |
 | `datauri` | Alrra's [dotfiles](https://github.com/alrra/dotfiles/blob/main/src/shell/bash_functions) | Converts a file to a data URI |
