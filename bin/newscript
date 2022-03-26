@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 #
-#   Copyright 2016-2021 Joe Block <jpb@unixorn.net>
+#   Copyright 2016-2022 Joe Block <jpb@unixorn.net>
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -69,11 +69,30 @@ function has() {
   which "$@" > /dev/null 2>&1
 }
 
-function cleanup() {
-  if [[ -d "$SCRATCH_D" ]]; then
-    rm -fr "$SCRATCH_D"
-  fi  
-}  
+# on_exit and add_on_exit from http://www.linuxjournal.com/content/use-bash-trap-statement-cleanup-temporary-files
+
+# Usage:
+#   add_on_exit rm -f /tmp/foo
+#   add_on_exit echo "I am exiting"
+#   tempfile=$(mktemp)
+#   add_on_exit rm -f "$tempfile"
+
+function on_exit()
+{
+    for i in "${on_exit_items[@]}"
+    do
+        eval $i
+    done
+}
+
+function add_on_exit()
+{
+    local n=${#on_exit_items[*]}
+    on_exit_items[$n]="$*"
+    if [[ $n -eq 0 ]]; then
+        trap on_exit EXIT
+    fi
+}
 
 # Set up a working scratch directory
 SCRATCH_D=$(mktemp -d)
@@ -81,9 +100,9 @@ SCRATCH_D=$(mktemp -d)
 if [[ ! "$SCRATCH_D" || ! -d "$SCRATCH_D" ]]; then
   echo "Could not create temp dir"
   exit 1
-fi  
+fi
 
-trap cleanup EXIT
+add_on_exit rm -rf "$SCRATCH_D"
 
 END_BASH_SCRIPT
   write_script(name: name, source: rawScript)
@@ -105,36 +124,36 @@ import sys
 
 
 def parseCLI():
-  '''
-  Parse the command line options
-  '''
-  parser = argparse.ArgumentParser()
-  parser.add_argument('-d', '--debug',
-                      help='Debug setting',
-                      action='store_true')
-  parser.add_argument('-l', '--log-level',
-                      type=str.upper,
-                      help='set log level',
-                      choices=['DEBUG','INFO','ERROR','WARNING','CRITICAL'],
-                      default='INFO')
+    '''
+    Parse the command line options
+    '''
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-d', '--debug',
+                        help='Debug setting',
+                        action='store_true')
+    parser.add_argument('-l', '--log-level',
+                        type=str.upper,
+                        help='set log level',
+                        choices=['DEBUG','INFO','ERROR','WARNING','CRITICAL'],
+                        default='INFO')
 
-  cliArgs = parser.parse_args()
-  loglevel = getattr(logging, cliArgs.log_level.upper(), None)
-  logFormat = "[%(asctime)s][%(levelname)8s][%(filename)s:%(lineno)s - %(funcName)20s() ] %(message)s"
-  logging.basicConfig(level=loglevel, format=logFormat)
-  logging.info('Set log level to %s', cliArgs.log_level.upper())
-  return cliArgs
+    cli = parser.parse_args()
+    loglevel = getattr(logging, cli.log_level.upper(), None)
+    logFormat = "[%(asctime)s][%(levelname)8s][%(filename)s:%(lineno)s - %(funcName)20s() ] %(message)s"
+    logging.basicConfig(level=loglevel, format=logFormat)
+    logging.info('Set log level to %s', cli.log_level.upper())
+    return cli
 
 
 def main():
-  '''
-  Main program driver
-  '''
-  cliArgs = parseCLI()
+    '''
+    Main program driver
+    '''
+    cli = parseCLI()
 
 
 if __name__ == '__main__':
-  main()
+    main()
 
 END_PYTHON_SCRIPT
   write_script(name: name, source: rawScript)
