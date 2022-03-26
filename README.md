@@ -46,6 +46,7 @@ The scripts in this collection don't actually require you to be using ZSH as you
 | `change-extension` | ? | Changes file extentions |
 | `clean-clipboard` | Mine | Cleans the macOS clipboard |
 | `clean-whiteboard-picture` | [https://gist.github.com/lelandbatey/8677901](https://gist.github.com/lelandbatey/8677901) | Cleans up pictures of whiteboards and pumps up contrast |
+| `datauri` | Alrra's [dotfiles](https://github.com/alrra/dotfiles/blob/main/src/shell/bash_functions) | Converts a file to a data URI |
 | `dedupe-in-order` | `awk` oneliner |
 | `diff-summary` | Gary Bernhardt's [dotfiles](https://github.com/garybernhardt/dotfiles/blob/main/bin/gn) |Prints a summary of piped diff files or `git diff` output |
 | `dumpdns` | | Dump DNS records for a domain |
