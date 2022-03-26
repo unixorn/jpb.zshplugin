@@ -69,10 +69,29 @@ function has() {
   which "$@" > /dev/null 2>&1
 }
 
-function cleanup() {
-  if [[ -d "$SCRATCH_D" ]]; then
-    rm -fr "$SCRATCH_D"
-  fi
+# on_exit and add_on_exit from http://www.linuxjournal.com/content/use-bash-trap-statement-cleanup-temporary-files
+
+# Usage:
+#   add_on_exit rm -f /tmp/foo
+#   add_on_exit echo "I am exiting"
+#   tempfile=$(mktemp)
+#   add_on_exit rm -f "$tempfile"
+
+function on_exit()
+{
+    for i in "${on_exit_items[@]}"
+    do
+        eval $i
+    done
+}
+
+function add_on_exit()
+{
+    local n=${#on_exit_items[*]}
+    on_exit_items[$n]="$*"
+    if [[ $n -eq 0 ]]; then
+        trap on_exit EXIT
+    fi
 }
 
 # Set up a working scratch directory
@@ -83,7 +102,7 @@ if [[ ! "$SCRATCH_D" || ! -d "$SCRATCH_D" ]]; then
   exit 1
 fi
 
-trap cleanup EXIT
+add_on_exit rm -rf "$SCRATCH_D"
 
 END_BASH_SCRIPT
   write_script(name: name, source: rawScript)
