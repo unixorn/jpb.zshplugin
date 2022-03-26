@@ -45,7 +45,7 @@ The scripts in this collection don't actually require you to be using ZSH as you
 | ------ | --------------- | ----------- |
 | `$` | Jordan Sissel's [dotfiles](https://github.com/jordansissel/dotfiles/blob/master/.zshrc) | A shim so that when you're pasting a command example with a leading `$` it will just work. |
 |  `ansi2html` | Mislav Marohnić's [dotfiles](https://github.com/mislav/dotfiles) | Convert terminal color ANSI escape sequences to HTML. |
-| `change-extension` | ? | Changes file extentions |
+| `change-extension` | ? | Changes file extensions |
 | `clean-clipboard` | Mine | Cleans the macOS clipboard |
 | `clean-whiteboard-picture` | [https://gist.github.com/lelandbatey/8677901](https://gist.github.com/lelandbatey/8677901) | Cleans up pictures of whiteboards and pumps up contrast |
 | `datauri` | Alrra's [dotfiles](https://github.com/alrra/dotfiles/blob/main/src/shell/bash_functions) | Converts a file to a data URI |
