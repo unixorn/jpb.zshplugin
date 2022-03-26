@@ -6,9 +6,22 @@ set -o pipefail
 
 # find-in-file - usage: fif <SEARCH_TERM>
 
+function fail() {
+  printf '%s\\n' "$1" >&2  ## Send message to stderr. Exclude >&2 if you don't want it that way.
+  exit "${2-1}"  ## Return a code specified by $2 or 1 by default.
+}
+
+function can_has() {
+  # Check if a command is in $PATH
+  which "$@" > /dev/null 2>&1
+}
+
 if [ ! "$#" -gt 0 ]; then
-  echo "Need a string to search for!";
-  return 1;
+  fail "Need a string to search for!"
+fi
+
+if ! can_has rg; then
+  fail "Can't find rg in your PATH"
 fi
 
 rg --files-with-matches --no-messages "$1" \
