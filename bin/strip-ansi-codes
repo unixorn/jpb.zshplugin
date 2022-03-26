@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+#
+# Copyright 2022, Joe Block <jpb@unixorn.net>
+# License: Apache 2.0
+#
+# Strip the ansi codes out of STDIN.
+# This makes jenkins build logs considerably less painful to read and grep through.
+
+exec sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g"

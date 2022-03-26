@@ -46,10 +46,12 @@ The scripts in this collection don't actually require you to be using ZSH as you
 | `change-extension` | ? | Changes file extentions |
 | `clean-clipboard` | Mine | Cleans the macOS clipboard |
 | `clean-whiteboard-picture` | [https://gist.github.com/lelandbatey/8677901](https://gist.github.com/lelandbatey/8677901) | Cleans up pictures of whiteboards and pumps up contrast |
+| `datauri` | Alrra's [dotfiles](https://github.com/alrra/dotfiles/blob/main/src/shell/bash_functions) | Converts a file to a data URI |
 | `dedupe-in-order` | `awk` oneliner |
 | `diff-summary` | Gary Bernhardt's [dotfiles](https://github.com/garybernhardt/dotfiles/blob/main/bin/gn) |Prints a summary of piped diff files or `git diff` output |
 | `dumpdns` | | Dump DNS records for a domain |
 | `extractFromRPM` | Mine | Extracts files from an rpm |
+| `exiftool` | Mine | Shows or removes a file's exif metadata |
 | `find-in-files` | [Boost Your Command Line Productivity With fzf](https://betterprogramming.pub/boost-your-command-line-productivity-with-fuzzy-finder-985aa162ba5d) | Combines `ripgrep` and `fzf` |
 | `fix-zsh-history` | Mine | Fixes a corrupted `.zsh_history` file |
 | `get-distro` | [https://github.com/blueyed/dotfiles/](https://github.com/blueyed/dotfiles/blob/master/usr/bin/get_distro) | Dumps info about the distro of the linux system you're on |
@@ -78,6 +80,7 @@ The scripts in this collection don't actually require you to be using ZSH as you
 | `pidpwd` | Mine | Find the pwd of a given pid. Only works on linux since it requires `/proc` |
 | `pjson` | [https://coderwall.com/](https://coderwall.com/p/hwu5uq?i=9&p=1&q=sort%3Ascore+desc&t%5B%5D=zsh) | Prettify json files |
 | `plot` | katef's [gist](https://gist.github.com/katef/fb4cb6d47decd8052bd0e8d88c03a102) | Draw a graph in the terminal |
+| `port-listeners-ipv{4,6}` | Mine | Show what programs are listening to a given port |
 | `random-password` | Mine | Generate a random password. If no argument, assume 32 character length |
 | `randsleep` | Mine | Sleep a random number of seconds |
 | `relocate-virtualenv` | Gary Josack's [scripts](https://github.com/gmjosack/scripts) repository | This is a simple script to clean up links and references in a python virtualenv that has been relocated. |
@@ -85,6 +88,7 @@ The scripts in this collection don't actually require you to be using ZSH as you
 | `seq` | Dave Taylor's [blog](https://www.askdavetaylor.com/step_through_count_numeric_values_bash_shell_script/) | Generates integer values from low...high similar to `range` in better programming languages |
 | `snag-dl` | ? | Moves the most recent file in `~/Downloads` into the current directory |
 | `solo` | Timothy Kay's [solo](http://timkay.com/solo/) | Prevents a program from running more than one copy at a time. |
+| `strip-ansi-codes` | Mine | Strips the ANSI codes from STDIN. Makes grepping through things like jenkins logs considerably less painful |
 | `tableflip` | [hangops](https://hangops.slack.com) slack | Prints a tableflip animation. |
 | `title-text` | Mine | Set the terminal title in any application (like iTerm 2 or Terminal on macOS) that supports VT100 escape sequences. |
 | `vbox` | Mine | Opens VirtualBox |
