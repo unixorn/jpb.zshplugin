@@ -88,6 +88,7 @@ The scripts in this collection don't actually require you to be using ZSH as you
 | `seq` | Dave Taylor's [blog](https://www.askdavetaylor.com/step_through_count_numeric_values_bash_shell_script/) | Generates integer values from low...high similar to `range` in better programming languages |
 | `snag-dl` | ? | Moves the most recent file in `~/Downloads` into the current directory |
 | `solo` | Timothy Kay's [solo](http://timkay.com/solo/) | Prevents a program from running more than one copy at a time. |
+| `strip-ansi-codes` | Mine | Strips the ANSI codes from STDIN. Makes grepping through things like jenkins logs considerably less painful |
 | `tableflip` | [hangops](https://hangops.slack.com) slack | Prints a tableflip animation. |
 | `title-text` | Mine | Set the terminal title in any application (like iTerm 2 or Terminal on macOS) that supports VT100 escape sequences. |
 | `vbox` | Mine | Opens VirtualBox |
