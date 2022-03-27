@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Fix a corrupt zsh history
+# Fix a corrupt ZSH history
 #
 # Copyright 2020, Joe Block <jpb@unixorn.net>
 

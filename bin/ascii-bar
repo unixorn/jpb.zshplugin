@@ -7,6 +7,7 @@
 #    echo 17.73 | ascii-bar --width 20
 #    [||||                ] 17.73 %
 #
+
 function usage() {
     echo "Draw an ascii bar figure from the percentage value read from stdin."
     echo "e.g."

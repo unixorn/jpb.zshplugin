@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 #
 # Block until a network connection is obtained.
-# https://github.com/bamos/dotfiles/blob/master/.funcs
+#
+# From: https://github.com/bamos/dotfiles/blob/master/.funcs
 
 while true; do
   ping -c 1 8.8.8.8 &> /dev/null && break
