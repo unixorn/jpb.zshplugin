@@ -2,7 +2,7 @@
 #
 # Create data URI from a file.
 #
-# https://github.com/alrra/dotfiles/blob/main/src/shell/bash_functions
+# Based on https://github.com/alrra/dotfiles/blob/main/src/shell/bash_functions
 
 datauri() {
 

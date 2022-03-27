@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+#
 # https://github.com/realpython/python-scripts/blob/master/14_html_to_markdown.sh
 # Convert all html files in a single directory to markdown
 #

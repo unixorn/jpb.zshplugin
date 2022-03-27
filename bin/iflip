@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-
+#
 # Takes an input string and flips it
 # based on the irssi plugin fliptext.pl by Gerfried Fuchs,
 # (http://rhonda.deb.at/projects/irssi/scripts/fliptext.pl)

@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
 #
 # I need timestamps in so many places...
+
 exec date +%Y%m%d-%H%M%S
