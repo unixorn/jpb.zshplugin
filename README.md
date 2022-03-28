@@ -71,6 +71,7 @@ The scripts in this collection don't actually require you to be using ZSH as you
 | `jmemstat` | [majk1's shellrc](https://github.com/majk1/shellrc/blob/master/utils/jmemstat.sh) | Displays a memory information summary for a java process |
 | `json2yaml` | ? | Converts JSON to YAML |
 | `jsondiff` | ? | Diff JSON files and cope with key-order differences by processing with json.tool |
+| `lineprof` | Mislav Marohnić's [dotfiles](https://github.com/mislav/dotfiles)  | Annotates each line of input with the number of milliseconds elapsed since the last line. Useful for figuring out slow points of output-producing programs. |
 | `local-ip-address` | jpb@unixorn.net | Print local IP v4 address |
 | `local-ipv6-address` | jpb@unixorn.net | Print local IP v6 address |
 | `lsof-unlinked` | [ludios/ubuntils/](https://github.com/ludios/ubuntils/blob/master/bin/lsof-unlinked) | List all open files (but not mapped files) that have been unlinked. |
