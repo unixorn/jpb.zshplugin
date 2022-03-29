@@ -139,11 +139,11 @@ ff() { find . -type f -iname '*'$*'*' -ls ; }
 
 # Got tired of constantly doing history | grep X | tail
 hgrep40() {
-  history | grep -i "$@" | tail -40
+  history | grep -i $@ | tail -40
 }
 
 hgrep() {
-  history | grep -i "$@" | tail -20
+  history | grep -i $@ | tail -20
 }
 
 # Syntax-highlight JSON strings or files

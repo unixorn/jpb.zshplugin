@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+#
+# List open ports
+
+function has() {
+  # Check if a command is in $PATH
+  which "$@" > /dev/null 2>&1
+}
+
+function linux-listeners() {
+    # ss is the new hotness
+    if has ss; then
+        ss -lnptu
+    else
+        lsof -i -n -P | awk 'NR==1 || /LISTEN/'
+    fi
+}
+
+# Print the currently listening IP ports
+
+case $(uname) in
+  Linux)
+    linux-listeners
+    ;;
+  Darwin)
+    lsof -i -n -P | awk 'NR==1 || /LISTEN/'
+    ;;
+esac

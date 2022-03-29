@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+#
+# List open sockets
+
+exec sudo lsof -i -P
