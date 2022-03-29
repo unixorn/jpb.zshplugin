@@ -74,6 +74,10 @@ The scripts in this collection don't actually require you to be using ZSH as you
 | `lineprof` | Mislav Marohnić's [dotfiles](https://github.com/mislav/dotfiles)  | Annotates each line of input with the number of milliseconds elapsed since the last line. Useful for figuring out slow points of output-producing programs. |
 | `local-ip-address` | jpb@unixorn.net | Print local IP v4 address |
 | `local-ipv6-address` | jpb@unixorn.net | Print local IP v6 address |
+| `ls-open-ports` | jpb@unixorn.net | List open ports |
+| `ls-sockets` | jpb@unixorn.net | List open sockets |
+| `ls-tcp-sockets` | jpb@unixorn.net | List open tcp sockets |
+| `ls-udp-sockets` | jpb@unixorn.net | List open udp sockets |
 | `lsof-unlinked` | [ludios/ubuntils/](https://github.com/ludios/ubuntils/blob/master/bin/lsof-unlinked) | List all open files (but not mapped files) that have been unlinked. |
 | `memcached-tool` | Brad Fitzpatrick <brad@danga.com> | stats/management tool for memcached |
 | `memcached-top` | [http://code.google.com/p/memcache-top/](http://code.google.com/p/memcache-top/) | Dumps basic `memcached` stats similarly to `top` |
