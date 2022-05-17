@@ -63,6 +63,7 @@ The scripts in this collection don't actually require you to be using ZSH as you
 | `http_debug` | | Dump debug info for a URL |
 | `http_headers` | | Dump http headers for a URL |
 | `html2markdown` | [https://github.com/realpython/python-scripts/](https://github.com/realpython/python-scripts/blob/master/scripts/14_html_to_markdown.sh) | Convert all HTML files in a single directory to Markdown |
+| `human-path` | coffeeops slack `#commandline-fu` channel | Print `$PATH` with one entry per line to make it easier for humans to tell if something is missing |
 | `human-time` | | Converts integer seconds into human-understandable time. `human-time 88000` will print `1d 26m 40s` |
 | `iflip` | [twirrim/iflip](https://github.com/twirrim/iflip/blob/master/iflip) | Tableflips a text string |
 | `ipaddresses` | jpb@unixorn.net | Dumps all the ip addresses for the host |
