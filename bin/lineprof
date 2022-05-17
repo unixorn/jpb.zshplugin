@@ -2,8 +2,8 @@
 #
 # Annotates each line of input with the number of milliseconds elapsed since
 # the last line. Useful for figuring out slow points of output-producing programs.
+#
 # Source: https://github.com/mislav/dotfiles/blob/master/bin/lineprof
-Annotates each line of input with the number of milliseconds elapsed since the last line. Useful for figuring out slow points of output-producing programs. Source: https://github.com/mislav/dotfiles/blob/master/bin/lineprof
 
 BEGIN {
   $last = $start = Time.now

@@ -47,7 +47,6 @@ The scripts in this collection don't actually require you to be using ZSH as you
 |  `ansi2html` | Mislav Marohnić's [dotfiles](https://github.com/mislav/dotfiles) | Convert terminal color ANSI escape sequences to HTML. |
 | `ascii-bar` | Wookayin's [dotfiles](https://github.com/wookayin/dotfiles/blob/master/bin/ascii-bar) | Draw an ascii bar figure from the percentage value read from stdin |
 | `change-extension` | ? | Changes file extensions |
-| `clean-clipboard` | jpb@unixorn.net | Cleans the macOS clipboard |
 | `clean-whiteboard-picture` | [https://gist.github.com/lelandbatey/8677901](https://gist.github.com/lelandbatey/8677901) | Cleans up pictures of whiteboards and pumps up contrast |
 | `datauri` | Alrra's [dotfiles](https://github.com/alrra/dotfiles/blob/main/src/shell/bash_functions) | Converts a file to a data URI |
 | `dedupe-in-order` | `awk` oneliner |
