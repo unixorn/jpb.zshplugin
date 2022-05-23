@@ -81,6 +81,7 @@ The scripts in this collection don't actually require you to be using ZSH as you
 | `lsof-unlinked` | [ludios/ubuntils/](https://github.com/ludios/ubuntils/blob/master/bin/lsof-unlinked) | List all open files (but not mapped files) that have been unlinked. |
 | `memcached-tool` | Brad Fitzpatrick <brad@danga.com> | stats/management tool for memcached |
 | `memcached-top` | [http://code.google.com/p/memcache-top/](http://code.google.com/p/memcache-top/) | Dumps basic `memcached` stats similarly to `top` |
+| `middle` | [@Hefeweizen](https://github.com/Hefeweizen) | Snips lines out of the the middle of a file and dumps them to stdout |
 | `mtr-url` | ? | Parses hostname from a URL, then does a `mtr` to it. |
 | `murder` | [Anonymous Gist](https://gist.github.com/anonymous/32b1e619bc9e7fbe0eaa#!/bin/bash) | Takes a list of PIDs and ends the processes through increasingly rude means. |
 | `name-window` | jpb@unixorn.net | Names a terminal window/tab by sending escape codes. |
