@@ -69,7 +69,7 @@ The scripts in this collection don't actually require you to be using ZSH as you
 | `ipaddresses` | jpb@unixorn.net | Dumps all the ip addresses for the host |
 | `jira` | jpb@unixorn.net | Opens a jira ticket from the command-line |
 | `jmemstat` | [majk1's shellrc](https://github.com/majk1/shellrc/blob/master/utils/jmemstat.sh) | Displays a memory information summary for a java process |
-| `json2yaml` | ? | Converts JSON to YAML |
+| `json2yaml` / `json-to-yaml` | jpb@unixorn.net | Converts JSON to YAML |
 | `jsondiff` | ? | Diff JSON files and cope with key-order differences by processing with json.tool |
 | `lineprof` | Mislav Marohnić's [dotfiles](https://github.com/mislav/dotfiles)  | Annotates each line of input with the number of milliseconds elapsed since the last line. Useful for figuring out slow points of output-producing programs. |
 | `local-ip-address` | jpb@unixorn.net | Print local IP v4 address |
@@ -102,6 +102,7 @@ The scripts in this collection don't actually require you to be using ZSH as you
 | `title-text` | jpb@unixorn.net | Set the terminal title in any application (like iTerm 2 or Terminal on macOS) that supports VT100 escape sequences. |
 | `vbox` | jpb@unixorn.net | Opens VirtualBox |
 | `wtfis` | jpb@unixorn.net | Looks something up on [cheat.sh](http://cheat.sh) |
+| `yaml2json` / `yaml-to-json` | jpb@unixorn.net | Converts yaml to json |
 
 ## Other useful ZSH plugins
 
