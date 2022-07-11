@@ -15,7 +15,7 @@ This contains miscellaneous tool scripts and aliases that are not specific enoug
 
 - [Installing](#installing)
   - [Antigen](#antigen)
-  - [Zgen/Zgenom](#zgenzgenom)
+  - [Zgenom](#zgenom)
   - [Without using a framework](#without-using-a-framework)
 - [Credits](#credits)
 - [Other useful ZSH plugins](#other-useful-zsh-plugins)
@@ -28,9 +28,9 @@ This contains miscellaneous tool scripts and aliases that are not specific enoug
 
 add `antigen bundle unixorn/jpb.zshplugin` to your `.zshrc`
 
-### Zgen/Zgenom
+### Zgenom
 
-add `zgen load unixorn/jpb.zshplugin` to your `.zshrc` with your other load commands.
+add `zgenom load unixorn/jpb.zshplugin` to your `.zshrc` with your other `zgenom load` commands.
 
 ### Without using a framework
 
