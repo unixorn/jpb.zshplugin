@@ -14,6 +14,9 @@
 
 # What platform are we on?
 on_linux() { [[ "$(uname -s)" = 'Linux'  ]] }
+on_macos()   { [[ "$(uname -s)" = 'Darwin' ]] }
+
+# Deprecated, OS name has changed to macOS
 on_osx()   { [[ "$(uname -s)" = 'Darwin' ]] }
 
 # check if a command is available
@@ -383,7 +386,7 @@ function zurl {
 }
 
 function stopwatch(){
-  case $(uname) in
+  case "$(uname)" in
     "Linux") DATE=date ;;
     "Darwin") DATE=gdate ;;
   esac
@@ -570,3 +573,10 @@ golistdeps(){
 	go list -e -f '{{join .Deps "\n"}}' ./... | xargs go list -e -f '{{if not .Standard}}{{.ImportPath}}{{end}}'
 	)
 }
+
+# Linux-specific stuff
+if on_linux; then
+  if exists xdg-open; then
+    alias open='xdg-open'
+  fi
+fi
