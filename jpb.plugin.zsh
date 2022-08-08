@@ -285,7 +285,22 @@ man() {
     man "$@"
 }
 
+# History tools
 alias zh='fc -l -d -D'
+delete-from-zsh-history () {
+  # Prevent the specified history line from being saved.
+  local HISTORY_IGNORE="${(b)$(fc -ln $1 $1)}"
+
+  # Write out the history to file, excluding lines that match `$HISTORY_IGNORE`.
+  fc -W
+
+  # Dispose of the current history and read the new history from file.
+  fc -p $HISTFILE $HISTSIZE $SAVEHIST
+
+  # TA-DA!
+  print "Deleted '$HISTORY_IGNORE' from history."
+}
+
 alias -s pdf=open
 alias edit="$EDITOR"' $(eval ${$(fc -l -1)[2,-1]} -l)'
 alias knife='nocorrect knife'
@@ -492,7 +507,7 @@ alias code-uninstall='code --uninstall-extension'
 alias vs-code='code'
 alias vscode='code'
 
-# From From https://github.com/jessfraz/dotfiles/blob/master/.functions
+# From https://github.com/jessfraz/dotfiles/blob/master/.functions
 # go to a folder easily in your gopath
 gogo(){
   local d=$1
