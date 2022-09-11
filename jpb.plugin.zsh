@@ -591,7 +591,29 @@ golistdeps(){
 
 # Linux-specific stuff
 if on_linux; then
+  # Add helper scripts with macOS tool names so I don't have to remember
+  # the names of the linux-specific ones.
   if exists xdg-open; then
     alias open='xdg-open'
+  fi
+
+  if exists xclip; then
+    function pbcopy {
+      if type xclip > /dev/null; then
+        xclip -selection clipboard
+      fi
+      if type xsel > /dev/null; then
+        xsel --clipboard --input
+      fi
+    }
+
+    function pbpaste {
+      if type xclip > /dev/null; then
+        xclip -selection clipboard -o
+      fi
+      if type xsel > /dev/null; then
+        xsel --clipboard --output
+      fi
+    }
   fi
 fi
