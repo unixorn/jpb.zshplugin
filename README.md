@@ -106,6 +106,7 @@ The scripts in this collection don't actually require you to be using ZSH as you
 | `vbox` | jpb@unixorn.net | Opens VirtualBox |
 | `wtfis` | jpb@unixorn.net | Looks something up on [cheat.sh](http://cheat.sh) |
 | `yaml2json` / `yaml-to-json` | jpb@unixorn.net | Converts yaml to json |
+| `yq` | jpb@unixorn.net | Run `yq` in a container to minimize the things directly installed locally |
 
 ## Other useful ZSH plugins
 

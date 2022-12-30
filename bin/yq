@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+#
+# Run yq via a docker container so it's one less thing to install directly
+# on machines
+#
+# Copyright 2020, Joe Block <jpb@unixorn.net>
+
+exec docker run --rm -i -v "${PWD}":/workdir unixorn/yq yq "$@"
+
