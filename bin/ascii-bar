@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+#
+# Original source: https://github.com/wookayin/dotfiles/blob/master/bin/ascii-bar
+#
+# Draw an ascii bar figure from the percentage value read from stdin.
+# e.g.
+#    echo 17.73 | ascii-bar --width 20
+#    [||||                ] 17.73 %
+#
+
+function usage() {
+    echo "Draw an ascii bar figure from the percentage value read from stdin."
+    echo "e.g."
+    echo "echo 17.73 | ascii-bar --width 20"
+}
+
+if [[ "$1" == "--help" ]]; then
+    usage
+    exit 0
+fi
+if [ "$1" == "--width" ]; then
+    shift
+fi
+
+width=${1:-20}
+if [[ ! $width =~ [0-9]+ ]]; then
+    echo "Invalid width: $width;"; exit 1;
+fi
+
+exec awk "{PERCENT=\$1; printf \"[\"; \
+    for(i=0;i<$width;++i) if(i/$width < PERCENT/100.0) printf \"|\"; else printf \" \"; \
+    printf \"] %5.2f %%\", PERCENT; print \"\" }"

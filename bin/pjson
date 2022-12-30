@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+#
+# Pretty up json
+#
+# from: https://coderwall.com/p/hwu5uq?i=9&p=1&q=sort%3Ascore+desc&t%5B%5D=zsh
+
+set -o pipefail
+
+if [ $# -gt 0 ]; then
+  for arg in "$@"
+  do
+    if [ -f "$arg" ]; then
+      python -m json.tool < "$arg"
+    else
+      echo "$arg" | python -m json.tool
+    fi
+  done
+fi

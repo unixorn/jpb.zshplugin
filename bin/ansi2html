@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+#
 # Usage: ansi2html [-w] [--css]
 #
 #   -w    : wrap HTML output in PRE tags

@@ -1,10 +1,11 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 # Original source: https://github.com/ludios/ubuntils/blob/master/bin/lsof-unlinked
 #
 # Original author: Ivan Kosik <ivan@ludios.org>
 
 set -e
+set -o pipefail
 
 if [ "$(id -u)" -ne 0 ]; then
 	echo "Warning: not running as root, some files may be missing." >&2

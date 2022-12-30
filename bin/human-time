@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+#
+# Turns integer seconds into human-understandable time.
+#
+# $ human-time 88000 
+# 1d 26m 40s
+#
+# Copyright 2021, Joe Block <jpb@unixorn.net>
+# License: Apache 2.0
+
+# shellcheck disable=SC2004
+human_time() {
+    local raw_seconds=$1
+    local days=$(( raw_seconds / 60 / 60 / 24 ))
+    local hours=$(( raw_seconds / 60 / 60 % 24 ))
+    local minutes=$(( raw_seconds / 60 % 60 ))
+    local seconds=$(( raw_seconds % 60 ))
+    (( $days > 0 )) && echo -n "${days}d "
+    (( $hours > 0 )) && echo -n "${hours}h "
+    (( $minutes > 0 )) && echo -n "${minutes}m "
+    echo "${seconds}s "
+}
+
+human_time "$@"

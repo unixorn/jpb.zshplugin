@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+#
+# Open a jira ticket from the command line
+#
+# Copyright 2022, Joe Block <jpb@unixorn.net>
+
+SETTINGS_F="${HOME}/.jpbscripts/jira-settings.sh"
+
+set -o pipefail
+if [[ -n "$DEBUG" ]]; then
+  set -x
+fi
+
+function debug() {
+  if [[ -n "$DEBUG" ]]; then
+    echo "$@"
+  fi
+}
+
+function fail() {
+  printf '%s\n' "$1" >&2  ## Send message to stderr. Exclude >&2 if you don't want it that way.
+  exit "${2-1}"  ## Return a code specified by $2 or 1 by default.
+}
+
+function has() {
+  # Check if a command is in $PATH
+  which "$@" > /dev/null 2>&1
+}
+
+if [[ "$(uname -s)" != "Darwin" ]]; then
+  fail "This script only works on macOS, sorry."
+fi
+
+if [[ $# != 1 ]]; then
+  fail "You must specify a JIRA ticket"
+fi
+
+if [[ -z "${JIRA_URL}" ]]; then
+  if [[ ! -r "${SETTINGS_F}" ]]; then
+    fail "You need to either set JIRA_URL in your environment or create ${SETTINGS_F} containing a line like 'JIRA_URL=http://your.jira.server'"
+  fi
+
+  # shellcheck disable=SC1090
+  source "${SETTINGS_F}"
+fi
+debug "JIRA_URL: ${JIRA_URL}"
+
+if [[ -z "${JIRA_URL}" ]]; then
+  fail "JIRA_URL is not set in your environment. Create ${SETTINGS_F} with 'JIRA_URL=http://your.jira.server' in it"
+fi
+
+open "$JIRA_URL/browse/$1"

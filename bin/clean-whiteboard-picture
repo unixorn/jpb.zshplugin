@@ -1,5 +1,19 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
-# Copied from https://gist.github.com/lelandbatey/8677901
+# Based on https://gist.github.com/lelandbatey/8677901
 
-convert "$1" -morphology Convolve DoG:15,100,0 -negate -normalize -blur 0x1 -channel RBG -level 60%,91%,0.1 "$2"
+function fail() {
+  printf '%s\\n' "$1" >&2  ## Send message to stderr. Exclude >&2 if you don't want it that way.
+  exit "${2-1}"  ## Return a code specified by $2 or 1 by default.
+}
+
+function has() {
+  # Check if a command is in $PATH
+  which "$@" > /dev/null 2>&1
+}
+
+if [[ ! has convert ]]; then
+  fail "Can't find 'convert' in your PATH"
+fi
+
+exec convert "$1" -morphology Convolve DoG:15,100,0 -negate -normalize -blur 0x1 -channel RBG -level 60%,91%,0.1 "$2"

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 # Run a command over and over until it exits 0. Wait $DELAY seconds between
 # attempts.

@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
 echo -en "( º_º）  ┬─┬     \r"
 sleep .2
 echo -en " ( º_º） ┬─┬     \r"

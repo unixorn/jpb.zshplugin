@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+#
+# List open TCP sockets
+
+sudo lsof -i -P | grep -i tcp
