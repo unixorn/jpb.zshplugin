@@ -43,15 +43,15 @@ The scripts in this collection don't actually require you to be using ZSH as you
 
 | Script | Original Source | Description |
 | ------ | --------------- | ----------- |
-| `$` | Jordan Sissel's [dotfiles](https://github.com/jordansissel/dotfiles/blob/master/.zshrc) | A shim so that when you're pasting a command example with a leading `$` it will just work. |
+| `$` | Jordan Sissel's [dotfiles](https://github.com/jordansissel/dotfiles/blob/master/.zshrc) | A shim so that pasting a command example with a leading `$` will just work instead of failing. |
 |  `ansi2html` | Mislav Marohnić's [dotfiles](https://github.com/mislav/dotfiles) | Convert terminal color ANSI escape sequences to HTML. |
-| `ascii-bar` | Wookayin's [dotfiles](https://github.com/wookayin/dotfiles/blob/master/bin/ascii-bar) | Draw an ascii bar figure from the percentage value read from stdin |
+| `ascii-bar` | Wookayin's [dotfiles](https://github.com/wookayin/dotfiles/blob/master/bin/ascii-bar) | Draw an ascii bar figure from the percentage value read from `STDIN` |
 | `change-extension` | ? | Changes file extensions |
 | `clean-whiteboard-picture` | [https://gist.github.com/lelandbatey/8677901](https://gist.github.com/lelandbatey/8677901) | Cleans up pictures of whiteboards and pumps up contrast |
 | `datauri` | Alrra's [dotfiles](https://github.com/alrra/dotfiles/blob/main/src/shell/bash_functions) | Converts a file to a data URI |
-| `dedupe-in-order` | `awk` oneliner |
-| `diff-summary` | Gary Bernhardt's [dotfiles](https://github.com/garybernhardt/dotfiles/blob/main/bin/gn) |Prints a summary of piped diff files or `git diff` output |
-| `dumpdns` | | Dump DNS records for a domain |
+| `dedupe-in-order` | `awk` oneliner | Use awk to dedupe a file, outputting the lines in order. Unlike `uniq`, doesn't only dedupe adjacent lines. |
+| `diff-summary` | Gary Bernhardt's [dotfiles](https://github.com/garybernhardt/dotfiles/blob/main/bin/gn) | Prints a summary of piped diff files or `git diff` output |
+| `dumpdns` | ? | Dump DNS records for a domain |
 | `extractFromRPM` | jpb@unixorn.net | Extracts files from an rpm |
 | `exiftool` | jpb@unixorn.net | Shows or removes a file's exif metadata |
 | `find-in-files` | [Boost Your Command Line Productivity With fzf](https://betterprogramming.pub/boost-your-command-line-productivity-with-fuzzy-finder-985aa162ba5d) | Combines `ripgrep` and `fzf` |
