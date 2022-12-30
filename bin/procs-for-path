@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+#
+# processes accessing a path
+#
+# Copyright 2020, Joe Block <jpb@unixorn.net>
+
+set -o pipefail
+
+for pid in $(lsof "$*" | cut -d' ' -f 3 | sort | uniq)
+do
+  ps -f -p "$pid"
+done

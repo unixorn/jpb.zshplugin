@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+#
+# mtr to a host from a URL to make it easier to see why we're
+# having issues connecting.
+#
+# Copyright 2020, Joe Block <jpb@unixorn.net>
+
+host=$(ruby -ruri -e "puts (URI.parse('$1').host or '$1')")
+exec sudo mtr -t $host

@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+#
+# List open UDP sockets
+
+sudo lsof -i -P | grep -i udp

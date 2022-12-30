@@ -1,4 +1,4 @@
-# Copyright 2006-2016 Joseph Block <jpb@apesseekingknowledge.net>
+# Copyright 2006-2022 Joseph Block <jpb@apesseekingknowledge.net>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,6 +14,9 @@
 
 # What platform are we on?
 on_linux() { [[ "$(uname -s)" = 'Linux'  ]] }
+on_macos()   { [[ "$(uname -s)" = 'Darwin' ]] }
+
+# Deprecated, OS name has changed to macOS
 on_osx()   { [[ "$(uname -s)" = 'Darwin' ]] }
 
 # check if a command is available
@@ -25,6 +28,8 @@ function exists() {
     return 1
   fi
 }
+#
+alias dmesg='sudo dmesg'
 
 # check if this is an interactive session
 # (tests if stdout is a tty)
@@ -85,13 +90,15 @@ alias wget='wget -c'
 alias annotate='git annotate'
 alias blame='git blame'
 alias gadd='git add'
+alias gblame='git blame'
 alias gci='git ci -v'
 alias gdiff='git diff'
+alias git-ignored='git ls-files --others --i --exclude-standard'
 alias gitadd='git add'
 alias gitci='git ci -v'
 alias gitdiff='git diff'
 alias gitignored='git ls-files --others --i --exclude-standard'
-alias gitlgg="log --pretty=format:'%Cred%h%Creset -%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'"
+alias gitlgg="git log --pretty=format:'%Cred%h%Creset -%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'"
 alias gitlog='git log'
 alias gitloll='git log --graph --decorate --pretty=oneline --abbrev-commit'
 alias gitmerge='git merge'
@@ -118,6 +125,8 @@ alias grep-i='grep -i'
 alias grep='GREP_COLOR="1;37;41" LANG=C grep --color=auto'
 alias grepi='grep -i'
 alias maek='make'
+alias mkdirp='mkdir -p'
+alias mkdir-p='mkdir -p'
 alias psax='ps ax'
 alias pswax='ps wax'
 alias psxa='ps ax'
@@ -133,11 +142,11 @@ ff() { find . -type f -iname '*'$*'*' -ls ; }
 
 # Got tired of constantly doing history | grep X | tail
 hgrep40() {
-  history | grep -i "$@" | tail -40
+  history | grep -i $* | tail -40
 }
 
 hgrep() {
-  history | grep -i "$@" | tail -20
+  history | grep -i $* | tail -20
 }
 
 # Syntax-highlight JSON strings or files
@@ -175,12 +184,7 @@ calc() {
   awk "BEGIN{ print $* }" ;
 }
 
-procs_for_path() {
-  for pid in $(lsof "$*" | cut -d' ' -f 3 | sort | uniq)
-  do
-    ps -f -p $pid
-  done
-}
+alias procs_for_path='procs-for-path'
 
 # begin sysadvent2011 functions
 _awk_col() {
@@ -235,11 +239,6 @@ authme() {
   < ~/.ssh/id_dsa.pub
 }
 
-mtr_url() {
-  host=$(ruby -ruri -e "puts (URI.parse('$1').host or '$1')")
-  sudo mtr -t $host
-}
-
 jsoncurl() {
   curl "$@" | python -m json.tool
 }
@@ -286,33 +285,25 @@ man() {
     man "$@"
 }
 
+# History tools
 alias zh='fc -l -d -D'
+delete-from-zsh-history () {
+  # Prevent the specified history line from being saved.
+  local HISTORY_IGNORE="${(b)$(fc -ln $1 $1)}"
+
+  # Write out the history to file, excluding lines that match `$HISTORY_IGNORE`.
+  fc -W
+
+  # Dispose of the current history and read the new history from file.
+  fc -p $HISTFILE $HISTSIZE $SAVEHIST
+
+  # TA-DA!
+  print "Deleted '$HISTORY_IGNORE' from history."
+}
+
 alias -s pdf=open
 alias edit="$EDITOR"' $(eval ${$(fc -l -1)[2,-1]} -l)'
 alias knife='nocorrect knife'
-
-# from: https://coderwall.com/p/hwu5uq?i=9&p=1&q=sort%3Ascore+desc&t%5B%5D=zsh
-pjson() {
-  if [ $# -gt 0 ]; then
-    for arg in $@
-    do
-      if [ -f $arg ]; then
-        cat $arg | python -m json.tool
-      else
-        echo "$arg" | python -m json.tool
-      fi
-    done
-  fi
-}
-
-# from: https://vinipsmaker.wordpress.com/2014/02/23/my-zsh-config/
-# bash prints ^C when you're typing a command and control-c to cancel, so it
-# is easy to see it wasn't executed. By default, zsh doesn't print the ^C.
-# Fortunately, it is easy to trap SIGINT.
-TRAPINT() {
-  print -n -u2 '^C'
-  return $((128+$1))
-}
 
 function hexpass() {
   openssl rand -hex 24 $@
@@ -337,22 +328,6 @@ function smite() {
 }
 
 alias python_module_path="echo 'import sys; t=__import__(sys.argv[1],fromlist=[\".\"]); print(t.__file__)'  | python - "
-
-function 755() {
-  chmod 755 $@
-}
-
-function 700() {
-  chmod 700 $@
-}
-
-function 644() {
-  chmod 644 $@
-}
-
-function 600() {
-  chmod 600 $@
-}
 
 function htmime {
   if [[ -z $1 ]]; then
@@ -426,7 +401,7 @@ function zurl {
 }
 
 function stopwatch(){
-  case $(uname) in
+  case "$(uname)" in
     "Linux") DATE=date ;;
     "Darwin") DATE=gdate ;;
   esac
@@ -454,21 +429,6 @@ alias grepm='grep --exclude-dir={node_modules,bower_components,dist,.bzr,.cvs,.g
 
 export BULLETTRAIN_CONTEXT_SHOW=true
 export BULLETTRAIN_IS_SSH_CLIENT=true
-
-decode-cert () {
-  local cert=${1?Need cert}
-  openssl x509 -in "$cert" -text -noout
-}
-
-csr-decode () {
-  local cert=${1?Need cert}
-  openssl req -in "$cert" -text -noout
-}
-
-p7b-decode () {
-  local cert=${1?Need cert}
-  openssl pkcs7 -in "$cert" -print_certs -text -noout
-}
 
 # Calculate how many days since epoch
 epochdays() {
@@ -533,4 +493,127 @@ elif [[ $(uname | grep -ci Linux) = 1 ]]; then
     modified_time=$(stat -c %Y "$1" 2> /dev/null) || modified_time=0
     echo "${modified_time}"
   }
+fi
+
+# Lazy enough to not want to hit the shift key
+alias get-file-modification-time=get_file_modification_time
+
+# VSCode stuff
+alias cadd='code -a'
+alias cdiff='code -d'
+alias cnew='code -n'
+alias code-install='code --install-extension'
+alias code-uninstall='code --uninstall-extension'
+alias vs-code='code'
+alias vscode='code'
+
+# From https://github.com/jessfraz/dotfiles/blob/master/.functions
+# go to a folder easily in your gopath
+gogo(){
+  local d=$1
+
+  if [[ -z $d ]]; then
+    echo "You need to specify a project name."
+    return 1
+  fi
+
+  if [[ "$d" = github* ]]; then
+    d=$(echo $d | sed 's/.*\///')
+  fi
+  d=${d%/}
+
+  # search for the project dir in the GOPATH
+  local path=( `find "${GOPATH}/src" \( -type d -o -type l \) -iname "$d"  | awk '{print length, $0;}' | sort -n | awk '{print $2}'` )
+
+  if [ "$path" == "" ] || [ "${path[*]}" == "" ]; then
+    echo "Could not find a directory named $d in $GOPATH"
+    echo "Maybe you need to 'go get' it ;)"
+    return 1
+  fi
+
+  # enter the first path found
+  cd "${path[0]}"
+}
+
+# build go static binary from root of project
+gostatic(){
+	local dir=$1
+	local arg=$2
+
+	if [[ -z $dir ]]; then
+		dir=$(pwd)
+	fi
+
+	local name
+	name=$(basename "$dir")
+	(
+	cd "$dir" || exit
+  export GOOS=${GOOS:-linux}
+
+	echo "Building ${GOOS} static binary for $name in $dir"
+
+	case $arg in
+		"netgo")
+			set -x
+			go build -a \
+				-tags 'netgo static_build' \
+				-installsuffix netgo \
+				-ldflags "-w" \
+				-o "$name" .
+			;;
+		"cgo")
+			set -x
+			CGO_ENABLED=1 go build -a \
+				-tags 'cgo static_build' \
+				-ldflags "-w -extldflags -static" \
+				-o "$name" .
+			;;
+		*)
+			set -x
+			CGO_ENABLED=0 go build -a \
+				-installsuffix cgo \
+				-ldflags "-w" \
+				-o "$name" .
+			;;
+	esac
+	)
+}
+
+golistdeps(){
+	(
+	if [[ -n "$1" ]]; then
+		gogo "$@"
+	fi
+
+	go list -e -f '{{join .Deps "\n"}}' ./... | xargs go list -e -f '{{if not .Standard}}{{.ImportPath}}{{end}}'
+	)
+}
+
+# Linux-specific stuff
+if on_linux; then
+  # Add helper scripts with macOS tool names so I don't have to remember
+  # the names of the linux-specific ones.
+  if exists xdg-open; then
+    alias open='xdg-open'
+  fi
+
+  if exists xclip; then
+    function pbcopy {
+      if type xclip > /dev/null; then
+        xclip -selection clipboard
+      fi
+      if type xsel > /dev/null; then
+        xsel --clipboard --input
+      fi
+    }
+
+    function pbpaste {
+      if type xclip > /dev/null; then
+        xclip -selection clipboard -o
+      fi
+      if type xsel > /dev/null; then
+        xsel --clipboard --output
+      fi
+    }
+  fi
 fi

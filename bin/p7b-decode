@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+#
+# Decode a p7b file with openssl
+#
+# Copyright 2020, Joe Block <jpb@unixorn.net>
+
+set -o pipefail
+
+cert=${1?Need cert}
+exec openssl pkcs7 -in "$cert" -print_certs -text -noout

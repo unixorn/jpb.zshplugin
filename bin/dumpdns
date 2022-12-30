@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+#
+# Dump DNS records for a zone
+#
+# Copyright 2019, Joe Block <jpb@unixorn.net>
+
+exec nslookup -q=any $@

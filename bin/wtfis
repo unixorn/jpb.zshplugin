@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+#
+# Lookup a command on cheat.sh
+#
+# Copyright 2021, Joe Block <jpb@unixorn.net>
+
+if [[ "$(uname)" == 'Darwin' ]]; then
+  exec open "http://cheat.sh/$1"
+else
+  exec curl -s "cheat.sh/$1"
+fi

@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+#
+# show or remove exif data from a file
+#
+# Copyright 2022, Joe Block <jpb@unixorn.net>
+
+set -o pipefail
+if [[ -n "$DEBUG" ]]; then
+  set -x
+fi
+
+function debug() {
+  if [[ -n "$DEBUG" ]]; then
+    echo "$@"
+  fi
+}
+
+function fail() {
+  printf '%s\n' "$1" >&2  ## Send message to stderr. Exclude >&2 if you don't want it that way.
+  exit "${2-1}"  ## Return a code specified by $2 or 1 by default.
+}
+
+function has() {
+  # Check if a command is in $PATH
+  which "$@" > /dev/null 2>&1
+}
+
+function exiftool
+{
+	if [[ "$1" == "show" ]]; then
+		# Print the content of the exif metadata
+		exec exif "$2";
+	elif [[ "$1" == "rm" ]]; then
+		# Remove exif metadatas
+		exec mogrify -strip "$2";
+	else
+		echo "Usage:"
+		echo "exif show <file>      show the EXIF data contained in <file>"
+		echo "exif rm <file>        deletes all the EXIF data in <file>"
+	fi
+}
+
+function checkdeps {
+  if ! has mogrify; then
+    fail "mogrify is not installed"
+  fi
+  if ! has exif; then
+    fail "exif is not installed"
+  fi
+}
+
+checkdeps
+exiftool "$@"

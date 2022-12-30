@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+#
+# Name a terminal window/tab
+#
+# Copyright 2021, Joe Block <jpb@unixorn.net>
+
+echo -ne "\e]1;$1\a"

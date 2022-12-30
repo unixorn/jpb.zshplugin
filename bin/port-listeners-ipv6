@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+#
+# What programs are listening to what ipv6 ports
+
+exec lsof -Pnl +M -i6

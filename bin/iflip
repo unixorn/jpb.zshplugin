@@ -1,0 +1,71 @@
+#!/usr/bin/env python3
+#
+# Takes an input string and flips it
+# based on the irssi plugin fliptext.pl by Gerfried Fuchs,
+# (http://rhonda.deb.at/projects/irssi/scripts/fliptext.pl)
+# but ported to python 3 and changed to operate as a simple cli app
+#
+# Source: https://github.com/twirrim/iflip/blob/master/iflip
+# Author: https://github.com/twirrim
+# Licnense: GPL v2
+
+import sys
+
+flipdict = {
+    'a': 'ɐ',
+    'b': 'q',
+    'c': 'ɔ',
+    'd': 'p',
+    'e': 'ǝ',
+    'f': 'ɟ',
+    'g': 'ƃ',
+    'h': 'ɥ',
+    'i': 'ı',
+    'j': 'ɾ',
+    'k': 'ʞ',
+    'l': '⌉',
+    'm': 'ɯ',
+    'n': 'u',
+    'o': 'o',
+    'p': 'd',
+    'q': 'b',
+    'r': 'ɹ',
+    's': 's',
+    't': 'ʇ',
+    'u': 'n',
+    'v': 'ʌ',
+    'w': 'ʍ',
+    'x': 'x',
+    'y': 'ʎ',
+    '.': '˙',
+    '[': ']',
+    '(': ')',
+    '{': '}',
+    '?': '¿',
+    '!': '¡',
+    "'": ',',
+    '<': '>',
+    '_': '‾',
+    ';': '؛',
+    '‿': '⁀',
+    '⁅': '⁆',
+    '∴': '∵', }
+
+
+def fliptext(text):
+    # Reverse the text
+    text = text[::-1]
+    flipper = "(╯°□°）╯︵"
+    flipped = ""
+    # Replace each letter in the text with its upside down alternative
+    for letter in text:
+        if letter in flipdict:
+            flipped = flipped+flipdict[letter]
+        else:
+            flipped = flipped+letter
+    # Merge the two together
+    print(flipper, flipped)
+
+
+if __name__ == '__main__':
+    fliptext(sys.argv[1])

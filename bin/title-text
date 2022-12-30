@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+#
+# Set iTerm2 tab title text
+#
+# Copyright 2018, Joe Block <jpb@unixorn.net>
+#
+# This is released under the Apache 2.0 license. See LICENSE in this
+# repository for details
+
+echo -ne "\033]0;"$*"\007"
