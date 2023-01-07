@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+#
+# Show DNS resolver information. Of course macOS makes it more complicated
+# than `cat /etc/resolv.conf`
+#
+# Copyright 2023, Joe Block <jpb@unixorn.net>
+
+set -o pipefail
+
+case $(uname) in
+  Darwin)
+    scutil --dns | awk '/^(DNS|resolver|  (search|nameserver|domain))/'
+    ;;
+  Linux)
+    cat /etc/resolv.conf
+    ;;
+esac

@@ -60,7 +60,7 @@ function debug() {
 }
 
 function echo-stderr() {
-  echo "$@" 1>&2
+  echo "$@" 1>&2  ## Send message to stderr.
 }
 
 function fail() {
