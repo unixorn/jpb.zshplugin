@@ -1,0 +1,27 @@
+#!/bin/bash
+#
+# Copyright 2023 Joe Block <jpb@unixorn.net>
+# License: Apache 2
+
+set -euo pipefail
+
+function fail() {
+  printf '%s\\n' "$1" >&2  ## Send message to stderr. Exclude >&2 if you don't want it that way.
+  exit "${2-1}"  ## Return a code specified by $2 or 1 by default.
+}
+
+function nanotime() {
+  ts=$(date +%s%N)
+
+  "$@"
+
+  # shellcheck disable=SC2004
+  tt=$((($(date +%s%N) - $ts)/1000000))
+  echo "time $tt ms" >&2
+}
+
+if [[ "$(uname)" != "Linux" ]];then
+  fail "Date command only supports nanoseconds on Linux"
+fi
+
+nanotime "$@"

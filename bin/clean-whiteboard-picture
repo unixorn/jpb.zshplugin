@@ -12,7 +12,7 @@ function has() {
   which "$@" > /dev/null 2>&1
 }
 
-if [[ ! has convert ]]; then
+if ! has convert; then
   fail "Can't find 'convert' in your PATH"
 fi
 

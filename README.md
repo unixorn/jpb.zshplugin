@@ -85,6 +85,7 @@ The scripts in this collection don't actually require you to be using ZSH as you
 | `mtr-url` | ? | Parses hostname from a URL, then does a `mtr` to it. |
 | `murder` | [Anonymous Gist](https://gist.github.com/anonymous/32b1e619bc9e7fbe0eaa#!/bin/bash) | Takes a list of PIDs and ends the processes through increasingly rude means. |
 | `name-window` | jpb@unixorn.net | Names a terminal window/tab by sending escape codes. |
+| `nanotime` | jpb@unixorn.net | Times a process and gives you results in milliseconds |
 | `newscript` | jpb@unixorn.net | Creates a new script from a template and does `chmod 755` on it. |
 | `pidpwd` | jpb@unixorn.net | Find the pwd of a given pid. Only works on linux since it requires `/proc` |
 | `pjson` | [https://coderwall.com/](https://coderwall.com/p/hwu5uq?i=9&p=1&q=sort%3Ascore+desc&t%5B%5D=zsh) | Prettify json files |

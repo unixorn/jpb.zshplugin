@@ -597,6 +597,8 @@ if on_linux; then
     alias open='xdg-open'
   fi
 
+  alias time-in-ms=nanotime
+
   if exists xclip; then
     function pbcopy {
       if type xclip > /dev/null; then

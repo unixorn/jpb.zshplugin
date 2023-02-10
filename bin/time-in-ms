@@ -1,9 +1,0 @@
-#!/bin/bash
-set -euo pipefail
-ts=$(date +%s%N)
-
-$@
-
-tt=$((($(date +%s%N) - $ts)/1000000))
-
-echo "time $tt ms" >&2
