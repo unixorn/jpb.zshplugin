@@ -589,6 +589,8 @@ golistdeps(){
 	)
 }
 
+alias snake_case='tr [A-Z\ ] [a-z_]'
+
 # Linux-specific stuff
 if on_linux; then
   # Add helper scripts with macOS tool names so I don't have to remember
