@@ -1,4 +1,4 @@
-# Copyright 2006-2022 Joseph Block <jpb@apesseekingknowledge.net>
+# Copyright 2006-2023 Joseph Block <jpb@apesseekingknowledge.net>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,10 +14,10 @@
 
 # What platform are we on?
 on_linux() { [[ "$(uname -s)" = 'Linux'  ]] }
-on_macos()   { [[ "$(uname -s)" = 'Darwin' ]] }
+on_macos() { [[ "$(uname -s)" = 'Darwin' ]] }
 
 # Deprecated, OS name has changed to macOS
-on_osx()   { [[ "$(uname -s)" = 'Darwin' ]] }
+on_osx() { [[ "$(uname -s)" = 'Darwin' ]] }
 
 # check if a command is available
 
@@ -28,12 +28,14 @@ function exists() {
     return 1
   fi
 }
-#
+
 alias dmesg='sudo dmesg'
 
 # check if this is an interactive session
 # (tests if stdout is a tty)
 # function is_interactive() { [ -t 1 ] }
+function is-interactive() { [ -t 1 ] }
+function is-interactive-session() { [ -t 1 ] }
 
 # Add our plugin's bin diretory to user's path
 PLUGIN_BIN="$(dirname $0)/bin"
@@ -76,10 +78,15 @@ alias myip="dig +short myip.opendns.com @resolver1.opendns.com"
 alias reattach='screen -r'
 
 # SSH stuff
+alias scp-no-hostchecks='scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o GlobalKnownHostsFile=/dev/null'
+alias scpi='scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o GlobalKnownHostsFile=/dev/null'
+alias ssh-force-password-no-hostcheck='ssh -o PreferredAuthentications=password -o PubkeyAuthentication=no -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o GlobalKnownHostsFile=/dev/null'
+alias ssh-force-password='ssh -o PreferredAuthentications=password -o PubkeyAuthentication=no'
+alias ssh-no-hostchecks='ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o GlobalKnownHostsFile=/dev/null'
 alias ssh='ssh -A'
 alias sshi='ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o GlobalKnownHostsFile=/dev/null'
-alias scpi='scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o GlobalKnownHostsFile=/dev/null'
-alias sshnohostchecks='sshi'
+# Until my fingers forget the old alias, keep it around
+alias sshnohostchecks='ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o GlobalKnownHostsFile=/dev/null'
 
 # Strip ANSI codes out of a stream
 alias stripcolors='sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g"'
@@ -118,19 +125,23 @@ alias hlog='git log --all --date-order --graph --date=short --format="%C(green)%
 alias sign='gpg --detach-sign --armor'
 
 # my common tyops
-alias ..='cd ..'
 alias ':q'="exit"
+alias ..='cd ..'
 alias gerp='grep'
 alias grep-i='grep -i'
 alias grep='GREP_COLOR="1;37;41" LANG=C grep --color=auto'
 alias grepi='grep -i'
 alias maek='make'
-alias mkdirp='mkdir -p'
 alias mkdir-p='mkdir -p'
+alias mkdirp='mkdir -p'
 alias psax='ps ax'
 alias pswax='ps wax'
 alias psxa='ps ax'
 alias raek='rake'
+alias tar-tvf='tar tvf'
+alias tar-tvzf='tar tvzf'
+alias tar-xvf='tar xvf'
+alias tar-xvzf='tar xvzf'
 alias tartvf='tar tvf'
 alias tartvzf='tar tvzf'
 alias tarxvf='tar xvf'
@@ -301,7 +312,9 @@ delete-from-zsh-history () {
   print "Deleted '$HISTORY_IGNORE' from history."
 }
 
-alias -s pdf=open
+if exists open;then
+  alias -s pdf=open
+fi
 alias edit="$EDITOR"' $(eval ${$(fc -l -1)[2,-1]} -l)'
 alias knife='nocorrect knife'
 
@@ -312,6 +325,7 @@ function hexpass() {
 function sshaddme {
   ssh $1 "mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys" < ~/.ssh/id_?sa.pub  # '?sa' is a glob, not a typo!
 }
+alias ssh-addme='sshaddme'
 
 # mkdir & cd
 function mkcd {
@@ -422,13 +436,17 @@ function justconfig() {
 }
 
 # from: https://github.com/chilicuil/shundle-plugins/blob/master/aliazator/aliases/extra/wget.aliases
-alias test.broadband='wget -O /dev/null http://speedtest.wdc01.softlayer.com/downloads/test500.zip'
+alias test-broadband='wget -O /dev/null http://speedtest.wdc01.softlayer.com/downloads/test500.zip'
 alias wcat='wget -q -O -'
 
 alias grepm='grep --exclude-dir={node_modules,bower_components,dist,.bzr,.cvs,.git,.hg,.svn,.tmp} --color=always'
 
-export BULLETTRAIN_CONTEXT_SHOW=true
-export BULLETTRAIN_IS_SSH_CLIENT=true
+if [[ -z "$BULLETRAIN_CONTEXT_SHOW" ]]; then
+  export BULLETTRAIN_CONTEXT_SHOW=true
+fi
+if [[ -z "$BULLETTRAIN_IS_SSH_CLIENT" ]]; then
+  export BULLETTRAIN_IS_SSH_CLIENT=true
+fi
 
 # Calculate how many days since epoch
 epochdays() {
@@ -458,6 +476,9 @@ pgs() { # [find] [replace] [filename]
 prep() { # [pattern] [filename unless STDOUT]
   perl -nle 'print if /'"$1"'/;' $2
 }
+alias perl-grep='pgrep'
+alias perlgrep='pgrep'
+alias pl-grep='pgrep'
 
 function stockquote() {
   curl -s "http://download.finance.yahoo.com/d/quotes.csv?s=$1&f=l1"
@@ -596,28 +617,34 @@ if on_linux; then
   # Add helper scripts with macOS tool names so I don't have to remember
   # the names of the linux-specific ones.
   if exists xdg-open; then
-    alias open='xdg-open'
+    if ! exists open; then
+      alias open='xdg-open'
+    fi
   fi
 
   alias time-in-ms=nanotime
 
   if exists xclip; then
-    function pbcopy {
-      if type xclip > /dev/null; then
-        xclip -selection clipboard
-      fi
-      if type xsel > /dev/null; then
-        xsel --clipboard --input
-      fi
-    }
+    if ! exists pbcopy; then
+      function pbcopy {
+        if type xclip > /dev/null; then
+          xclip -selection clipboard
+        fi
+        if type xsel > /dev/null; then
+          xsel --clipboard --input
+        fi
+      }
+    fi
 
-    function pbpaste {
-      if type xclip > /dev/null; then
-        xclip -selection clipboard -o
-      fi
-      if type xsel > /dev/null; then
-        xsel --clipboard --output
-      fi
-    }
+    if ! exists pbpaste; then
+      function pbpaste {
+        if type xclip > /dev/null; then
+          xclip -selection clipboard -o
+        fi
+        if type xsel > /dev/null; then
+          xsel --clipboard --output
+        fi
+      }
+    fi
   fi
 fi
