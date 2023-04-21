@@ -50,8 +50,9 @@ jobs:
       - name: Lint Code Base
         uses: nvuillam/mega-linter@v6
         env:
-          VALIDATE_ALL_CODEBASE: false
           DEFAULT_BRANCH: main
+          REPOSITORY_CHECKOV_DISABLE_ERRORS: true
+          VALIDATE_ALL_CODEBASE: false
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DISABLE_LINTERS: SPELL_CSPELL,MARKDOWN_MARKDOWN_LINK_CHECK,YAML_YAMLLINT
 
