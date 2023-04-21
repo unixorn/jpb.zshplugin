@@ -44,7 +44,7 @@ The scripts in this collection don't actually require you to be using ZSH as you
 | Script | Original Source | Description |
 | ------ | --------------- | ----------- |
 | `$` | Jordan Sissel's [dotfiles](https://github.com/jordansissel/dotfiles/blob/master/.zshrc) | A shim so that pasting a command example with a leading `$` will just work instead of failing. |
-|  `ansi2html` | Mislav Marohnić's [dotfiles](https://github.com/mislav/dotfiles) | Convert terminal color ANSI escape sequences to HTML. |
+| `ansi2html` | Mislav Marohnić's [dotfiles](https://github.com/mislav/dotfiles) | Convert terminal color ANSI escape sequences to HTML. |
 | `ascii-bar` | Wookayin's [dotfiles](https://github.com/wookayin/dotfiles/blob/master/bin/ascii-bar) | Draw an ascii bar figure from the percentage value read from `STDIN` |
 | `bindiff` | jpb@unixorn.net | Hexdumps two files and diffs the output |
 | `change-extension` | ? | Changes file extensions |
@@ -53,8 +53,8 @@ The scripts in this collection don't actually require you to be using ZSH as you
 | `dedupe-in-order` | `awk` oneliner | Use awk to dedupe a file, outputting the lines in order. Unlike `uniq`, doesn't only dedupe adjacent lines. |
 | `diff-summary` | Gary Bernhardt's [dotfiles](https://github.com/garybernhardt/dotfiles/blob/main/bin/gn) | Prints a summary of piped diff files or `git diff` output |
 | `dumpdns` | ? | Dump DNS records for a domain |
-| `extractFromRPM` | jpb@unixorn.net | Extracts files from an rpm |
 | `exiftool` | jpb@unixorn.net | Shows or removes a file's exif metadata |
+| `extractFromRPM` | jpb@unixorn.net | Extracts files from an rpm |
 | `find-in-files` | [Boost Your Command Line Productivity With fzf](https://betterprogramming.pub/boost-your-command-line-productivity-with-fuzzy-finder-985aa162ba5d) | Combines `ripgrep` and `fzf` |
 | `fix-zsh-history` | jpb@unixorn.net | Fixes a corrupted `.zsh_history` file |
 | `get-distro` | [https://github.com/blueyed/dotfiles/](https://github.com/blueyed/dotfiles/blob/master/usr/bin/get_distro) | Dumps info about the distro of the linux system you're on |
@@ -62,9 +62,9 @@ The scripts in this collection don't actually require you to be using ZSH as you
 | `gxpr` | [brutasse's dotfiles](https://github.com/brutasse/dotfiles/blob/master/bin/gxpr). | Uses Google and or Wolfram Alpha to evaluate expressions. Requires `URI::Escape` to be installed with `cpan`. |
 | `headers` | Zach Holman's [dotfiles](https://github.com/holman/dotfiles/blob/master/bin/headers) | Gets the HTTP headers from a server |
 | `hex-to-bin` | jpb@unixorn.net | Converts a hexstring to a binary stream |
+| `html2markdown` | [https://github.com/realpython/python-scripts/](https://github.com/realpython/python-scripts/blob/master/scripts/14_html_to_markdown.sh) | Convert all HTML files in a single directory to Markdown |
 | `http_debug` | | Dump debug info for a URL |
 | `http_headers` | | Dump http headers for a URL |
-| `html2markdown` | [https://github.com/realpython/python-scripts/](https://github.com/realpython/python-scripts/blob/master/scripts/14_html_to_markdown.sh) | Convert all HTML files in a single directory to Markdown |
 | `human-path` | coffeeops slack `#commandline-fu` channel | Print `$PATH` with one entry per line to make it easier for humans to tell if something is missing |
 | `human-time` | | Converts integer seconds into human-understandable time. `human-time 88000` will print `1d 26m 40s` |
 | `iflip` | [twirrim/iflip](https://github.com/twirrim/iflip/blob/master/iflip) | Tableflips a text string |
