@@ -1,0 +1,66 @@
+#!/usr/bin/env bash
+#
+# Diff two binary files
+#
+# Copyright 2023, Joe Block <jpb@unixorn.net>
+
+set -o pipefail
+if [[ -n "$DEBUG" ]]; then
+  if [[ "$(echo $DEBUG | tr '[:upper:]' '[:lower:]')" == "verbose" ]]; then
+    set -x
+  fi
+fi
+
+function debug() {
+  if [[ -n "$DEBUG" ]]; then
+    echo "$@"
+  fi
+}
+
+function echo-stderr() {
+  echo "$@" 1>&2  ## Send message to stderr.
+}
+
+function fail() {
+  printf '%s\n' "$1" >&2  ## Send message to stderr. Exclude >&2 if you don't want it that way.
+  exit "${2-1}"  ## Return a code specified by $2 or 1 by default.
+}
+
+function has() {
+  # Check if a command is in $PATH
+  which "$@" > /dev/null 2>&1
+}
+
+function check-deps() {
+  debug "Checking dependencies..."
+  for p in 'xxd' 'diff'
+  do
+    if ! has $p; then
+      fail "Can't find $p in your \$PATH"
+    else
+      debug "- Found $p"
+    fi
+  done
+}
+
+function get-settings() {
+  if [[ -z "$DIFF_PROG" ]]; then
+    for p in 'less' 'bat' 'colordiff'
+    do
+      if has "$p"; then
+        DIFF_PROG=$p
+        debug "Found $p, setting DIFF_PROG to $DIFF_PROG"
+      fi
+    done
+  fi
+  if ! has "$DIFF_PROG"; then
+    fail "DIFF_PROG: $DIFF_PROG not found in your \$PATH"
+  fi
+  debug "Using $DIFF_PROG to process binary diff output"
+}
+
+check-deps
+get-settings
+
+diff -y <(xxd "$1") <(xxd "$2") | $DIFF_PROG
+exit $?

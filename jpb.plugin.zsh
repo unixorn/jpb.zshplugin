@@ -92,6 +92,7 @@ alias sshnohostchecks='ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/de
 alias stripcolors='sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g"'
 
 alias wget='wget -c'
+alias wget-images='wget -nd -r -l 2 -A jpg,jpeg,png,gif,bmp'
 
 # git aliases
 alias annotate='git annotate'
@@ -648,3 +649,10 @@ if on_linux; then
     fi
   fi
 fi
+
+ssh-copy-key() {
+	local destination=$1
+	[ -z ${destination} ] && return 1
+	cat ${HOME}/.ssh/id_rsa.pub | ssh "$destination" "mkdir -p ~/.ssh; cat >> ~/.ssh/authorized_keys"
+}
+

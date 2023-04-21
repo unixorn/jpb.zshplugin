@@ -46,6 +46,7 @@ The scripts in this collection don't actually require you to be using ZSH as you
 | `$` | Jordan Sissel's [dotfiles](https://github.com/jordansissel/dotfiles/blob/master/.zshrc) | A shim so that pasting a command example with a leading `$` will just work instead of failing. |
 |  `ansi2html` | Mislav Marohnić's [dotfiles](https://github.com/mislav/dotfiles) | Convert terminal color ANSI escape sequences to HTML. |
 | `ascii-bar` | Wookayin's [dotfiles](https://github.com/wookayin/dotfiles/blob/master/bin/ascii-bar) | Draw an ascii bar figure from the percentage value read from `STDIN` |
+| `bindiff` | jpb@unixorn.net | Hexdumps two files and diffs the output |
 | `change-extension` | ? | Changes file extensions |
 | `clean-whiteboard-picture` | [https://gist.github.com/lelandbatey/8677901](https://gist.github.com/lelandbatey/8677901) | Cleans up pictures of whiteboards and pumps up contrast |
 | `datauri` | Alrra's [dotfiles](https://github.com/alrra/dotfiles/blob/main/src/shell/bash_functions) | Converts a file to a data URI |
@@ -60,6 +61,7 @@ The scripts in this collection don't actually require you to be using ZSH as you
 | `get-site-cert` | ? | Download the SSL cert from a site |
 | `gxpr` | [brutasse's dotfiles](https://github.com/brutasse/dotfiles/blob/master/bin/gxpr). | Uses Google and or Wolfram Alpha to evaluate expressions. Requires `URI::Escape` to be installed with `cpan`. |
 | `headers` | Zach Holman's [dotfiles](https://github.com/holman/dotfiles/blob/master/bin/headers) | Gets the HTTP headers from a server |
+| `hex-to-bin` | jpb@unixorn.net | Converts a hexstring to a binary stream |
 | `http_debug` | | Dump debug info for a URL |
 | `http_headers` | | Dump http headers for a URL |
 | `html2markdown` | [https://github.com/realpython/python-scripts/](https://github.com/realpython/python-scripts/blob/master/scripts/14_html_to_markdown.sh) | Convert all HTML files in a single directory to Markdown |
@@ -67,6 +69,7 @@ The scripts in this collection don't actually require you to be using ZSH as you
 | `human-time` | | Converts integer seconds into human-understandable time. `human-time 88000` will print `1d 26m 40s` |
 | `iflip` | [twirrim/iflip](https://github.com/twirrim/iflip/blob/master/iflip) | Tableflips a text string |
 | `ipaddresses` | jpb@unixorn.net | Dumps all the ip addresses for the host |
+| `is-remote-session` | jpb@unixorn.net | Exits 0 if you're in an `ssh` remote session, 1 otherwise |
 | `jira` | jpb@unixorn.net | Opens a jira ticket from the command-line |
 | `jmemstat` | [majk1's shellrc](https://github.com/majk1/shellrc/blob/master/utils/jmemstat.sh) | Displays a memory information summary for a java process |
 | `json2yaml` / `json-to-yaml` | jpb@unixorn.net | Converts JSON to YAML |
@@ -94,6 +97,7 @@ The scripts in this collection don't actually require you to be using ZSH as you
 | `random-password` | jpb@unixorn.net | Generate a random password. If no argument, assume 32 character length |
 | `randsleep` | jpb@unixorn.net | Sleep a random number of seconds |
 | `relocate-virtualenv` | Gary Josack's [scripts](https://github.com/gmjosack/scripts) repository | This is a simple script to clean up links and references in a python virtualenv that has been relocated. |
+| `remote-packet-capture` | jpb@unixorn.net | Run `tcpdump` on a remote host and pipe it to local `wireshark` |
 | `retry` | jpb@unixorn.net | Re-run a command until it exits successfully. Waits `$DELAY` seconds between attempts. |
 | `seq` | Dave Taylor's [blog](https://www.askdavetaylor.com/step_through_count_numeric_values_bash_shell_script/) | Generates integer values from low...high similar to `range` in better programming languages |
 | `snag-dl` | ? | Moves the most recent file in `~/Downloads` into the current directory |
