@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+#
+# hex-to-bin
+#
+# Converts a hexstring to a binary stream
+#
+# Copyright 2023, Joe Block <jpb@unixorn.net>
+
+set -o pipefail
+if [[ -n "$DEBUG" ]]; then
+  set -x
+fi
+
+function echo-stderr() {
+  echo "$@" 1>&2  ## Send message to stderr.
+}
+
+function fail() {
+  echo-stderr "$@"
+  exit "${2-1}"  ## Return a code specified by $2 or 1 by default.
+}
+
+function has() {
+  # Check if a command is in $PATH
+  which "$@" > /dev/null 2>&1
+}
+
+# hexstring to binary stream
+if has xxd; then
+  echo -n "$@" | xxd -p -r
+  exit $?
+else
+  fail "Can't find 'xxd' in PATH"
+fi

@@ -50,7 +50,9 @@ def generate_bash_script(name:)
 
 set -o pipefail
 if [[ -n "$DEBUG" ]]; then
-  set -x
+  if [[ "$(echo $DEBUG | tr '[:upper:]' '[:lower:]')" == "verbose" ]]; then
+    set -x
+  fi
 fi
 
 function debug() {
@@ -107,6 +109,24 @@ if [[ ! "$SCRATCH_D" || ! -d "$SCRATCH_D" ]]; then
 fi
 
 add_on_exit rm -rf "$SCRATCH_D"
+
+function get-settings() {
+  SETTING_ENV_NAME=${SETTING_ENV_NAME:-'default-value'}
+}
+
+function check-dependencies() {
+  debug "Checking dependencies..."
+  for p in 'bash' 'cat'
+  do
+    if ! has $p; then
+      fail "Can't find $p in your \$PATH"
+    else
+      debug "- Found $p"
+    fi
+  done
+}
+
+get-settings
 
 END_BASH_SCRIPT
   write_script(name: name, source: rawScript)

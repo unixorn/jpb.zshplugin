@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+#
+# Check an SSL certificate
+#
+# Copyright 2023, Joe Block <jpb@unixorn.net>
+
+set -o pipefail
+if [[ -n "$DEBUG" ]]; then
+  set -x
+fi
+
+function debug() {
+  if [[ -n "$DEBUG" ]]; then
+    echo "$@"
+  fi
+}
+
+function echo-stderr() {
+  echo "$@" 1>&2  ## Send message to stderr.
+}
+
+function fail() {
+  printf '%s\n' "$1" >&2  ## Send message to stderr. Exclude >&2 if you don't want it that way.
+  exit "${2-1}"  ## Return a code specified by $2 or 1 by default.
+}
+
+function has() {
+  # Check if a command is in $PATH
+  which "$@" > /dev/null 2>&1
+}
+
+if ! has openssl; then
+  fail "Can't find 'openssl' in PATH"
+fi
+
+function usage() {
+  # shellcheck disable=SC2086
+  my_name="$(basename $0)"
+  echo "Usage:"
+  echo "$my_name DOMAIN [PORT]"
+  echo
+}
+
+if [[ "$1" == "--help" ]]; then
+  usage
+  exit 0
+fi
+
+if [[ $# == 0 ]]; then
+  usage
+  exit 0
+fi
+
+DOMAIN="$1"
+PORT=${2:-"443"}
+debug "DOMAIN: $DOMAIN"
+debug "PORT: $PORT"
+
+echo | openssl s_client -servername "$DOMAIN" -connect "$DOMAIN:$PORT" | openssl x509 -noout -dates
+exit $?
