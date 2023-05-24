@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 #
-#   Copyright 2016-2022 Joe Block <jpb@unixorn.net>
+#   Copyright 2016-2023 Joe Block <jpb@unixorn.net>
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -44,12 +44,16 @@ def generate_bash_script(name:)
   rawScript =<<"END_BASH_SCRIPT"
 #!/usr/bin/env bash
 #
+# This base script is MIT licensed so you can base your
+# own work on it.
+#
 # Script skeleton
 #
 # Copyright #{copyright_year}, Your Name <yourname@yourdomain.com>
 
 set -o pipefail
 if [[ -n "$DEBUG" ]]; then
+  # shellcheck disable=SC2086
   if [[ "$(echo $DEBUG | tr '[:upper:]' '[:lower:]')" == "verbose" ]]; then
     set -x
   fi
@@ -87,6 +91,7 @@ function on_exit()
 {
   for i in "${on_exit_items[@]}"
   do
+    # shellcheck disable=SC2086
     eval $i
   done
 }
@@ -94,6 +99,7 @@ function on_exit()
 function add_on_exit()
 {
   local n=${#on_exit_items[*]}
+  # shellcheck disable=SC2004
   on_exit_items[$n]="$*"
   if [[ $n -eq 0 ]]; then
     trap on_exit EXIT
@@ -126,7 +132,30 @@ function check-dependencies() {
   done
 }
 
-get-settings
+function approve() {
+  # $1 = prompt for user, or Continue?
+  # $2 = message for non approved
+  local prompt
+  local reject_message
+  prompt=${1-'Ok to continue?'}
+  reject_message=${2-'Exiting...'}
+  echo -n "$prompt [yes/NO]"
+  read -r answer
+  # shellcheck disable=SC2086
+  if [[ ! "$(echo $answer | tr '[:upper:]' '[:lower:]')" == "yes" ]]; then
+    fail "$reject_message"
+  fi
+}
+
+function my-name() {
+  basename "$0"
+}
+
+function usage() {
+  echo "Usage: $(my-name) ARG ARG"
+}
+
+check-dependencies
 
 END_BASH_SCRIPT
   write_script(name: name, source: rawScript)
@@ -136,6 +165,9 @@ def generate_python_script(name:)
   copyright_year = `date -u "+%Y"`.chomp
   rawScript =<<"END_PYTHON_SCRIPT"
 #!/usr/bin/env python3
+#
+# This base script is MIT licensed so you can base your
+# own work on it.
 #
 # Script skeleton
 #
