@@ -48,7 +48,7 @@ jobs:
       # Run Linter against code base #
       ################################
       - name: Lint Code Base
-        uses: nvuillam/mega-linter@v6
+        uses: nvuillam/mega-linter@v7
         env:
           DEFAULT_BRANCH: main
           REPOSITORY_CHECKOV_DISABLE_ERRORS: true
