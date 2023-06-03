@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+#
+# Get an AWS account's number from its name
+#
+# Script skeleton
+#
+# Copyright 2023, Your Name <yourname@yourdomain.com>
+
+set -o pipefail
+grep "$1" ~/.aws/config  -A 1 | grep -v profile | sed -r "s/role_arn = arn:aws:iam::(.*):.*/`printf "\033[31m"`\1`printf "\033[0m"`/"
+exit $?

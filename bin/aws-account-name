@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+#
+# Get an AWS account's name from it's ID
+#
+# Copyright 2023, Your Name <yourname@yourdomain.com>
+
+set -o pipefail
+
+grep "$1" ~/.aws/config -B 1 | grep profile | sed -r "s/\[profile (.*)\]/`printf "\033[31m"`\1`printf "\033[0m"`/"
+exit $?
