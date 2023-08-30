@@ -101,7 +101,7 @@ The scripts in this collection don't actually require you to be using ZSH as you
 | `retry` | jpb@unixorn.net | Re-run a command until it exits successfully. Waits `$DELAY` seconds between attempts. |
 | `seq` | Dave Taylor's [blog](https://www.askdavetaylor.com/step_through_count_numeric_values_bash_shell_script/) | Generates integer values from low...high similar to `range` in better programming languages |
 | `snag-dl` | ? | Moves the most recent file in `~/Downloads` into the current directory |
-| `solo` | Timothy Kay's [solo](http://timkay.com/solo/) | Prevents a program from running more than one copy at a time. |
+| `solo` | Timothy Kay's `solo` script | Prevents a program from running more than one copy at a time. |
 | `steal` | jpb@unixorn.net | Helper for quickly resetting ownership of files you created with the wrong userid |
 | `strip-ansi-codes` | jpb@unixorn.net | Strips the ANSI codes from STDIN. Makes grepping through things like jenkins logs considerably less painful |
 | `tableflip` | [hangops](https://hangops.slack.com) slack | Prints a tableflip animation. |

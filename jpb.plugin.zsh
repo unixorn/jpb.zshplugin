@@ -38,8 +38,7 @@ function is-interactive() { [ -t 1 ] }
 function is-interactive-session() { [ -t 1 ] }
 
 # Add our plugin's bin diretory to user's path
-PLUGIN_BIN="$(dirname $0)/bin"
-export PATH="${PATH}:${PLUGIN_BIN}"
+path+=("${0:h}/bin")
 
 if [[ "$(uname -s)" = 'Linux'  ]]; then
   # We're on linux
@@ -656,3 +655,6 @@ ssh-copy-key() {
 	cat ${HOME}/.ssh/id_rsa.pub | ssh "$destination" "mkdir -p ~/.ssh; cat >> ~/.ssh/authorized_keys"
 }
 
+boring-prompt() {
+  PROMPT_COMMAND='' PS0='' PS1='$ ' zsh
+}
