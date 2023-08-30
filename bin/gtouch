@@ -1,0 +1,83 @@
+#!/usr/bin/env bash
+#
+# This base script is MIT licensed so you can base your
+# own work on it.
+#
+# touch a file and add it to git
+#
+# Copyright 2023, Joe Block <jpb@unixorn.net>
+
+set -o pipefail
+if [[ -n "$DEBUG" ]]; then
+  # shellcheck disable=SC2086
+  if [[ "$(echo $DEBUG | tr '[:upper:]' '[:lower:]')" == "verbose" ]]; then
+    set -x
+  fi
+fi
+
+function debug() {
+  if [[ -n "$DEBUG" ]]; then
+    echo "$@"
+  fi
+}
+
+function echo-stderr() {
+  echo "$@" 1>&2  ## Send message to stderr.
+}
+
+function fail() {
+  printf '%s\n' "$1" >&2  ## Send message to stderr. Exclude >&2 if you don't want it that way.
+  exit "${2-1}"  ## Return a code specified by $2 or 1 by default.
+}
+
+function has() {
+  # Check if a command is in $PATH
+  which "$@" > /dev/null 2>&1
+}
+
+# on_exit and add_on_exit from http://www.linuxjournal.com/content/use-bash-trap-statement-cleanup-temporary-files
+
+# Usage:
+#   add_on_exit rm -f /tmp/foo
+#   add_on_exit echo "I am exiting"
+#   tempfile=$(mktemp)
+#   add_on_exit rm -f "$tempfile"
+
+function on_exit()
+{
+  for i in "${on_exit_items[@]}"
+  do
+    # shellcheck disable=SC2086
+    eval $i
+  done
+}
+
+function add_on_exit()
+{
+  local n=${#on_exit_items[*]}
+  # shellcheck disable=SC2004
+  on_exit_items[$n]="$*"
+  if [[ $n -eq 0 ]]; then
+    trap on_exit EXIT
+  fi
+}
+
+# Set up a working scratch directory
+SCRATCH_D=$(mktemp -d)
+
+if [[ ! "$SCRATCH_D" || ! -d "$SCRATCH_D" ]]; then
+  echo "Could not create temp dir"
+  exit 1
+fi
+
+add_on_exit rm -rf "$SCRATCH_D"
+
+function my-name() {
+  basename "$0"
+}
+
+function usage() {
+  echo "Usage: $(my-name) ARG ARG"
+}
+
+if [[ $# < 1 ]];then

@@ -655,3 +655,6 @@ ssh-copy-key() {
 	cat ${HOME}/.ssh/id_rsa.pub | ssh "$destination" "mkdir -p ~/.ssh; cat >> ~/.ssh/authorized_keys"
 }
 
+boring-prompt() {
+  PROMPT_COMMAND='' PS0='' PS1='$ ' zsh
+}
