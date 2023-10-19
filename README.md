@@ -90,6 +90,7 @@ The scripts in this collection don't actually require you to be using ZSH as you
 | `name-window` | jpb@unixorn.net | Names a terminal window/tab by sending escape codes. |
 | `nanotime` | jpb@unixorn.net | Times a process and gives you results in milliseconds |
 | `newscript` | jpb@unixorn.net | Creates a new script from a template and does `chmod 755` on it. |
+| `openports` | jpb@unixorn.net | Wraps `ss` and makes a prettier list of open ports. |
 | `pidpwd` | jpb@unixorn.net | Find the pwd of a given pid. Only works on linux since it requires `/proc` |
 | `pjson` | [https://coderwall.com/](https://coderwall.com/p/hwu5uq?i=9&p=1&q=sort%3Ascore+desc&t%5B%5D=zsh) | Prettify json files |
 | `plot` | katef's [gist](https://gist.github.com/katef/fb4cb6d47decd8052bd0e8d88c03a102) | Draw a graph in the terminal |
