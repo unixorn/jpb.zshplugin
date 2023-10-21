@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+#
+# Run wireshark on a remote host
+#
+# Copyright 2023, Joe Block <jpb@unixorn.net>
+
+set -o pipefail
+
+host=${1}
+port=${2-22}
+ssh "${host}" tcpdump -U -s0 -w - "not port ${port}" | wireshark -k -i -
+exit $?
