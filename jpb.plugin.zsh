@@ -69,6 +69,12 @@ function historygram() {
     awk '!max{max=$1;}{r="";i=s=60*$1/max;while(i-->0)r=r"#";printf "%15s %5d %s %s",$2,$1,r,"\n";}'
 }
 
+function version_greater_equal()
+{
+    printf '%s\n%s\n' "$2" "$1" | sort --check=quiet --version-sort
+}
+
+
 # IP address fiddling
 alias external_ip='curl -s icanhazip.com'
 alias my_ips="ifconfig -a | perl -nle'/(\d+\.\d+\.\d+\.\d+)/ && print $1'"
@@ -129,7 +135,11 @@ alias ':q'="exit"
 alias ..='cd ..'
 alias gerp='grep'
 alias grep-i='grep -i'
-alias grep='GREP_COLOR="1;37;41" LANG=C grep --color=auto'
+if version_greater_equal $(grep -V | head -1 | grep GNU | cut -d" " -f4 ) 3.8; then
+  alias grep='GREP_COLORS="mt=1;37;41" LANG=C grep --color=auto'
+else
+  alias grep='GREP_COLOR="1;37;41" LANG=C grep --color=auto'
+fi
 alias grepi='grep -i'
 alias maek='make'
 alias mkdir-p='mkdir -p'
