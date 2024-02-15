@@ -157,6 +157,14 @@ function usage() {
   echo "Usage: $(my-name) ARG ARG"
 }
 
+function path-exists() {
+  local file="${1}"
+  [[ -s "${file}" ]] || fail "$1 is not valid"
+  [[ -d "${file}" ]] && return
+  [[ -f "${file}" ]] && return
+  fail "$1 is not a directory or file"
+}
+
 check-dependencies
 
 END_BASH_SCRIPT
