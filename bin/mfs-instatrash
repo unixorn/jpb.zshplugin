@@ -1,0 +1,125 @@
+#!/usr/bin/env bash
+#
+# Set trash expiry time for a file/directory to 0
+#
+# Script skeleton
+#
+# Copyright 2024, Your Name <yourname@yourdomain.com>
+
+set -o pipefail
+if [[ -n "$DEBUG" ]]; then
+  # shellcheck disable=SC2086
+  if [[ "$(echo $DEBUG | tr '[:upper:]' '[:lower:]')" == "verbose" ]]; then
+    set -x
+  fi
+fi
+
+function debug() {
+  if [[ -n "$DEBUG" ]]; then
+    echo "$@"
+  fi
+}
+
+function echo-stderr() {
+  echo "$@" 1>&2  ## Send message to stderr.
+}
+
+function fail() {
+  printf '%s\n' "$1" >&2  ## Send message to stderr. Exclude >&2 if you don't want it that way.
+  exit "${2-1}"  ## Return a code specified by $2 or 1 by default.
+}
+
+function has() {
+  # Check if a command is in $PATH
+  which "$@" > /dev/null 2>&1
+}
+
+# on_exit and add_on_exit from http://www.linuxjournal.com/content/use-bash-trap-statement-cleanup-temporary-files
+
+# Usage:
+#   add_on_exit rm -f /tmp/foo
+#   add_on_exit echo "I am exiting"
+#   tempfile=$(mktemp)
+#   add_on_exit rm -f "$tempfile"
+
+function on_exit()
+{
+  for i in "${on_exit_items[@]}"
+  do
+    # shellcheck disable=SC2086
+    eval $i
+  done
+}
+
+function add_on_exit()
+{
+  local n=${#on_exit_items[*]}
+  # shellcheck disable=SC2004
+  on_exit_items[$n]="$*"
+  if [[ $n -eq 0 ]]; then
+    trap on_exit EXIT
+  fi
+}
+
+# Set up a working scratch directory
+SCRATCH_D=$(mktemp -d)
+
+if [[ ! "$SCRATCH_D" || ! -d "$SCRATCH_D" ]]; then
+  echo "Could not create temp dir"
+  exit 1
+fi
+
+add_on_exit rm -rf "$SCRATCH_D"
+
+function get-settings() {
+  SETTING_ENV_NAME=${SETTING_ENV_NAME:-'default-value'}
+}
+
+function check-dependencies() {
+  debug "Checking dependencies..."
+  # shellcheck disable=SC2041
+  # Placeholders for whatever programs you really need
+  for p in 'mfssettrashtime'
+  do
+    if ! has $p; then
+      fail "Can't find $p in your $PATH"
+    else
+      debug "- Found $p"
+    fi
+  done
+}
+
+function approve() {
+  # $1 = prompt for user, or Continue?
+  # $2 = message for non approved
+  local prompt
+  local reject_message
+  prompt=${1-'Ok to continue?'}
+  reject_message=${2-'Exiting...'}
+  echo -n "$prompt [yes/NO]"
+  read -r answer
+  # shellcheck disable=SC2086
+  if [[ ! "$(echo $answer | tr '[:upper:]' '[:lower:]')" == "yes" ]]; then
+    fail "$reject_message"
+  fi
+}
+
+function my-name() {
+  basename "$0"
+}
+
+function usage() {
+  echo "Usage: $(my-name) ARG ARG"
+}
+
+function path-exists() {
+  local file="${1}"
+  [[ -s "${file}" ]] || fail "$1 is not valid"
+  [[ -d "${file}" ]] && return
+  [[ -f "${file}" ]] && return
+  fail "$1 is not a directory or file"
+}
+
+check-dependencies
+path-exists "$1"
+mfssettrashtime 0 "$1"

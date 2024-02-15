@@ -668,3 +668,63 @@ ssh-copy-key() {
 boring-prompt() {
   PROMPT_COMMAND='' PS0='' PS1='$ ' zsh
 }
+
+# Cloned from https://github.com/ag4ve/dotfiles/blob/master/dot_zsh/rc/650-functions.sh
+
+# Pertinent information from whois
+whoism () {
+    whois "$1" | egrep '^(inetnum|netname|descr|address|CIDR|OrgName|OrgId|Address|City|StateProv|PostalCode|[Cc]ountry|inetrev|owner(id)?|responsible|nserver):'
+}
+compdef whoism=whois
+
+# short dig
+sdig () {
+  dig "$@" +short
+}
+compdef sdig=dig
+
+# long dig
+
+ldig () {
+  dig +trace +nocmd "$@" any +multiline +answer
+}
+compdef ldig=dig
+
+# Convert number to normal ip
+int2ip () {
+    perl -e "print join '.', unpack 'C4', pack 'N', $@"
+}
+
+# Regex grep all ASCII files in a directory
+tgrep () {
+    string="$1"
+    local dir="$2"
+
+    if [ -z "$dir" ] ; then
+        dir="./"
+    fi
+
+    while read file ; do
+        if [[ "$(file -b --mime-encoding "$file")" = *ascii* ]] ; then
+            grep -HE "$string" "$file"
+        fi
+    done <<< "$(command find $dir -type f)"
+}
+compdef tgrep=egrep
+
+s_client () {
+  command openssl s_client -connect "$1:443" -servername "$1" -showcerts -verify 10 <<<"QUIT" 2>&1
+}
+
+asn1parse () {
+  command openssl asn1parse -in "$1" -dump -i
+}
+
+defstrace () {
+  command strace -f -e open,access,connect,recvfrom,sendto,network $@
+}
+compdef defstrace=strace
+
+alias whatip6="curl -s http://ip4only.me/api/ | cut -d',' -f2"
+alias whatip4="curl -s http://ip6only.me/api/ | cut -d',' -f2"
+alias whatip="whatip4;whatip6"
