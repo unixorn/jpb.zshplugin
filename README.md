@@ -54,6 +54,7 @@ The scripts in this collection don't actually require you to be using ZSH as you
 | `diff-summary` | Gary Bernhardt's [dotfiles](https://github.com/garybernhardt/dotfiles/blob/main/bin/gn) | Prints a summary of piped diff files or `git diff` output |
 | `dumpdns` | ? | Dump DNS records for a domain |
 | `exiftool` | jpb@unixorn.net | Shows or removes a file's exif metadata |
+| `explainshell` | jpb@unixorn.net | Uses https://explainshell.com to explain shell commands. |
 | `extractFromRPM` | jpb@unixorn.net | Extracts files from an rpm |
 | `find-in-files` | [Boost Your Command Line Productivity With fzf](https://betterprogramming.pub/boost-your-command-line-productivity-with-fuzzy-finder-985aa162ba5d) | Combines `ripgrep` and `fzf` |
 | `fix-zsh-history` | jpb@unixorn.net | Fixes a corrupted `.zsh_history` file |
