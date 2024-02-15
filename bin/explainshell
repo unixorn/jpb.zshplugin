@@ -97,6 +97,7 @@ function usage() {
   echo "Gets an explanation of a command from explainshell.com"
 }
 
+get-settings
 check-dependencies
 if [[ $# == 0 ]]; then
   usage
