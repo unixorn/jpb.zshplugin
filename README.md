@@ -5,6 +5,7 @@ This is a ZSH plugin usable with [zgenom](https://github.com/jandamm/zgenom) and
 This contains miscellaneous tool scripts and aliases that are not specific enough for one of my more targeted ZSH plugins.
 
 ## Status
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/license/Apache-2.0)
 [![Build Status](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2Funixorn%2Fjpb.zshplugin%2Fbadge%3Fref%3Dmain&style=plastic)](https://actions-badge.atrox.dev/unixorn/jpb.zshplugin/goto?ref=main)
 ![Awesomebot](https://github.com/unixorn/jpb.zshplugin/actions/workflows/awesomebot.yml/badge.svg)
 ![Mega-Linter](https://github.com/unixorn/jpb.zshplugin/actions/workflows/mega-linter.yml/badge.svg)
@@ -96,6 +97,7 @@ The scripts in this collection don't actually require you to be using ZSH as you
 | `pjson` | [https://coderwall.com/](https://coderwall.com/p/hwu5uq?i=9&p=1&q=sort%3Ascore+desc&t%5B%5D=zsh) | Prettify json files |
 | `plot` | katef's [gist](https://gist.github.com/katef/fb4cb6d47decd8052bd0e8d88c03a102) | Draw a graph in the terminal |
 | `port-listeners-ipv{4,6}` | jpb@unixorn.net | Show what programs are listening to a given port |
+| `pydoc` | jpb@unixorn.net | Look something up on [docs.python.org](https://docs.python.org) and opens it in your default browser |
 | `random-password` | jpb@unixorn.net | Generate a random password. If no argument, assume 32 character length |
 | `randsleep` | jpb@unixorn.net | Sleep a random number of seconds |
 | `relocate-virtualenv` | Gary Josack's [scripts](https://github.com/gmjosack/scripts) repository | This is a simple script to clean up links and references in a python virtualenv that has been relocated. |
