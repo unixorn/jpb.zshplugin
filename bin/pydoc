@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 #
-#
-# Copyright 2024, Joe Block <jpb@unixorn.net>
+# Originally from a Hangops slack thread
 
 set -o pipefail
 if [[ -n "$DEBUG" ]]; then
@@ -74,4 +73,4 @@ function path-exists() {
 
 get-settings
 check-dependencies
-exec $OPENER "https://docs.python.org/3/search.html?q=$*"
+exec $OPENER "https://docs.python.org/$(python --version | cut -d' ' -f2 | cut -d. -f1,2)/search.html?q=$*"
