@@ -725,6 +725,6 @@ defstrace () {
 }
 compdef defstrace=strace
 
-alias whatip6="curl -s http://ip4only.me/api/ | cut -d',' -f2"
-alias whatip4="curl -s http://ip6only.me/api/ | cut -d',' -f2"
-alias whatip="whatip4;whatip6"
+if exists batcat; then
+  alias bat="batcat --pager less"
+fi
