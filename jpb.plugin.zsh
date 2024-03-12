@@ -37,8 +37,11 @@ alias dmesg='sudo dmesg'
 function is-interactive() { [ -t 1 ] }
 function is-interactive-session() { [ -t 1 ] }
 
-# Add our plugin's bin diretory to user's path
-path+=("${0:h}/bin")
+# Add plugin_root/bin to user's path, but only if it exists and is
+# a directory
+if [[ -d "${0:h}/bin" ]];then
+  path+=("${0:h}/bin")
+fi
 
 if [[ "$(uname -s)" = 'Linux'  ]]; then
   # We're on linux
@@ -728,3 +731,4 @@ compdef defstrace=strace
 if exists batcat; then
   alias bat="batcat --pager less"
 fi
+alias dicepass="perl -MCrypt::XkcdPassword -e 'print Crypt::XkcdPassword->make_password(\$_)'"
