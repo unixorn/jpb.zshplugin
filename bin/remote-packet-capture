@@ -48,5 +48,5 @@ check-dependencies
 # Wireshark remote capture
 host=${1}
 ignore_port=${2-22}
-ssh ${host} /usr/sbin/tcpdump -U -s0 -w - "not port ${ignore_port}" | wireshark -k -i -
+ssh ${host} tcpdump -U -s0 -w - "not port ${ignore_port}" | wireshark -k -i -
 exit $?
