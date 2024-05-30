@@ -1,4 +1,4 @@
-# Copyright 2006-2023 Joseph Block <jpb@apesseekingknowledge.net>
+# Copyright 2006-2024 Joseph Block <jpb@apesseekingknowledge.net>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -33,7 +33,6 @@ alias dmesg='sudo dmesg'
 
 # check if this is an interactive session
 # (tests if stdout is a tty)
-# function is_interactive() { [ -t 1 ] }
 function is-interactive() { [ -t 1 ] }
 function is-interactive-session() { [ -t 1 ] }
 
@@ -74,9 +73,8 @@ function historygram() {
 
 function version_greater_equal()
 {
-    printf '%s\n%s\n' "$2" "$1" | sort --check=quiet --version-sort
+  printf '%s\n%s\n' "$2" "$1" | sort --check=quiet --version-sort
 }
-
 
 # IP address fiddling
 alias external_ip='curl -s icanhazip.com'
@@ -95,6 +93,24 @@ alias ssh='ssh -A'
 alias sshi='ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o GlobalKnownHostsFile=/dev/null'
 # Until my fingers forget the old alias, keep it around
 alias sshnohostchecks='ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o GlobalKnownHostsFile=/dev/null'
+
+# Colors
+NO_COLOR='\033[0m'
+BLUE='\033[0;34m'
+CYAN='\033[0;36m'
+GREEN='\033[0;32m'
+ORANGE='\033[0;33m'
+PURPLE='\033[0;35m'
+RED='\033[0;31m'
+DARK_GRAY='\033[1;30m'
+LIGHT_BLUE='\033[1;34m'
+LIGHT_CYAN='\033[1;36m'
+LIGHT_GRAY='\033[0;37m'
+LIGHT_GREEN='\033[1;32m'
+LIGHT_PURPLE='\033[1;35m'
+LIGHT_RED='\033[1;31m'
+WHITE='\033[1;37m'
+YELLOW='\033[1;33m'
 
 # Strip ANSI codes out of a stream
 alias stripcolors='sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g"'
