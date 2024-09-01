@@ -48,7 +48,7 @@ jobs:
       # Run Linter against code base #
       ################################
       - name: Lint Code Base
-        uses: nvuillam/mega-linter@v7
+        uses: nvuillam/mega-linter@v8
         env:
           DEFAULT_BRANCH: main
           DISABLE_LINTERS: SPELL_CSPELL,MARKDOWN_MARKDOWN_LINK_CHECK,REPOSITORY_CHECKOV,REPOSITORY_TRIVY,REPOSITORY_GRYPE,SPELL_LYCHEE
