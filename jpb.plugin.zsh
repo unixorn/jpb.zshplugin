@@ -36,8 +36,7 @@ alias dmesg='sudo dmesg'
 function is-interactive() { [ -t 1 ] }
 function is-interactive-session() { [ -t 1 ] }
 
-# Add plugin_root/bin to user's path, but only if it exists and is
-# a directory
+# Add plugin_root/bin to user's path, but only if it exists and is a directory
 if [[ -d "${0:h}/bin" ]];then
   path+=("${0:h}/bin")
 fi
@@ -56,10 +55,9 @@ if [[ "$(uname -s)" = 'Linux'  ]]; then
 fi
 
 # View HTTP traffic
-alias sniff="sudo ngrep -d 'en1' -t '^(GET|POST) ' 'tcp and port 80'"
-alias httpdump="sudo tcpdump -i en1 -n -s 0 -w - | grep -a -o -E \"Host\: .*|GET \/.*\""
-
 alias historysummary="history | awk '{a[\$2]++} END{for(i in a){printf \"%5d\t%s\n\",a[i],i}}'| sort -rn| head -30"
+alias httpdump="sudo tcpdump -i en1 -n -s 0 -w - | grep -a -o -E \"Host\: .*|GET \/.*\""
+alias sniff="sudo ngrep -d 'en1' -t '^(GET|POST) ' 'tcp and port 80'"
 
 function historygram() {
   history | \
@@ -119,6 +117,7 @@ alias wget='wget -c'
 alias wget-images='wget -nd -r -l 2 -A jpg,jpeg,png,gif,bmp'
 
 # git aliases
+# Deal with my tyops
 alias annotate='git annotate'
 alias blame='git blame'
 alias gadd='git add'
@@ -149,7 +148,7 @@ alias hlog='git log --all --date-order --graph --date=short --format="%C(green)%
 # GPG stuff
 alias sign='gpg --detach-sign --armor'
 
-# my common tyops
+# more of my common tyops
 alias ':q'="exit"
 alias ..='cd ..'
 alias gerp='grep'
@@ -178,7 +177,9 @@ alias tarxvzf='tar xvzf'
 alias zz='exit'
 
 # from cads
-ff() { find . -type f -iname '*'$*'*' -ls ; }
+ff() {
+  find . -type f -iname '*'$*'*' -ls
+}
 
 # Got tired of constantly doing history | grep X | tail
 hgrep40() {
@@ -286,11 +287,14 @@ jsoncurl() {
 # recursively touch, e.g. touch + mkdir -p
 # so files can easily be created at depth
 canhaz() {
-  mkdir -p $(dirname "${1}") && touch "${1}"
+  mkdir -p $(dirname "${1}") && \
+  touch "${1}"
 }
 
 canhaz_script() {
-  mkdir -p $(dirname "${1}") && touch "${1}" && chmod +x "${1}"
+  mkdir -p $(dirname "${1}") && \
+  touch "${1}" && \
+  chmod +x "${1}"
 }
 
 pong() {
@@ -358,7 +362,7 @@ alias ssh-addme='sshaddme'
 
 # mkdir & cd
 function mkcd {
-    mkdir -p "$@" && cd $_
+  mkdir -p "$@" && cd $_
 }
 
 # delete .pyc and .pyo files
@@ -458,6 +462,7 @@ function stopwatch(){
 function zombie() {
   ps aux | awk '{if ($8=="Z") { print $2 }}'
 }
+alias zombies=zombie
 
 # strip comments from config files
 function justconfig() {
