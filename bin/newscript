@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 #
-#   Copyright 2016-2024 Joe Block <jpb@unixorn.net>
+#   Copyright 2016-2025 Joe Block <jpb@unixorn.net>
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -61,7 +61,7 @@ fi
 
 function debug() {
   if [[ -n "$DEBUG" ]]; then
-    echo "$@"
+    echo-stderr "$@"
   fi
 }
 
@@ -120,16 +120,30 @@ function get-settings() {
   SETTING_ENV_NAME=${SETTING_ENV_NAME:-'default-value'}
 }
 
+function only-run-on() {
+  if [[ "$(uname -s | tr '[:upper:]' '[:lower:]')" != "$(echo $1 | tr '[:upper:]' '[:lower:]')" ]]; then
+    fail "This script only runs on $1, this machine is running $(uname -s)"
+  else
+    debug "OS ($(uname -s)) is valid..."
+  fi
+}
+
+function check-dependency() {
+  if ! (builtin command -V "$1" >/dev/null 2>&1); then
+    fail "missing dependency: can't find $1 in your PATH"
+  fi
+}
+
 function check-dependencies() {
   debug "Checking dependencies..."
   # shellcheck disable=SC2041
   # Placeholders for whatever programs you really need
-  for p in 'bash' 'cat'
+  for dep in "$@"
   do
-    if ! has $p; then
-      fail "Can't find $p in your \$PATH"
+    if ! has "$dep"; then
+      fail "Can't find $dep in your $PATH"
     else
-      debug "- Found $p"
+      debug "- Found $dep"
     fi
   done
 }
@@ -165,7 +179,8 @@ function path-exists() {
   fail "$1 is not a directory or file"
 }
 
-check-dependencies
+# Placeholders for your script's real dependencies
+check-dependencies bash cat
 
 END_BASH_SCRIPT
   write_script(name: name, source: rawScript)
