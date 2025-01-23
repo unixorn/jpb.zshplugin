@@ -48,4 +48,3 @@ if __name__ == '__main__':
     print '%+i words (+%i, -%i)' % (len(added_words) - len(removed_words),
                                     len(added_words),
                                     len(removed_words))
-
