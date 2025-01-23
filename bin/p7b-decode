@@ -2,9 +2,24 @@
 #
 # Decode a p7b file with openssl
 #
-# Copyright 2020, Joe Block <jpb@unixorn.net>
+# Copyright 2020-2025, Joe Block <jpb@unixorn.net>
 
 set -o pipefail
 
+function check-dependencies() {
+  debug "Checking dependencies..."
+  # shellcheck disable=SC2041
+  # Placeholders for whatever programs you really need
+  for dep in "$@"
+  do
+    if ! has "$dep"; then
+      fail "Can't find $dep in your $PATH"
+    else
+      debug "- Found $dep"
+    fi
+  done
+}
+
+check-dependencies openssl
 cert=${1?Need cert}
 exec openssl pkcs7 -in "$cert" -print_certs -text -noout

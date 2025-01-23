@@ -1,15 +1,22 @@
 #!/usr/bin/env bash
+#
+# Copyright 2013 Joe Block <jpb@unixorn.net>
+#
+# Sleeps a random number of seconds to keep tasks from becoming a
+# thundering herd
 
 LIMIT=600
-if [ ! -z "$1" ] ; then
+if [ -n "$1" ] ; then
   LIMIT=$1
 fi
 
 if [ "$1" == "--help" ] ; then
+  # shellcheck disable=SC2086
   echo "$(basename $0) [max time to sleep in seconds]"
   echo "time to sleep is in seconds, defaults to 600"
   echo "Will sleep between zero and LIMIT"
   exit 1
 fi
 
+# shellcheck disable=SC2004
 sleep $(( RANDOM % ${LIMIT} ))
