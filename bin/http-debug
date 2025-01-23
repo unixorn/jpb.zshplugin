@@ -4,4 +4,3 @@
 
 # shellcheck disable=SC2068
 exec curl $@ -o /dev/null -w "dns: %{time_namelookup}\nconnect: %{time_connect}\npretransfer: %{time_pretransfer}\nstart transfer: %{time_starttransfer} \ntotal: %{time_total}\n"
-
