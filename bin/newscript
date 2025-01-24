@@ -68,7 +68,7 @@ function debug() {
     echo-stderr "$@"
     fi
   }
-  
+
 function fail() {
   echo-stderr "$1"
   exit "${2-1}"  ## Return a code specified by $2 or 1 by default.
