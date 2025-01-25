@@ -5,9 +5,11 @@
 
 # jpb.zshplugin
 
-This is a ZSH plugin usable with [zgenom](https://github.com/jandamm/zgenom) and other [oh-my-zsh](https://github.com/ohmyzsh/ohmyzsh)-compatible frameworks to easily load some of my tool scripts.
+This is a ZSH plugin usable with [zgenom](https://github.com/jandamm/zgenom) and other frameworks compatible with [oh-my-zsh](https://github.com/ohmyzsh/ohmyzsh) to easily load some of my tool scripts.
 
 This contains miscellaneous tool scripts and aliases that are not specific enough for one of my more targeted ZSH plugins.
+
+These scripts are personal collection of helper scripts, so while I try to make them useful for other people, they're in a constant state of flux as I make them suit my needs.
 
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
@@ -35,10 +37,10 @@ add `zgenom load unixorn/jpb.zshplugin` to your `.zshrc` with your other `zgenom
 
 ### Without using a framework
 
-1. git clone this repository, then add its bin directory to your `$PATH`.
+1. `git clone` this repository, then add its bin directory to your `$PATH`.
 2. Add `source /path/to/here/jpb.plugin.zsh` to your `.zshrc` file.
 
-The scripts in this collection don't actually require you to be using ZSH as your login shell, they're being distributed as an [oh-my-zsh](https://github.com/ohmyzsh/ohmyzsh)-compatible plugin because it's convenient for me.
+The scripts in this collection don't actually require you to be using ZSH as your login shell, they're being distributed as a plugin compatible with [oh-my-zsh](https://github.com/ohmyzsh/ohmyzsh) because it's convenient for me.
 
 ## Credits
 
