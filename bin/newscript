@@ -1,4 +1,7 @@
 #!/usr/bin/env ruby
+# shellcheck disable=SC1234,SC1071
+# Shellcheck finds the embedded bash template and complains because of the
+# ruby and python also found in the script
 #
 #   Copyright 2016-2025 Joe Block <jpb@unixorn.net>
 #
@@ -60,14 +63,14 @@ if [[ -n "$DEBUG" ]]; then
 fi
 
 function echo-stderr() {
-  printf '%s\\n' "$1" >&2  ## Send message to stderr. Exclude >&2 if you don't want it that way.
+  printf '%s\n' "$1" >&2  ## Send message to stderr. Exclude >&2 if you don't want it that way.
 }
 
 function debug() {
   if [[ -n "$DEBUG" ]]; then
-    echo-stderr "$@"
-    fi
-  }
+      echo-stderr "$@"
+  fi
+}
 
 function fail() {
   echo-stderr "$1"
@@ -187,6 +190,40 @@ function path-exists() {
 
 # Placeholders for your script's real dependencies
 check-dependencies bash cat
+
+# parse arguments
+A_BOOL_SETTING='false'
+
+while :
+do
+  if [[ $# == 0 ]]; then
+    break
+  fi
+  case "$1" in
+    --help | -h)
+      usage
+      exit 0
+      ;;
+    --set-a-bool-to-true)
+      A_BOOL_SETTING='true'
+      shift
+      ;;
+    --set-a-value)
+      shift
+      A_VALUE="$1"
+      shift
+      ;;
+    -- )
+      shift;
+      break
+      ;;
+    *)
+      echo-stderr "Unexpected option: $1"
+      usage
+      fail "Invalid CLI argument: '$1'"
+      ;;
+  esac
+done
 
 END_BASH_SCRIPT
   write_script(name: name, source: rawScript)

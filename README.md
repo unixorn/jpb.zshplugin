@@ -101,6 +101,7 @@ The scripts in this collection don't actually require you to be using ZSH as you
 | `pjson` | [https://coderwall.com/](https://coderwall.com/p/hwu5uq?i=9&p=1&q=sort%3Ascore+desc&t%5B%5D=zsh) | Prettify json files |
 | `plot` | katef's [gist](https://gist.github.com/katef/fb4cb6d47decd8052bd0e8d88c03a102) | Draw a graph in the terminal |
 | `port-listeners-ipv{4,6}` | jpb@unixorn.net | Show what programs are listening to a given port |
+| `port-listened-by}` | jpb@unixorn.net | Show what programs are listening to a given port |
 | `pydoc` | Hangops Slack | Look something up on [docs.python.org](https://docs.python.org) and opens it in your default browser |
 | `random-password` | jpb@unixorn.net | Generate a random password. If no argument, assume 32 character length |
 | `randsleep` | jpb@unixorn.net | Sleep a random number of seconds |
