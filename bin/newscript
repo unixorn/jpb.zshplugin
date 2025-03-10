@@ -1,4 +1,7 @@
 #!/usr/bin/env ruby
+# shellcheck disable=SC1234,SC1071
+# Shellcheck finds the embedded bash template and complains because of the
+# ruby and python also found in the script
 #
 #   Copyright 2016-2025 Joe Block <jpb@unixorn.net>
 #
