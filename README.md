@@ -73,6 +73,7 @@ The scripts in this collection don't actually require you to be using ZSH as you
 | `http_headers` | | Dump http headers for a URL |
 | `human-path` | coffeeops slack `#commandline-fu` channel | Print `$PATH` with one entry per line to make it easier for humans to tell if something is missing |
 | `human-time` | | Converts integer seconds into human-understandable time. `human-time 88000` will print `1d 26m 40s` |
+| `icorrupt` | [twirrim/icorrupt](https://gist.github.com/twirrim/b87d08a2436437c8ff97a65877586182) | Corrupts a text string |
 | `iflip` | [twirrim/iflip](https://github.com/twirrim/iflip/blob/master/iflip) | Tableflips a text string |
 | `ipaddresses` | jpb@unixorn.net | Dumps all the ip addresses for the host |
 | `is-remote-session` | jpb@unixorn.net | Exits 0 if you're in an `ssh` remote session, 1 otherwise |
