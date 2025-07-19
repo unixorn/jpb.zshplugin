@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+#
+# Make it easier to generate a decent timestamp in scripts
+#
+# Copyright 2024, Joe Block <jpb@unixorn.net>
+
+exec date +%Y%m%d.%H%M
