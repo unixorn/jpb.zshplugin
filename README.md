@@ -5,9 +5,11 @@
 
 # jpb.zshplugin
 
-This is a ZSH plugin usable with [zgenom](https://github.com/jandamm/zgenom) and other [oh-my-zsh](https://github.com/ohmyzsh/ohmyzsh)-compatible frameworks to easily load some of my tool scripts.
+This is a ZSH plugin usable with [zgenom](https://github.com/jandamm/zgenom) and other frameworks compatible with [oh-my-zsh](https://github.com/ohmyzsh/ohmyzsh) to easily load some of my tool scripts.
 
 This contains miscellaneous tool scripts and aliases that are not specific enough for one of my more targeted ZSH plugins.
+
+These scripts are personal collection of helper scripts, so while I try to make them useful for other people, they're in a constant state of flux as I make them suit my needs.
 
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
@@ -35,10 +37,10 @@ add `zgenom load unixorn/jpb.zshplugin` to your `.zshrc` with your other `zgenom
 
 ### Without using a framework
 
-1. git clone this repository, then add its bin directory to your `$PATH`.
+1. `git clone` this repository, then add its bin directory to your `$PATH`.
 2. Add `source /path/to/here/jpb.plugin.zsh` to your `.zshrc` file.
 
-The scripts in this collection don't actually require you to be using ZSH as your login shell, they're being distributed as an [oh-my-zsh](https://github.com/ohmyzsh/ohmyzsh)-compatible plugin because it's convenient for me.
+The scripts in this collection don't actually require you to be using ZSH as your login shell, they're being distributed as a plugin compatible with [oh-my-zsh](https://github.com/ohmyzsh/ohmyzsh) because it's convenient for me.
 
 ## Credits
 
@@ -71,6 +73,7 @@ The scripts in this collection don't actually require you to be using ZSH as you
 | `http_headers` | | Dump http headers for a URL |
 | `human-path` | coffeeops slack `#commandline-fu` channel | Print `$PATH` with one entry per line to make it easier for humans to tell if something is missing |
 | `human-time` | | Converts integer seconds into human-understandable time. `human-time 88000` will print `1d 26m 40s` |
+| `icorrupt` | [twirrim/icorrupt](https://gist.github.com/twirrim/b87d08a2436437c8ff97a65877586182) | Corrupts a text string |
 | `iflip` | [twirrim/iflip](https://github.com/twirrim/iflip/blob/master/iflip) | Tableflips a text string |
 | `ipaddresses` | jpb@unixorn.net | Dumps all the ip addresses for the host |
 | `is-remote-session` | jpb@unixorn.net | Exits 0 if you're in an `ssh` remote session, 1 otherwise |
@@ -99,6 +102,7 @@ The scripts in this collection don't actually require you to be using ZSH as you
 | `pjson` | [https://coderwall.com/](https://coderwall.com/p/hwu5uq?i=9&p=1&q=sort%3Ascore+desc&t%5B%5D=zsh) | Prettify json files |
 | `plot` | katef's [gist](https://gist.github.com/katef/fb4cb6d47decd8052bd0e8d88c03a102) | Draw a graph in the terminal |
 | `port-listeners-ipv{4,6}` | jpb@unixorn.net | Show what programs are listening to a given port |
+| `port-listened-by}` | jpb@unixorn.net | Show what programs are listening to a given port |
 | `pydoc` | Hangops Slack | Look something up on [docs.python.org](https://docs.python.org) and opens it in your default browser |
 | `random-password` | jpb@unixorn.net | Generate a random password. If no argument, assume 32 character length |
 | `randsleep` | jpb@unixorn.net | Sleep a random number of seconds |

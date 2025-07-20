@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
 #
-# Use ss to get a list of open ports
+# This base script is MIT licensed so you can base your
+# own work on it.
 #
-# Copyright 2023, Joe Block <jpb@unixorn.net>
+# Find what is listening on a port
+#
+# Copyright 2025, Joe Block <jpb@unixorn.net>
 
 set -o pipefail
 if [[ -n "$DEBUG" ]]; then
@@ -32,6 +35,15 @@ function has() {
   which "$@" > /dev/null 2>&1
 }
 
+function only-run-on() {
+  # shellcheck disable=SC2086
+  if [[ "$(uname -s | tr '[:upper:]' '[:lower:]')" != "$(echo $1 | tr '[:upper:]' '[:lower:]')" ]]; then
+    fail "This script only runs on $1, this machine is running $(uname -s)"
+  else
+    debug "OS ($(uname -s)) is valid..."
+  fi
+}
+
 function check-dependency() {
   if ! (builtin command -V "$1" >/dev/null 2>&1); then
     fail "missing dependency: can't find $1 in your PATH"
@@ -57,11 +69,11 @@ function my-name() {
 }
 
 function usage() {
-  echo "Usage: $(my-name) ARG ARG"
+  echo "Usage: $(my-name) PORT"
+  echo
+  echo "Uses lsof to see what is listening on PORT"
 }
 
-check-dependencies ss
+check-dependencies awk lsof uniq
 
-exec sudo ss -nplutO '! ( src = localhost )'  | \
-  sed 's/\(udp\|tcp\).*:\([0-9][0-9]*\)/\2\t\1\t/;s/\([0-9][0-9]*\t[udtcp]*\t\)[^u]*users:(("/\1/;s/".*//;s/.*Address:Port.*/Netid\tPort\tProcess/' | \
-  sort -nu
+lsof -i -P -n | grep "$@" | awk '/LISTEN/  {print  $9}' | uniq

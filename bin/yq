@@ -6,4 +6,3 @@
 # Copyright 2020, Joe Block <jpb@unixorn.net>
 
 exec docker run --rm -i -v "${PWD}":/workdir unixorn/yq yq "$@"
-

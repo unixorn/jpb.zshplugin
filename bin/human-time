@@ -2,7 +2,7 @@
 #
 # Turns integer seconds into human-understandable time.
 #
-# $ human-time 88000 
+# $ human-time 88000
 # 1d 26m 40s
 #
 # Copyright 2021, Joe Block <jpb@unixorn.net>

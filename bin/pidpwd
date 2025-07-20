@@ -3,13 +3,33 @@
 # Find the pwd of a given pid. Only works on linux since it requires
 # /proc
 #
-# Copyright 2017, Joe Block <jpb@unixorn.net>
+# Copyright 2017-2025, Joe Block <jpb@unixorn.net>
 
 set -o pipefail
 
-if [[ "$(uname -s)" = 'Linux'  ]]; then
-  # We're on linux
-  exec ls -d  /proc/$1/cwd
-else
-  exit 1
-fi
+function debug() {
+  if [[ -n "$DEBUG" ]]; then
+    echo-stderr "$@"
+  fi
+}
+
+function echo-stderr() {
+  echo "$@" 1>&2  ## Send message to stderr.
+}
+
+function fail() {
+  printf '%s\\n' "$1" >&2  ## Send message to stderr. Exclude >&2 if you don't want it that way.
+  exit "${2-1}"  ## Return a code specified by $2 or 1 by default.
+}
+
+function only-run-on() {
+  # shellcheck disable=SC2086
+  if [[ "$(uname -s | tr '[:upper:]' '[:lower:]')" != "$(echo $1 | tr '[:upper:]' '[:lower:]')" ]]; then
+    fail "This script only runs on $1, this machine is running $(uname -s)"
+  else
+    debug "OS ($(uname -s)) is valid..."
+  fi
+}
+
+only-run-on-linux
+exec ls -d  /proc/"$1"/cwd
