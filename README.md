@@ -118,6 +118,7 @@ The scripts in this collection don't actually require you to be using ZSH as you
 | `strip-ansi-codes` | jpb@unixorn.net | Strips the ANSI codes from STDIN. Makes grepping through things like jenkins logs considerably less painful |
 | `tableflip` | [hangops](https://hangops.slack.com) slack | Prints a tableflip animation. |
 | `title-text` | jpb@unixorn.net | Set the terminal title in any application (like iTerm 2 or Terminal on macOS) that supports VT100 escape sequences. |
+| `tmux-cleanup` | jpb@unixorn.net | Kill unattached `tmux` sessions |
 | `urldecode` | jpb@unixorn.net | Decode an url string |
 | `urlencode` | jpb@unixorn.net | Encode a string to an url parameter |
 | `vbox` | jpb@unixorn.net | Opens VirtualBox |
