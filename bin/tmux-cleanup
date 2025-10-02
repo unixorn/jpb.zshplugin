@@ -1,0 +1,72 @@
+#!/usr/bin/env bash
+#
+# This base script is MIT licensed so you can base your
+# own work on it.
+#
+# bin/tmux-cleanup script skeleton
+#
+# Copyright 2025, Your Name <yourname@yourdomain.com>
+
+set -o pipefail
+if [[ -n "$DEBUG" ]]; then
+  # shellcheck disable=SC2086
+  if [[ "$(echo $DEBUG | tr '[:upper:]' '[:lower:]')" == "verbose" ]]; then
+    set -x
+  fi
+fi
+
+function echo-stderr() {
+  printf '%s
+' "$1" >&2  ## Send message to stderr. Exclude >&2 if you don't want it that way.
+}
+
+function debug() {
+  if [[ -n "$DEBUG" ]]; then
+      echo-stderr "$@"
+  fi
+}
+
+function fail() {
+  echo-stderr "$1"
+  exit "${2-1}"  ## Return a code specified by $2 or 1 by default.
+}
+
+function has() {
+  # Check if a command is in $PATH
+  which "$@" > /dev/null 2>&1
+}
+
+function only-run-on() {
+  # shellcheck disable=SC2086
+  if [[ "$(uname -s | tr '[:upper:]' '[:lower:]')" != "$(echo $1 | tr '[:upper:]' '[:lower:]')" ]]; then
+    fail "This script only runs on $1, this machine is running $(uname -s)"
+  else
+    debug "OS ($(uname -s)) is valid..."
+  fi
+}
+
+function check-dependencies() {
+  debug "Checking dependencies..."
+  # shellcheck disable=SC2041
+  # Placeholders for whatever programs you really need
+  for dep in "$@"
+  do
+    if ! has "$dep"; then
+      fail "Can't find $dep in your $PATH"
+    else
+      debug "- Found $dep"
+    fi
+  done
+}
+
+check-dependencies awk grep tmux
+
+echo "Found $(tmux ls | grep -c) '(attached)' stale tmux sessions"
+for session in $(tmux ls | grep -v '(attached)' | awk -F: '{print $1}')
+do
+  debug "Killing $session..."
+  tmux kill-session -t "$session"
+done
+if [[ -n "$DEBUG" ]]; then
+  tmux ls
+fi

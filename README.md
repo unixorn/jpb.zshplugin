@@ -68,6 +68,7 @@ The scripts in this collection don't actually require you to be using ZSH as you
 | `gxpr` | [brutasse's dotfiles](https://github.com/brutasse/dotfiles/blob/master/bin/gxpr). | Uses Google and or Wolfram Alpha to evaluate expressions. Requires `URI::Escape` to be installed with `cpan`. |
 | `headers` | Zach Holman's [dotfiles](https://github.com/holman/dotfiles/blob/master/bin/headers) | Gets the HTTP headers from a server |
 | `hex-to-bin` | jpb@unixorn.net | Converts a hexstring to a binary stream |
+| `hex-to-bytes` | jpb@unixorn.net | Converts a hexstring to bytes |
 | `html2markdown` | [https://github.com/realpython/python-scripts/](https://github.com/realpython/python-scripts/blob/master/scripts/14_html_to_markdown.sh) | Convert all HTML files in a single directory to Markdown |
 | `http_debug` | | Dump debug info for a URL |
 | `http_headers` | | Dump http headers for a URL |
@@ -103,6 +104,7 @@ The scripts in this collection don't actually require you to be using ZSH as you
 | `plot` | katef's [gist](https://gist.github.com/katef/fb4cb6d47decd8052bd0e8d88c03a102) | Draw a graph in the terminal |
 | `port-listeners-ipv{4,6}` | jpb@unixorn.net | Show what programs are listening to a given port |
 | `port-listened-by}` | jpb@unixorn.net | Show what programs are listening to a given port |
+| `prettyping` | [Denilson Sá Maia](https://github.com/denilsonsa/prettyping) | Prettify `ping` output |
 | `pydoc` | Hangops Slack | Look something up on [docs.python.org](https://docs.python.org) and opens it in your default browser |
 | `random-password` | jpb@unixorn.net | Generate a random password. If no argument, assume 32 character length |
 | `randsleep` | jpb@unixorn.net | Sleep a random number of seconds |
@@ -117,6 +119,7 @@ The scripts in this collection don't actually require you to be using ZSH as you
 | `strip-ansi-codes` | jpb@unixorn.net | Strips the ANSI codes from STDIN. Makes grepping through things like jenkins logs considerably less painful |
 | `tableflip` | [hangops](https://hangops.slack.com) slack | Prints a tableflip animation. |
 | `title-text` | jpb@unixorn.net | Set the terminal title in any application (like iTerm 2 or Terminal on macOS) that supports VT100 escape sequences. |
+| `tmux-cleanup` | jpb@unixorn.net | Kill unattached `tmux` sessions |
 | `urldecode` | jpb@unixorn.net | Decode an url string |
 | `urlencode` | jpb@unixorn.net | Encode a string to an url parameter |
 | `vbox` | jpb@unixorn.net | Opens VirtualBox |
