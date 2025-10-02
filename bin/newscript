@@ -192,7 +192,10 @@ function path-exists() {
 check-dependencies bash cat
 
 # parse arguments
-A_BOOL_SETTING='false'
+# Make it easy to override settings from CLI or by setting an
+# environment variable
+A_BOOL_SETTING=${A_BOOL_SETTING:-'false'}
+A_PATH_TO_A_FILE=${A_PATH_TO_A_FILE:-'/path/to/file'}
 
 while :
 do
@@ -210,7 +213,7 @@ do
       ;;
     --set-a-value)
       shift
-      A_VALUE="$1"
+      A_PATH_TO_A_FILE="$1"
       shift
       ;;
     -- )
