@@ -69,6 +69,7 @@ The scripts in this collection don't actually require you to be using ZSH as you
 | `headers` | Zach Holman's [dotfiles](https://github.com/holman/dotfiles/blob/master/bin/headers) | Gets the HTTP headers from a server |
 | `hex-to-bin` | jpb@unixorn.net | Converts a hexstring to a binary stream |
 | `hex-to-bytes` | jpb@unixorn.net | Converts a hexstring to bytes |
+| `hilight-regex` | [Milosz Galazka](https://sleeplessbeastie.eu/2014/02/10/how-to-highlight-text-in-terminal/) | Hilights text based on a regex |
 | `html2markdown` | [https://github.com/realpython/python-scripts/](https://github.com/realpython/python-scripts/blob/master/scripts/14_html_to_markdown.sh) | Convert all HTML files in a single directory to Markdown |
 | `http_debug` | | Dump debug info for a URL |
 | `http_headers` | | Dump http headers for a URL |

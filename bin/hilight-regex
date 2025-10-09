@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+#
+# Hilight text based on regex
+#
+# Copyright 2014, Milosz Galazka
+#
+# Original source: https://sleeplessbeastie.eu/2014/02/10/how-to-highlight-text-in-terminal/
+
+set -o pipefail
+
+if [ ! -z "$1" ]; then
+  # shellcheck disable=SC2162
+  while read line; do
+    if [ -n "$(which ssed)" ]; then
+      # shellcheck disable=SC2046,SC2005
+      echo $(echo "$line" | ssed -R -e "s/(?<!\x1b\[|\x1b\[[01])($1)/\x1b\[1m\1\x1b\[0m/g");
+    else
+      # shellcheck disable=SC2046,SC2005
+      echo $(echo "$line" | sed -e "s/\x1b\[1m/\x11/g" -e "s/\x1b\[0m/\x12/g" -e "s/\($1\)/\x1b\[1m\1\x1b\[0m/g" -e "s/\x11/\x1b\[1m/g"  -e "s/\x12/\x1b\[0m/g");
+    fi
+  done
+else
+  # shellcheck disable=SC2162
+  while read line; do echo "$line"; done
+fi
