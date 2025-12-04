@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+#
+# Take a bunch of text with annoying newlines and smush it
+#
+# Useful for copying bits out of YT transcripts
+#
+# Copyright 2025, Joe Block <jpb@unixorn.net>
+
+set -o pipefail
+if [[ -n "$DEBUG" ]]; then
+  # shellcheck disable=SC2086
+  if [[ "$(echo $DEBUG | tr '[:upper:]' '[:lower:]')" == "verbose" ]]; then
+    set -x
+  fi
+fi
+
+function only-run-on() {
+  # shellcheck disable=SC2086
+  if [[ "$(uname -s | tr '[:upper:]' '[:lower:]')" != "$(echo $1 | tr '[:upper:]' '[:lower:]')" ]]; then
+    fail "This script only runs on $1, this machine is running $(uname -s)"
+  else
+    debug "OS ($(uname -s)) is valid..."
+  fi
+}
+
+function check-dependency() {
+  if ! (builtin command -V "$1" >/dev/null 2>&1); then
+    fail "Missing dependency: can't find $1 in your PATH"
+  fi
+}
+
+only-run-on-darwin
+check-dependency pbpaste
+check-dependency pbcopy
+pbpaste | awk '{printf "%s ", $0}' | sed 's/  / /g' | pbcopy
