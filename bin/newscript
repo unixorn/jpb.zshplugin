@@ -3,7 +3,7 @@
 # Shellcheck finds the embedded bash template and complains because of the
 # ruby and python also found in the script
 #
-#   Copyright 2016-2025 Joe Block <jpb@unixorn.net>
+#   Copyright 2016-2026 Joe Block <jpb@unixorn.net>
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -68,7 +68,13 @@ function echo-stderr() {
 
 function debug() {
   if [[ -n "$DEBUG" ]]; then
-      echo-stderr "$@"
+    echo-stderr "$@"
+  fi
+}
+
+function verbose() {
+  if [[ -n "$VERBOSE" ]]; then
+    echo "$@"
   fi
 }
 
@@ -119,8 +125,11 @@ fi
 
 add_on_exit rm -rf "$SCRATCH_D"
 
-function get-settings() {
-  SETTING_ENV_NAME=${SETTING_ENV_NAME:-'default-value'}
+function get-default-settings() {
+  # Make it easy to override settings from CLI or by setting an
+  # environment variable
+  A_BOOL_SETTING=${A_BOOL_SETTING:-'false'}
+  A_PATH_TO_A_FILE=${A_PATH_TO_A_FILE:-'/path/to/file'}
 }
 
 function only-run-on() {
@@ -134,7 +143,7 @@ function only-run-on() {
 
 function check-dependency() {
   if ! (builtin command -V "$1" >/dev/null 2>&1); then
-    fail "missing dependency: can't find $1 in your PATH"
+    fail "Missing dependency: can't find $1 in your PATH"
   fi
 }
 
@@ -183,6 +192,15 @@ function path-exists() {
   fail "$1 is not a directory or file"
 }
 
+function pingable() {
+  if ! ping -c 5 $@ > /dev/null 2>&1; then
+    debug "Could not ping $@"
+    return 1
+  else
+    return 0
+  fi
+}
+
 # If you need to restrict to a specific os, use
 # only-run-on Darwin
 # or
@@ -190,12 +208,9 @@ function path-exists() {
 
 # Placeholders for your script's real dependencies
 check-dependencies bash cat
+get-default-settings
 
 # parse arguments
-# Make it easy to override settings from CLI or by setting an
-# environment variable
-A_BOOL_SETTING=${A_BOOL_SETTING:-'false'}
-A_PATH_TO_A_FILE=${A_PATH_TO_A_FILE:-'/path/to/file'}
 
 while :
 do
