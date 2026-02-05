@@ -51,7 +51,7 @@ case $(uname) in
   Darwin)
     exec open "${url_base}.html"
     ;;
-  *) 
+  *)
     curl -s "${url_base}.txt" | ${PAGER:-$DEFAULT_PAGER}
     exit $?
     ;;
