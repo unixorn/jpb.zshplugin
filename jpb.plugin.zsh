@@ -416,11 +416,6 @@ function hr {
   print ${(l:COLUMNS::=:)}
 }
 
-# urlencode text
-function urlencode {
-  print "${${(j: :)@}//(#b)(?)/%$[[##16]##${match[1]}]}"
-}
-
 # Create short urls via http://goo.gl using curl(1).
 # Contributed back to grml zshrc
 # API reference: https://code.google.com/apis/urlshortener/
