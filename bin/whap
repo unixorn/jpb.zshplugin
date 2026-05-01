@@ -59,13 +59,13 @@ def path_to_module(path: str, name: str) -> Optional[str]:
     Returns:
         The path to the matching Python source or compiled file, or None if none found.
     """
-    glob = '%s.py*' % name
-    python_files = [f
-                    for f in directory_list(path)
-                    if is_matching_file_in(path, f, glob)]
+    glob = "%s.py*" % name
+    python_files = [
+        f for f in directory_list(path) if is_matching_file_in(path, f, glob)
+    ]
     if not python_files:
         return None
-    source_files = [f for f in python_files if os.path.splitext(f)[-1] == '.py']
+    source_files = [f for f in python_files if os.path.splitext(f)[-1] == ".py"]
     python_file = source_files[0] if source_files else python_files[0]
     return os.path.join(path, python_file)
 
@@ -93,7 +93,7 @@ def built_in(name: str) -> bool:
         __import__(name)
     except ImportError:
         return False
-    return '(built-in)' in str(sys.modules[name])
+    return "(built-in)" in str(sys.modules[name])
 
 
 def path_to_import(module_name: str) -> Optional[str]:
@@ -107,11 +107,11 @@ def path_to_import(module_name: str) -> Optional[str]:
     """
     module = importlib.import_module(module_name)
     if module:
-        path_to_file = getattr(module, '__file__', None)
+        path_to_file = getattr(module, "__file__", None)
         if path_to_file is None:
             return None
-        if '.egg/' in path_to_file:
-            return path_to_file.split('.egg/')[0] + '.egg'
+        if ".egg/" in path_to_file:
+            return path_to_file.split(".egg/")[0] + ".egg"
         return path_to_file
     return None
 
@@ -127,17 +127,18 @@ def main(strings: Sequence[str]) -> int:
     """
     for string in strings:
         if built_in(string):
-            print('builtin', string)
+            print("builtin", string)
         path_to_imported_module = path_to_import(string)
         if path_to_imported_module:
-            os.system('ls -ld %s' % path_to_imported_module)
+            os.system("ls -ld %s" % path_to_imported_module)
     return 0
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     args = sys.argv[1:]
     if not args:
         from what import test
+
         sys.exit(test())
     else:
         sys.exit(main(args))

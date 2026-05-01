@@ -12,7 +12,11 @@ import datetime
 import string
 import sys
 from typing import Optional, Sequence
-from appscript import *
+
+try:
+    from appscript import app, k  # type: ignore[import]
+except ImportError:
+    pass
 
 
 def getdate() -> str:
@@ -28,10 +32,10 @@ def typestring(s: str) -> None:
     Args:
         s: The string to type.
     """
-    SE = app(u'System Events')
+    SE = app("System Events")
 
     for c in s:
-        if c == '\n':
+        if c == "\n":
             continue
 
         if c in string.ascii_uppercase:
@@ -53,5 +57,5 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     return 0
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     sys.exit(main())

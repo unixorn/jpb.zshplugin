@@ -10,82 +10,88 @@
 import argparse
 import os
 import sys
-from typing import Optional
-
 from subprocess import check_output
+from typing import Optional
 
 g_CLIargs = None
 
-def darwinRAMDisk(args: Optional[argparse.Namespace] = None) -> None:
-  """Create a RAM disk on macOS.
 
-  Args:
-      args: Parsed command-line arguments.
-  """
-  if args is None:
-    raise ValueError('args is required')
-  if args.megabytes:
-    blocks = int(args.megabytes) * 2048
-  if args.gigabytes:
-    blocks = int(args.gigabytes) * 1024 * 2048
-  deviceCreateCommand = ("hdiutil attach -nomount ram://%s" % blocks).split(' ')
-  rawVolume = check_output(deviceCreateCommand).decode('utf-8').strip()
-  check_output(['diskutil', 'erasevolume', 'HFS+', args.name, rawVolume])
+def darwinRAMDisk(args: Optional[argparse.Namespace] = None) -> None:
+    """Create a RAM disk on macOS.
+
+    Args:
+        args: Parsed command-line arguments.
+    """
+    if args is None:
+        raise ValueError("args is required")
+    if args.megabytes:
+        blocks = int(args.megabytes) * 2048
+    if args.gigabytes:
+        blocks = int(args.gigabytes) * 1024 * 2048
+    deviceCreateCommand = ("hdiutil attach -nomount ram://%s" % blocks).split(" ")
+    rawVolume = check_output(deviceCreateCommand).decode("utf-8").strip()
+    check_output(["diskutil", "erasevolume", "HFS+", args.name, rawVolume])
 
 
 def linuxRAMDisk(args: Optional[argparse.Namespace] = None) -> None:
-  """Create a RAM disk on Linux."""
-  if args is None:
-    raise ValueError('args is required')
-  if not os.path.isdir(args.name):
-    print("%s is not a directory" % args.name)
-  if args.megabytes:
-    size = "size=%sm" % args.megabytes
-  if args.gigabytes:
-    size = "size=%sg" % args.gigabytes
-  check_output(['mount', '-t', 'ramfs', '-o', size, 'ramfs', args.name])
+    """Create a RAM disk on Linux."""
+    if args is None:
+        raise ValueError("args is required")
+    if not os.path.isdir(args.name):
+        print("%s is not a directory" % args.name)
+    if args.megabytes:
+        size = "size=%sm" % args.megabytes
+    if args.gigabytes:
+        size = "size=%sg" % args.gigabytes
+    check_output(["mount", "-t", "ramfs", "-o", size, "ramfs", args.name])
 
 
 def setupRAMdisk(args: Optional[argparse.Namespace] = None) -> None:
-  """Dispatch RAM disk creation based on OS platform."""
-  if args is None:
-    raise ValueError('args is required')
-  if sys.platform.startswith('darwin'):
-    darwinRAMDisk(args)
-  elif sys.platform.startswith('linux'):
-    linuxRAMDisk(args)
-  else:
-    print("Can't create RAM disk on %s" % sys.platform)
-    sys.exit(1)
+    """Dispatch RAM disk creation based on OS platform."""
+    if args is None:
+        raise ValueError("args is required")
+    if sys.platform.startswith("darwin"):
+        darwinRAMDisk(args)
+    elif sys.platform.startswith("linux"):
+        linuxRAMDisk(args)
+    else:
+        print("Can't create RAM disk on %s" % sys.platform)
+        sys.exit(1)
 
 
 if __name__ == "__main__":
-  parser = argparse.ArgumentParser(description="RAMDisk creator")
-  parser.add_argument("--name",
-                      action="store",
-                      dest="name",
-                      help="Specify the name of the RAM disk on OSX, or the path to mountpoint on FreeBSD or Linux")
-  parser.add_argument("--megabytes",
-                      action="store",
-                      dest="megabytes",
-                      help="Size of RAM disk in megabytes")
-  parser.add_argument("--gigabytes",
-                      action="store",
-                      dest="gigabytes",
-                      help="Size of RAM disk in gigabytes")
-  args = parser.parse_args()
+    parser = argparse.ArgumentParser(description="RAMDisk creator")
+    parser.add_argument(
+        "--name",
+        action="store",
+        dest="name",
+        help="Specify the name of the RAM disk on OSX, or the path to mountpoint on FreeBSD or Linux",
+    )
+    parser.add_argument(
+        "--megabytes",
+        action="store",
+        dest="megabytes",
+        help="Size of RAM disk in megabytes",
+    )
+    parser.add_argument(
+        "--gigabytes",
+        action="store",
+        dest="gigabytes",
+        help="Size of RAM disk in gigabytes",
+    )
+    args = parser.parse_args()
 
-  # sanity check arguments
-  sane = True
-  if not args.name:
-    print("You must specify a name for the RAM disk with --name.")
-    sane = False
-  if (not args.megabytes) and (not args.gigabytes):
-    print("You must specify the disk size with either --megabytes or --gigabytes.")
-    sane = False
-  if args.megabytes and args.gigabytes:
-    print("Please specify either megabytes or gigabytes, not both.")
-    sane = False
-  if not sane:
-    sys.exit(1)
-  setupRAMdisk(args)
+    # sanity check arguments
+    sane = True
+    if not args.name:
+        print("You must specify a name for the RAM disk with --name.")
+        sane = False
+    if (not args.megabytes) and (not args.gigabytes):
+        print("You must specify the disk size with either --megabytes or --gigabytes.")
+        sane = False
+    if args.megabytes and args.gigabytes:
+        print("Please specify either megabytes or gigabytes, not both.")
+        sane = False
+    if not sane:
+        sys.exit(1)
+    setupRAMdisk(args)

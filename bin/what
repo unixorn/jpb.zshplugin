@@ -15,16 +15,16 @@ _copyright = """
 """
 
 
-import os
-import re
-import sys
-import stat
 import doctest
 import optparse
+import os
+import re
+import stat
 import subprocess
+import sys
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, TypeVar
 
-T = TypeVar('T')
+T = TypeVar("T")
 
 
 def get_options() -> Any:
@@ -48,21 +48,23 @@ def environment_value(key: str) -> str:
     >>> environment_value('SHELL') is not None
     True
     """
-    return os.environ.get(key, '')
+    return os.environ.get(key, "")
 
 
 class BashError(ValueError):
     """Use this class to have better name appear in tracebacks"""
+
     pass
 
 
 class Bash(object):
     """This class is a namespace to hold bash commands to be used later"""
+
     # pylint wants an __init__(), but I don't
     # pylint: disable=no-init
-    view_file = 'vimcat'  # https://github.com/vim-scripts/vimcat, YMMV
-    declare_f = 'declare -f'  # This is a bash builtin
-    ls = 'ls'  # This is often in path, and more often aliased
+    view_file = "vimcat"  # https://github.com/vim-scripts/vimcat, YMMV
+    declare_f = "declare -f"  # This is a bash builtin
+    ls = "ls"  # This is often in path, and more often aliased
 
 
 def replace_alias(command: str) -> str:
@@ -74,15 +76,15 @@ def replace_alias(command: str) -> str:
     Returns:
         The command with the alias expanded, if present.
     """
-    if ' ' not in command:
+    if " " not in command:
         return command
-    command, arguments = command.split(' ', 1)
-    return '%s %s' % (get_alias(command), arguments)
+    command, arguments = command.split(" ", 1)
+    return "%s %s" % (get_alias(command), arguments)
 
 
 def bash_executable() -> str:
     """Return the path to the bash executable found in PATH."""
-    return file_in_environment_path('bash')
+    return file_in_environment_path("bash")
 
 
 def show_output_of_shell_command(command: str) -> None:
@@ -95,7 +97,7 @@ def show_output_of_shell_command(command: str) -> None:
         BashError: If the underlying bash command fails.
     """
     command = replace_alias(command)
-    bash_command = [bash_executable(), '-c', command]
+    bash_command = [bash_executable(), "-c", command]
     process = subprocess.Popen(
         bash_command,
         stdout=subprocess.PIPE,
@@ -109,11 +111,14 @@ def show_output_of_shell_command(command: str) -> None:
             return
         if not stderr:
             return
-    raise BashError('''
+    raise BashError(
+        """
         command: %r
         status: %s
         stderr: %s
-        stdout: %s''' % (command, process.returncode, stderr, stdout))
+        stdout: %s"""
+        % (command, process.returncode, stderr, stdout)
+    )
 
 
 def strip_quotes(raw_string: str) -> str:
@@ -132,7 +137,7 @@ def strip_quotes(raw_string: str) -> str:
         return raw_string
     first = raw_string[0]
     last = raw_string[-1]
-    if first == last and first in '"\'':
+    if first == last and first in "\"'":
         return raw_string[1:-1]
     return raw_string
 
@@ -152,8 +157,9 @@ def memoize(method: Callable[[], T]) -> Callable[[], T]:
         if not cache:
             cache.append(method())
         return cache[0]
+
     new_method.__doc__ = method.__doc__
-    new_method.__name__ = 'memoized_%s' % method.__name__
+    new_method.__name__ = "memoized_%s" % method.__name__
     return new_method
 
 
@@ -165,12 +171,12 @@ def get_aliases() -> Dict[str, str]:
         A mapping from alias name to aliased command.
     """
     try:
-        with open(get_options().aliases, 'r', encoding='utf-8') as source:
-            lines = [l.rstrip() for l in source]
+        with open(get_options().aliases, "r", encoding="utf-8") as source:
+            lines = [line.rstrip() for line in source]
     except IOError:
         return {}
-    alias_lines = [l[6:] for l in lines if l.startswith('alias ')]
-    alias_strings = [l.split('=', 1) for l in alias_lines]
+    alias_lines = [line[6:] for line in lines if line.startswith("alias ")]
+    alias_strings = [line.split("=", 1) for line in alias_lines]
     alias_commands = [(n, strip_quotes(c)) for (n, c) in alias_strings]
     return dict(alias_commands)
 
@@ -195,29 +201,29 @@ def get_functions() -> Dict[str, str]:
         A mapping from function name to the function body.
     """
     try:
-        with open(get_options().functions, 'r', encoding='utf-8') as source:
-            lines = [l.rstrip() for l in source]
+        with open(get_options().functions, "r", encoding="utf-8") as source:
+            lines = [line.rstrip() for line in source]
     except IOError:
         return {}
     name = function_lines = None
     functions = {}
     for line in lines:
-        if line == '{':
+        if line == "{":
             continue
-        elif line == '}':
+        elif line == "}":
             functions[name] = function_lines[:]
         else:
             words = line.split()
             if not words:
                 continue
-            if len(words) == 2 and words[1] == '()':
+            if len(words) == 2 and words[1] == "()":
                 name = words[0]
                 function_lines = []
                 continue
             function_lines.append(line)
     result: Dict[str, str] = {}
     for name, lines in functions.items():
-        result[name] = '%s ()\n{\n%s\n}\n' % (name, '\n'.join(lines))
+        result[name] = "%s ()\n{\n%s\n}\n" % (name, "\n".join(lines))
     return result
 
 
@@ -230,7 +236,7 @@ def environment_paths() -> List[str]:
     >>> '/bin' in environment_paths()
     True
     """
-    return environment_value('PATH').split(':')
+    return environment_value("PATH").split(":")
 
 
 def contractuser(path: str) -> str:
@@ -247,7 +253,7 @@ def contractuser(path: str) -> str:
     >>> contractuser(os.path.expanduser('~/.bashrc')) == '~/.bashrc'
     True
     """
-    home_symbol = '~'
+    home_symbol = "~"
     home = os.path.expanduser(home_symbol)
     if path.startswith(home):
         return path.replace(home, home_symbol)
@@ -357,12 +363,12 @@ def file_in_environment_path(path: str) -> str:
     try:
         return files_in_environment_path()[path]
     except KeyError:
-        return file_in_environment_path('%s.exe' % path)
+        return file_in_environment_path("%s.exe" % path)
 
 
 def showable(language: Optional[str]) -> bool:
     """Return whether a language is supported for viewing."""
-    return language in ['python', 'python2', 'python3', 'bash', 'sh']
+    return language in ["python", "python2", "python3", "bash", "sh"]
 
 
 def show_function(command: str) -> None:
@@ -372,14 +378,16 @@ def show_function(command: str) -> None:
         command: The function name to view.
     """
     if not get_options().verbose:
-        print(command, 'is a function')
+        print(command, "is a function")
     else:
-        commands = ' | '.join([
-            "shopt -s extglob; . %s; %s %s" % (
-                get_options().functions, Bash.declare_f, command),
-            "sed '1 i\\\n#! /bin/bash\n'",
-            Bash.view_file
-        ])
+        commands = " | ".join(
+            [
+                "shopt -s extglob; . %s; %s %s"
+                % (get_options().functions, Bash.declare_f, command),
+                "sed '1 i\\\n#! /bin/bash\n'",
+                Bash.view_file,
+            ]
+        )
         show_output_of_shell_command(commands)
 
 
@@ -393,13 +401,13 @@ def shebang_command(path_to_file: str) -> str:
         The interpreter command from the shebang, or an empty string.
     """
     try:
-        with open(path_to_file, 'r', encoding='utf-8') as source:
+        with open(path_to_file, "r", encoding="utf-8") as source:
             first_line = source.readline()
-        if first_line.startswith('#!'):
+        if first_line.startswith("#!"):
             return first_line[2:].strip()
     except (IndexError, IOError):
         pass
-    return ''
+    return ""
 
 
 def extension_language(path_to_file: str) -> Optional[str]:
@@ -412,7 +420,7 @@ def extension_language(path_to_file: str) -> Optional[str]:
         The language name if known, otherwise None.
     """
     _, extension = os.path.splitext(path_to_file)
-    known_languages = {'.py': 'python', '.sh': 'bash'}
+    known_languages = {".py": "python", ".sh": "bash"}
     return known_languages.get(extension, None)
 
 
@@ -426,7 +434,7 @@ def shebang_language(path_to_file: str) -> Optional[str]:
         The command name found in the shebang line, or None if not found.
     """
     run_command = shebang_command(path_to_file)
-    command_words = re.split('[ /]', run_command)
+    command_words = re.split("[ /]", run_command)
     try:
         last_word = command_words[-1]
     except IndexError:
@@ -474,13 +482,12 @@ def show_path_to_command(path_to_command: str) -> None:
     if get_options().file:
         print(os.path.realpath(path_to_command))
         return
-    show_output_of_shell_command('%s -l %r' % (Bash.ls, path_to_command))
+    show_output_of_shell_command("%s -l %r" % (Bash.ls, path_to_command))
     if not get_options().verbose:
         return
     language = script_language(path_to_command)
     if showable(language):
-        show_output_of_shell_command('%s %r' % (
-            Bash.view_file, str(path_to_command)))
+        show_output_of_shell_command("%s %r" % (Bash.view_file, str(path_to_command)))
 
 
 def show_alias(command: str) -> None:
@@ -490,7 +497,7 @@ def show_alias(command: str) -> None:
         command: The alias name to inspect.
     """
     aliases = get_aliases()
-    print('alias %s=%r' % (command, aliases[command]))
+    print("alias %s=%r" % (command, aliases[command]))
     if not get_options().verbose:
         return
     sub_command = aliases[command].split()[0].strip()
@@ -545,30 +552,54 @@ def read_command_line() -> List[str]:
     Returns:
         A list of command arguments provided by the user.
     """
-    parser = optparse.OptionParser(
-        'Usage: what [options] command\n\n%s' % __doc__)
-    parser.add_option('-e', '--hide_errors', action='store_true',
-                      help='hide error messages from successful commands')
-    parser.add_option('-f', '--file', action='store_true',
-                      help='show real path to file (if it is a file)')
-    parser.add_option('-q', '--quiet', action='store_true',
-                      help='do not show any output')
-    parser.add_option('-v', '--verbose', action='store_true',
-                      help='whether to show more info, such as file contents')
-    parser.add_option('-A', '--aliases', default='/tmp/aliases',
-                      help='path to file which holds aliases')
-    parser.add_option('-F', '--functions', default='/tmp/functions',
-                      help='path to file which holds functions')
-    parser.add_option('-U', '--debugging', action='store_true',
-                      help='debug with pudb')
+    parser = optparse.OptionParser("Usage: what [options] command\n\n%s" % __doc__)
+    parser.add_option(
+        "-e",
+        "--hide_errors",
+        action="store_true",
+        help="hide error messages from successful commands",
+    )
+    parser.add_option(
+        "-f",
+        "--file",
+        action="store_true",
+        help="show real path to file (if it is a file)",
+    )
+    parser.add_option(
+        "-q", "--quiet", action="store_true", help="do not show any output"
+    )
+    parser.add_option(
+        "-v",
+        "--verbose",
+        action="store_true",
+        help="whether to show more info, such as file contents",
+    )
+    parser.add_option(
+        "-A",
+        "--aliases",
+        default="/tmp/aliases",
+        help="path to file which holds aliases",
+    )
+    parser.add_option(
+        "-F",
+        "--functions",
+        default="/tmp/functions",
+        help="path to file which holds functions",
+    )
+    parser.add_option("-U", "--debugging", action="store_true", help="debug with pudb")
     options, arguments = parser.parse_args()
     if options.debugging:
         import pudb
+
         pudb.set_trace()
     # plint does not seem to notice that methods are globals
     # pylint: disable=global-variable-undefined
     global get_options
-    get_options = lambda: options
+
+    def get_options_impl() -> Any:  # noqa: D102
+        return options
+
+    get_options = get_options_impl
     return arguments
 
 
@@ -580,14 +611,14 @@ def test() -> int:
     """
     options = doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE
     all_failures, all_tests = 0, 0
-    main_module = sys.modules['__main__']
+    main_module = sys.modules["__main__"]
     failures, tests = doctest.testmod(
         main_module,
         optionflags=options,
     )
     all_failures += failures
     all_tests += tests
-    for extension in ['.test', '.tests']:
+    for extension in [".test", ".tests"]:
         main_test = nearby_file(main_module.__file__, extension)
         if not os.path.isfile(main_test):
             continue
@@ -598,7 +629,7 @@ def test() -> int:
         )
         all_failures += failures
         all_tests += tests
-    print('Ran', all_tests, 'tests,', all_failures, 'failures')
+    print("Ran", all_tests, "tests,", all_failures, "failures")
     return 0
 
 
@@ -617,7 +648,7 @@ def main(commands: Sequence[str]) -> int:
     return result
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     args = read_command_line()
     if not args:
         sys.exit(test())
