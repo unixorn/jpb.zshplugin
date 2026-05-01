@@ -52,6 +52,7 @@ The scripts in this collection don't actually require you to be using ZSH as you
 | `bindiff` | jpb@unixorn.net | Hexdumps two files and diffs the output |
 | `change-extension` | ? | Changes file extensions |
 | `clean-whiteboard-picture` | [https://gist.github.com/lelandbatey/8677901](https://gist.github.com/lelandbatey/8677901) | Cleans up pictures of whiteboards and pumps up contrast |
+| `csv-less` | slack | Runs `less` on a CSV file while always keeping the header row visible |
 | `cursor-hide` | jpb@unixorn.net | Hides cursor in iTerm2 |
 | `cursor-show` | jpb@unixorn.net | Enables cursor visibility in iTerm2 if a program exits without setting it visible again |
 | `datauri` | Alrra's [dotfiles](https://github.com/alrra/dotfiles/blob/main/src/shell/bash_functions) | Converts a file to a data URI |
