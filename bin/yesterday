@@ -1,41 +1,61 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #
 # Original source
 # https://github.com/ClarkGoble/Scripts/blob/master/yesterday.py
 ###############################
-#   today.py
+#   yesterday.py
 ###############################
 #
-# Types today's date formated
+# Types yesterday's date formatted
 
-import sys, datetime, string
-from appscript import *
+import datetime
+import string
+import sys
+from typing import Optional, Sequence
+
+try:
+    from appscript import app, k  # type: ignore[import]
+except ImportError:
+    pass
 
 
-def getdate():
-    d=datetime.date.today()
+def getdate() -> str:
+    """Return yesterday's date formatted as MM/DD/YYYY."""
+    d = datetime.date.today()
     d = d + datetime.timedelta(-1)
     return d.strftime("%m/%d/%Y")
 
 
-def typestring(s):
-    SE = app(u'System Events')
+def typestring(s: str) -> None:
+    """Type the provided string using macOS System Events.
 
-    for i in range(0,len(s)):
-        c = s[i]
+    Args:
+        s: The string to type.
+    """
+    SE = app("System Events")
 
-        if c == '\n':
+    for c in s:
+        if c == "\n":
             continue
 
         if c in string.ascii_uppercase:
-            SE.keystroke(s[i], using=k.shift_down)
+            SE.keystroke(c, using=k.shift_down)
         else:
-            SE.keystroke(s[i])
+            SE.keystroke(c)
 
 
-def main(argv=None):
-    print getdate()
+def main(argv: Optional[Sequence[str]] = None) -> int:
+    """Main entry point for the script.
+
+    Args:
+        argv: Ignored command-line arguments.
+
+    Returns:
+        Exit status code.
+    """
+    print(getdate())
+    return 0
 
 
-if __name__=='__main__':
+if __name__ == "__main__":
     sys.exit(main())

@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 
 """Show the text behind commands
 
@@ -15,177 +15,259 @@ _copyright = """
 """
 
 
-import os
-import re
-import sys
-import stat
 import doctest
 import optparse
+import os
+import re
+import stat
 import subprocess
+import sys
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, TypeVar
+
+T = TypeVar("T")
 
 
-def get_options():
-    """The values of options set by user on command line"""
+def get_options() -> Any:
+    """Return command-line options.
+
+    Returns:
+        The parsed options object returned by the command-line parser.
+    """
     return None
 
 
-def environment_value(key):
-    """A value from the shell environment, defaults to empty string
+def environment_value(key: str) -> str:
+    """Return an environment value.
+
+    Args:
+        key: Name of the environment variable.
+
+    Returns:
+        The value of the environment variable, or an empty string if unset.
 
     >>> environment_value('SHELL') is not None
     True
     """
-    return os.environ.get(key, '')
+    return os.environ.get(key, "")
 
 
 class BashError(ValueError):
     """Use this class to have better name appear in tracebacks"""
+
     pass
 
 
 class Bash(object):
     """This class is a namespace to hold bash commands to be used later"""
+
     # pylint wants an __init__(), but I don't
     # pylint: disable=no-init
-    view_file = 'vimcat'  # https://github.com/vim-scripts/vimcat, YMMV
-    declare_f = 'declare -f'  # This is a bash builtin
-    ls = 'ls'  # This is often in path, and more often aliased
+    view_file = "vimcat"  # https://github.com/vim-scripts/vimcat, YMMV
+    declare_f = "declare -f"  # This is a bash builtin
+    ls = "ls"  # This is often in path, and more often aliased
 
 
-def replace_alias(command):
-    """Replace any alias with its value at start of the command"""
-    if ' ' not in command:
+def replace_alias(command: str) -> str:
+    """Replace any alias at the start of the command.
+
+    Args:
+        command: The original shell command.
+
+    Returns:
+        The command with the alias expanded, if present.
+    """
+    if " " not in command:
         return command
-    command, arguments = command.split(' ', 1)
-    return '%s %s' % (get_alias(command), arguments)
+    command, arguments = command.split(" ", 1)
+    return "%s %s" % (get_alias(command), arguments)
 
 
-def bash_executable():
-    """The first executable called 'bash' in the $PATH"""
-    return file_in_environment_path('bash')
+def bash_executable() -> str:
+    """Return the path to the bash executable found in PATH."""
+    return file_in_environment_path("bash")
 
 
-def show_output_of_shell_command(command):
-    """Run the given command using bash"""
+def show_output_of_shell_command(command: str) -> None:
+    """Execute a shell command through bash.
+
+    Args:
+        command: The shell command to execute.
+
+    Raises:
+        BashError: If the underlying bash command fails.
+    """
     command = replace_alias(command)
-    bash_command = [bash_executable(), '-c', command]
+    bash_command = [bash_executable(), "-c", command]
     process = subprocess.Popen(
-        bash_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        bash_command,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        universal_newlines=True,
+    )
     stdout, stderr = process.communicate()
     if not process.returncode:
-        print stdout
+        print(stdout)
         if get_options().hide_errors:
             return
         if not stderr:
             return
-    raise BashError('''
+    raise BashError(
+        """
         command: %r
         status: %s
         stderr: %s
-        stdout: %s''' % (command, process.returncode, stderr, stdout))
+        stdout: %s"""
+        % (command, process.returncode, stderr, stdout)
+    )
 
 
-def strip_quotes(string):
-    """Remove quotes from front and back of string
+def strip_quotes(raw_string: str) -> str:
+    """Remove surrounding quotes from a string.
+
+    Args:
+        raw_string: The string to strip quotes from.
+
+    Returns:
+        The input string without surrounding single or double quotes.
 
     >>> strip_quotes('"fred"') == 'fred'
     True
     """
-    if not string:
-        return string
-    first = string[0]
-    last = string[-1]
-    if first == last and first in '"\'':
-        return string[1:-1]
-    return string
+    if not raw_string:
+        return raw_string
+    first = raw_string[0]
+    last = raw_string[-1]
+    if first == last and first in "\"'":
+        return raw_string[1:-1]
+    return raw_string
 
 
-def memoize(method):
-    """Cache the return value of the method, which takes no arguments"""
+def memoize(method: Callable[[], T]) -> Callable[[], T]:
+    """Cache the return value of a no-argument function.
+
+    Args:
+        method: The function to memoize.
+
+    Returns:
+        A wrapper that caches the result of the original function.
+    """
     cache = []  # use a list to workaround some warnings from pylint
 
-    def new_method():
+    def new_method() -> T:
         if not cache:
             cache.append(method())
         return cache[0]
+
     new_method.__doc__ = method.__doc__
-    new_method.__name__ = 'memoized_%s' % method.__name__
+    new_method.__name__ = "memoized_%s" % method.__name__
     return new_method
 
 
 @memoize
-def get_aliases():
-    """Read a dictionary of aliases from a file"""
+def get_aliases() -> Dict[str, str]:
+    """Read a dictionary of aliases from a file.
+
+    Returns:
+        A mapping from alias name to aliased command.
+    """
     try:
-        lines = [l.rstrip() for l in file(get_options().aliases)]
+        with open(get_options().aliases, "r", encoding="utf-8") as source:
+            lines = [line.rstrip() for line in source]
     except IOError:
         return {}
-    alias_lines = [l[6:] for l in lines if l.startswith('alias ')]
-    alias_strings = [l.split('=', 1) for l in alias_lines]
+    alias_lines = [line[6:] for line in lines if line.startswith("alias ")]
+    alias_strings = [line.split("=", 1) for line in alias_lines]
     alias_commands = [(n, strip_quotes(c)) for (n, c) in alias_strings]
     return dict(alias_commands)
 
 
-def get_alias(string):
-    """Give the alias for that string, or the string itself"""
-    return get_aliases().get(string, string)
+def get_alias(alias: str) -> str:
+    """Return the alias expansion for a string.
+
+    Args:
+        alias: The alias name to look up.
+
+    Returns:
+        The expanded alias or the original string if no alias exists.
+    """
+    return get_aliases().get(alias, alias)
 
 
 @memoize
-def get_functions():
-    """Read a dictionary of functions from a known file"""
+def get_functions() -> Dict[str, str]:
+    """Read a dictionary of shell functions from a file.
+
+    Returns:
+        A mapping from function name to the function body.
+    """
     try:
-        lines = [l.rstrip() for l in file(get_options().functions)]
+        with open(get_options().functions, "r", encoding="utf-8") as source:
+            lines = [line.rstrip() for line in source]
     except IOError:
         return {}
     name = function_lines = None
     functions = {}
     for line in lines:
-        if line == '{':
+        if line == "{":
             continue
-        elif line == '}':
+        elif line == "}":
             functions[name] = function_lines[:]
         else:
             words = line.split()
             if not words:
                 continue
-            if len(words) == 2 and words[1] == '()':
+            if len(words) == 2 and words[1] == "()":
                 name = words[0]
                 function_lines = []
                 continue
             function_lines.append(line)
-    result = {}
-    for name, lines in functions.iteritems():
-        result[name] = '%s ()\n{\n%s\n}\n' % (name, '\n'.join(lines))
+    result: Dict[str, str] = {}
+    for name, lines in functions.items():
+        result[name] = "%s ()\n{\n%s\n}\n" % (name, "\n".join(lines))
     return result
 
 
-def environment_paths():
-    """A list of paths in the environment's PATH
+def environment_paths() -> List[str]:
+    """Return a list of paths from the PATH environment variable.
+
+    Returns:
+        A list of PATH entries.
 
     >>> '/bin' in environment_paths()
     True
     """
-    return environment_value('PATH').split(':')
+    return environment_value("PATH").split(":")
 
 
-def contractuser(path):
-    """Replace the home directory in that path with ~
+def contractuser(path: str) -> str:
+    """Replace the home directory in a path with '~'.
 
-    This is the opposite of os.path.expanduser()
+    Args:
+        path: The file path to contract.
+
+    Returns:
+        The path with the home directory replaced by '~'.
+
+    This is the opposite of os.path.expanduser().
 
     >>> contractuser(os.path.expanduser('~/.bashrc')) == '~/.bashrc'
     True
     """
-    home_symbol = '~'
+    home_symbol = "~"
     home = os.path.expanduser(home_symbol)
     if path.startswith(home):
         return path.replace(home, home_symbol)
     return path
 
 
-def items_in(path):
-    """A list of all items in the given path
+def items_in(path: str) -> List[Tuple[str, str]]:
+    """Return all items in the given directory.
+
+    Args:
+        path: Directory path to inspect.
+
+    Returns:
+        A list of tuples containing item name and full path.
 
     >>> ('local', '/usr/local') in items_in('/usr')
     True
@@ -196,8 +278,14 @@ def items_in(path):
         return []
 
 
-def files_in(path):
-    """A list of all files in the given path
+def files_in(path: str) -> List[Tuple[str, str]]:
+    """Return all regular files in the given directory.
+
+    Args:
+        path: Directory path to inspect.
+
+    Returns:
+        A list of tuples containing file name and full path.
 
     >>> ('bash', '/bin/bash') in files_in('/bin')
     True
@@ -205,8 +293,14 @@ def files_in(path):
     return [(f, p) for (f, p) in items_in(path) if os.path.isfile(p)]
 
 
-def is_executable(path_to_file):
-    """Whether the file has any executable bits set
+def is_executable(path_to_file: str) -> bool:
+    """Return whether a file is executable.
+
+    Args:
+        path_to_file: Path to the file to inspect.
+
+    Returns:
+        True if the file has executable bits set, False otherwise.
 
     >>> is_executable(sys.executable)
     True
@@ -218,20 +312,30 @@ def is_executable(path_to_file):
         return False
 
 
-def executables_in(path):
-    """A list of all executable files in the given path"""
+def executables_in(path: str) -> List[Tuple[str, str]]:
+    """Return executable files in the given directory.
+
+    Args:
+        path: Directory path to inspect.
+
+    Returns:
+        A list of tuples containing executable filename and full path.
+    """
     return [(f, p) for (f, p) in items_in(path) if is_executable(p)]
 
 
 @memoize
-def files_in_environment_path():
-    """Gives a dictionary of all executable files in the environment's PATH
+def files_in_environment_path() -> Dict[str, str]:
+    """Return all executable files found in the PATH.
+
+    Returns:
+        A mapping from command name to executable path.
 
     >>> files_in_environment_path()['python'] == sys.executable or True
     True
     """
     known_filenames = set()
-    result = {}
+    result: Dict[str, str] = {}
     for path in environment_paths():
         for filename, path_to_file in executables_in(path):
             if filename in known_filenames:
@@ -241,62 +345,96 @@ def files_in_environment_path():
     return dict(result)
 
 
-def file_in_environment_path(string):
-    """Gives the path to string, or string.exe
+def file_in_environment_path(path: str) -> str:
+    """Return the filesystem path for a command in PATH.
+
+    Args:
+        path: Command name to resolve.
+
+    Returns:
+        The path to the executable.
+
+    Raises:
+        RecursionError: If no executable path can be found.
 
     >>> file_in_environment_path('python') == sys.executable or True
     True
     """
     try:
-        return files_in_environment_path()[string]
+        return files_in_environment_path()[path]
     except KeyError:
-        return file_in_environment_path('%s.exe' % string)
+        return file_in_environment_path("%s.exe" % path)
 
 
-def showable(language):
-    """A list of languages whose source files we are interested in viewing"""
-    return language in ['python', 'python2', 'python3', 'bash', 'sh']
+def showable(language: Optional[str]) -> bool:
+    """Return whether a language is supported for viewing."""
+    return language in ["python", "python2", "python3", "bash", "sh"]
 
 
-def show_function(command):
-    """Show a function to the user"""
+def show_function(command: str) -> None:
+    """Show a function to the user.
+
+    Args:
+        command: The function name to view.
+    """
     if not get_options().verbose:
-        print command, 'is a function'
+        print(command, "is a function")
     else:
-        commands = ' | '.join([
-            "shopt -s extglob; . %s; %s %s" % (
-                get_options().functions, Bash.declare_f, command),
-            "sed '1 i\\\n#! /bin/bash\n'",
-            Bash.view_file
-        ])
+        commands = " | ".join(
+            [
+                "shopt -s extglob; . %s; %s %s"
+                % (get_options().functions, Bash.declare_f, command),
+                "sed '1 i\\\n#! /bin/bash\n'",
+                Bash.view_file,
+            ]
+        )
         show_output_of_shell_command(commands)
 
 
-def shebang_command(path_to_file):
-    """Get the shebang line of that file
+def shebang_command(path_to_file: str) -> str:
+    """Return the interpreter command from a file shebang.
 
-    Which is the first line, if that line starts with #!
+    Args:
+        path_to_file: Path to the script file.
+
+    Returns:
+        The interpreter command from the shebang, or an empty string.
     """
     try:
-        first_line = file(path_to_file).readlines()[0]
-        if first_line.startswith('#!'):
+        with open(path_to_file, "r", encoding="utf-8") as source:
+            first_line = source.readline()
+        if first_line.startswith("#!"):
             return first_line[2:].strip()
     except (IndexError, IOError):
         pass
-    return ''
+    return ""
 
 
-def extension_language(path_to_file):
-    """Guess the language used to run a file from its extension"""
+def extension_language(path_to_file: str) -> Optional[str]:
+    """Return the language inferred from a file extension.
+
+    Args:
+        path_to_file: Path to the file whose extension will be inspected.
+
+    Returns:
+        The language name if known, otherwise None.
+    """
     _, extension = os.path.splitext(path_to_file)
-    known_languages = {'.py': 'python', '.sh': 'bash'}
+    known_languages = {".py": "python", ".sh": "bash"}
     return known_languages.get(extension, None)
 
 
-def shebang_language(path_to_file):
-    """Guess the language used to run a file from its shebang line"""
+def shebang_language(path_to_file: str) -> Optional[str]:
+    """Return the language inferred from a file's shebang line.
+
+    Args:
+        path_to_file: Path to the script file.
+
+    Returns:
+        The command name found in the shebang line, or None if not found.
+    """
     run_command = shebang_command(path_to_file)
-    command_words = re.split('[ /]', run_command)
+    command_words = re.split("[ /]", run_command)
     try:
         last_word = command_words[-1]
     except IndexError:
@@ -304,11 +442,14 @@ def shebang_language(path_to_file):
     return last_word
 
 
-def script_language(path_to_file):
-    """Guess the language used to run a file from its first line
+def script_language(path_to_file: str) -> Optional[str]:
+    """Return the language used to execute the given file.
 
-    The language should be the last word on the shebang line (if present)
-    If no shebang line is found, try an extension
+    Args:
+        path_to_file: Path to the file to inspect.
+
+    Returns:
+        The detected language name, or None if unknown.
 
     >>> script_language('what.py') == 'python'
     True
@@ -319,32 +460,44 @@ def script_language(path_to_file):
         language = get_language(path_to_file)
         if language:
             return language
+    return None
 
 
-def show_command_in_path(command):
-    """Show a command which is a file in $PATH"""
+def show_command_in_path(command: str) -> None:
+    """Show a command that exists in the PATH.
+
+    Args:
+        command: The command name to locate in PATH.
+    """
     path_to_command = file_in_environment_path(command)
     show_path_to_command(path_to_command)
 
 
-def show_path_to_command(path_to_command):
-    """Show a command which is a file at that path"""
+def show_path_to_command(path_to_command: str) -> None:
+    """Show details about a command file at a specific path.
+
+    Args:
+        path_to_command: The absolute path to the command file.
+    """
     if get_options().file:
-        print os.path.realpath(path_to_command)
+        print(os.path.realpath(path_to_command))
         return
-    show_output_of_shell_command('%s -l %r' % (Bash.ls, path_to_command))
+    show_output_of_shell_command("%s -l %r" % (Bash.ls, path_to_command))
     if not get_options().verbose:
         return
     language = script_language(path_to_command)
     if showable(language):
-        show_output_of_shell_command('%s %r' % (
-            Bash.view_file, str(path_to_command)))
+        show_output_of_shell_command("%s %r" % (Bash.view_file, str(path_to_command)))
 
 
-def show_alias(command):
-    """Show a command defined by alias"""
+def show_alias(command: str) -> None:
+    """Show a command defined by alias.
+
+    Args:
+        command: The alias name to inspect.
+    """
     aliases = get_aliases()
-    print 'alias %s=%r' % (command, aliases[command])
+    print("alias %s=%r" % (command, aliases[command]))
     if not get_options().verbose:
         return
     sub_command = aliases[command].split()[0].strip()
@@ -354,8 +507,15 @@ def show_alias(command):
         show_command(sub_command)
 
 
-def show_command(command):
-    """Show whatever is behind a command"""
+def show_command(command: str) -> int:
+    """Show whatever is behind a command.
+
+    Args:
+        command: The command to inspect.
+
+    Returns:
+        Exit status code: 0 for found, 1 for not found.
+    """
     methods = [
         (lambda x: x in get_aliases(), show_alias),
         (lambda x: x in get_functions(), show_function),
@@ -370,8 +530,15 @@ def show_command(command):
     return 1
 
 
-def nearby_file(named_file, extension):
-    """Return the name of that file, changed to use that extension
+def nearby_file(named_file: str, extension: str) -> str:
+    """Return the name of a file with a different extension.
+
+    Args:
+        named_file: Original file name.
+        extension: New file extension.
+
+    Returns:
+        The file name with the updated extension.
 
     >>> os.path.basename(nearby_file('what.pyc', '.txt')) == 'what.txt'
     True
@@ -379,47 +546,79 @@ def nearby_file(named_file, extension):
     return os.path.splitext(named_file)[0] + extension
 
 
-def read_command_line():
-    """Look for options from user on the command line for this script"""
-    parser = optparse.OptionParser(
-        'Usage: what [options] command\n\n%s' % __doc__)
-    parser.add_option('-e', '--hide_errors', action='store_true',
-                      help='hide error messages from successful commands')
-    parser.add_option('-f', '--file', action='store_true',
-                      help='show real path to file (if it is a file)')
-    parser.add_option('-q', '--quiet', action='store_true',
-                      help='do not show any output')
-    parser.add_option('-v', '--verbose', action='store_true',
-                      help='whether to show more info, such as file contents')
-    parser.add_option('-A', '--aliases', default='/tmp/aliases',
-                      help='path to file which holds aliases')
-    parser.add_option('-F', '--functions', default='/tmp/functions',
-                      help='path to file which holds functions')
-    parser.add_option('-U', '--debugging', action='store_true',
-                      help='debug with pudb')
+def read_command_line() -> List[str]:
+    """Parse command-line arguments.
+
+    Returns:
+        A list of command arguments provided by the user.
+    """
+    parser = optparse.OptionParser("Usage: what [options] command\n\n%s" % __doc__)
+    parser.add_option(
+        "-e",
+        "--hide_errors",
+        action="store_true",
+        help="hide error messages from successful commands",
+    )
+    parser.add_option(
+        "-f",
+        "--file",
+        action="store_true",
+        help="show real path to file (if it is a file)",
+    )
+    parser.add_option(
+        "-q", "--quiet", action="store_true", help="do not show any output"
+    )
+    parser.add_option(
+        "-v",
+        "--verbose",
+        action="store_true",
+        help="whether to show more info, such as file contents",
+    )
+    parser.add_option(
+        "-A",
+        "--aliases",
+        default="/tmp/aliases",
+        help="path to file which holds aliases",
+    )
+    parser.add_option(
+        "-F",
+        "--functions",
+        default="/tmp/functions",
+        help="path to file which holds functions",
+    )
+    parser.add_option("-U", "--debugging", action="store_true", help="debug with pudb")
     options, arguments = parser.parse_args()
     if options.debugging:
         import pudb
+
         pudb.set_trace()
     # plint does not seem to notice that methods are globals
     # pylint: disable=global-variable-undefined
     global get_options
-    get_options = lambda: options
+
+    def get_options_impl() -> Any:  # noqa: D102
+        return options
+
+    get_options = get_options_impl
     return arguments
 
 
-def test():
-    """Run any doctests in this script or associated test scripts"""
+def test() -> int:
+    """Run doctests for this script and associated test files.
+
+    Returns:
+        The number of failures encountered.
+    """
     options = doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE
     all_failures, all_tests = 0, 0
-    main_module = sys.modules['__main__']
+    main_module = sys.modules["__main__"]
     failures, tests = doctest.testmod(
         main_module,
         optionflags=options,
     )
     all_failures += failures
     all_tests += tests
-    for extension in ['.test', '.tests']:
+    for extension in [".test", ".tests"]:
         main_test = nearby_file(main_module.__file__, extension)
         if not os.path.isfile(main_test):
             continue
@@ -430,19 +629,26 @@ def test():
         )
         all_failures += failures
         all_tests += tests
-    print 'Ran', all_tests, 'tests,', all_failures, 'failures'
+    print("Ran", all_tests, "tests,", all_failures, "failures")
     return 0
 
 
-def main(commands):
-    """Run the program"""
+def main(commands: Sequence[str]) -> int:
+    """Run the program for the given commands.
+
+    Args:
+        commands: A sequence of command names to inspect.
+
+    Returns:
+        The combined exit status code.
+    """
     result = 0
     for arg in commands:
         result |= show_command(arg)
     return result
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     args = read_command_line()
     if not args:
         sys.exit(test())

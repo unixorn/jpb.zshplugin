@@ -130,6 +130,7 @@ function get-default-settings() {
   # environment variable
   A_BOOL_SETTING=${A_BOOL_SETTING:-'false'}
   A_PATH_TO_A_FILE=${A_PATH_TO_A_FILE:-'/path/to/file'}
+  STALE_BASH_TREATMENT=warning # set to 'failure' if the script won't work on stale bash
 }
 
 function only-run-on() {
@@ -173,6 +174,26 @@ function approve() {
   # shellcheck disable=SC2086
   if [[ ! "$(echo $answer | tr '[:upper:]' '[:lower:]')" == "yes" ]]; then
     fail "$reject_message"
+  fi
+}
+
+function check_bash_version() {
+  if [[ "${BASH_VERSINFO[0]}" == "3" ]]; then
+    echo "You are running a very old version of bash.  Please upgrade to the"
+    echo "latest version."
+    echo
+    echo "If you are on macOS, please use homebrew to install the latest GPL'd
+    echo "version of bash with the following command:"
+    echo
+    echo "brew install bash"
+    echo
+    if [[ "${STALE_BASH_TREATMENT}" == 'failure' ]]; then
+      exit 1
+    fi
+  fi
+  if [[ "${BASH_VERSINFO[0]}" -lt "5" ]]; then
+    echo "Please make sure you are running v5 or greater of bash"
+    exit 1
   fi
 }
 
@@ -222,6 +243,10 @@ do
       usage
       exit 0
       ;;
+    --fail-if-bash-stale)
+      STALE_BASH_TREATMENT=failure
+      shift
+      ;;
     --set-a-bool-to-true)
       A_BOOL_SETTING='true'
       shift
@@ -242,6 +267,8 @@ do
       ;;
   esac
 done
+
+check_bash_version
 
 END_BASH_SCRIPT
   write_script(name: name, source: rawScript)

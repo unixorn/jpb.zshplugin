@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #
 # From Gary Bernhardt's dotfiles
 # https://github.com/garybernhardt/dotfiles/blob/main/bin/gn
@@ -17,34 +17,66 @@
 #   +11 lines (+18, -7)
 #   +77 words (+110, -33)
 
-import sys, os, re, fileinput
+import fileinput
+import re
+from typing import List, Tuple
 
-def get_lines(diff_lines):
+
+def get_lines(diff_lines: List[str]) -> Tuple[List[str], List[str]]:
+    """Return the added and removed lines from a diff.
+
+    Args:
+        diff_lines: Lines from a diff or patch file.
+
+    Returns:
+        A tuple containing added lines and removed lines.
+    """
     # Added lines start with '+' (but not '+++', because that marks a new
     # file).  The same goes for removed lines, except '-' instead of '+'.
-    added_lines = [line for line in diff_lines
-        if line.startswith('+') and not line.startswith('+++')]
-    removed_lines = [line for line in diff_lines
-        if line.startswith('-') and not line.startswith('---')]
+    added_lines = [
+        line
+        for line in diff_lines
+        if line.startswith("+") and not line.startswith("+++")
+    ]
+    removed_lines = [
+        line
+        for line in diff_lines
+        if line.startswith("-") and not line.startswith("---")
+    ]
     return added_lines, removed_lines
 
-def get_words(added_lines, removed_lines):
-    def word_count(lines):
-        return [word
-                for line in lines
-                for word in line.split()
-                if re.match(r'^\w+', word)]
+
+def get_words(
+    added_lines: List[str], removed_lines: List[str]
+) -> Tuple[List[str], List[str]]:
+    """Return word lists for added and removed diff lines.
+
+    Args:
+        added_lines: Lines added in the diff.
+        removed_lines: Lines removed in the diff.
+
+    Returns:
+        A tuple containing words from added lines and removed lines.
+    """
+
+    def word_count(lines: List[str]) -> List[str]:
+        return [
+            word for line in lines for word in line.split() if re.match(r"^\w+", word)
+        ]
 
     return word_count(added_lines), word_count(removed_lines)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     diff_lines = list(fileinput.input())
     added_lines, removed_lines = get_lines(diff_lines)
     added_words, removed_words = get_words(added_lines, removed_lines)
-    print '%i lines of diff' % len(diff_lines)
-    print '%+i lines (+%i, -%i)' % (len(added_lines) - len(removed_lines),
-                                    len(added_lines),
-                                    len(removed_lines))
-    print '%+i words (+%i, -%i)' % (len(added_words) - len(removed_words),
-                                    len(added_words),
-                                    len(removed_words))
+    print("%i lines of diff" % len(diff_lines))
+    print(
+        "%+i lines (+%i, -%i)"
+        % (len(added_lines) - len(removed_lines), len(added_lines), len(removed_lines))
+    )
+    print(
+        "%+i words (+%i, -%i)"
+        % (len(added_words) - len(removed_words), len(added_words), len(removed_words))
+    )
