@@ -15,7 +15,7 @@ repos:
       - id: trailing-whitespace
 
   - repo: https://github.com/igorshubovych/markdownlint-cli
-    rev: v0.48.0
+    rev: v0.49.0
     hooks:
       - id: markdownlint-fix
         args: ["--ignore", "LICENSE.md", "--disable", "~MD013"]
@@ -27,7 +27,7 @@ repos:
         args: ["--update-only"]
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.15.17
+    rev: v0.15.20
     hooks:
       - id: ruff-check
         args: ["--fix", "--ignore=E402"]
