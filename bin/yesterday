@@ -11,7 +11,7 @@
 import datetime
 import string
 import sys
-from typing import Optional, Sequence
+from collections.abc import Sequence
 
 try:
     from appscript import app, k  # type: ignore[import]
@@ -44,7 +44,7 @@ def typestring(s: str) -> None:
             SE.keystroke(c)
 
 
-def main(argv: Optional[Sequence[str]] = None) -> int:
+def main(argv: Sequence[str] | None = None) -> int:
     """Main entry point for the script.
 
     Args:

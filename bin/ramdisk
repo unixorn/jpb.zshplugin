@@ -11,12 +11,11 @@ import argparse
 import os
 import sys
 from subprocess import check_output
-from typing import Optional
 
 g_CLIargs = None
 
 
-def darwinRAMDisk(args: Optional[argparse.Namespace] = None) -> None:
+def darwinRAMDisk(args: argparse.Namespace | None = None) -> None:
     """Create a RAM disk on macOS.
 
     Args:
@@ -33,7 +32,7 @@ def darwinRAMDisk(args: Optional[argparse.Namespace] = None) -> None:
     check_output(["diskutil", "erasevolume", "HFS+", args.name, rawVolume])
 
 
-def linuxRAMDisk(args: Optional[argparse.Namespace] = None) -> None:
+def linuxRAMDisk(args: argparse.Namespace | None = None) -> None:
     """Create a RAM disk on Linux."""
     if args is None:
         raise ValueError("args is required")
@@ -46,7 +45,7 @@ def linuxRAMDisk(args: Optional[argparse.Namespace] = None) -> None:
     check_output(["mount", "-t", "ramfs", "-o", size, "ramfs", args.name])
 
 
-def setupRAMdisk(args: Optional[argparse.Namespace] = None) -> None:
+def setupRAMdisk(args: argparse.Namespace | None = None) -> None:
     """Dispatch RAM disk creation based on OS platform."""
     if args is None:
         raise ValueError("args is required")

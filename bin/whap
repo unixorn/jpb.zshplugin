@@ -21,10 +21,10 @@ import fnmatch
 import importlib
 import os
 import sys
-from typing import List, Optional, Sequence
+from collections.abc import Sequence
 
 
-def directory_list(path: str) -> List[str]:
+def directory_list(path: str) -> list[str]:
     """Return a list of names in a directory.
 
     Args:
@@ -49,7 +49,7 @@ def is_matching_file_in(path: str, name: str, glob: str) -> bool:
     return is_file_in(path, name) and fnmatch.fnmatch(name, glob)
 
 
-def path_to_module(path: str, name: str) -> Optional[str]:
+def path_to_module(path: str, name: str) -> str | None:
     """Return the path to a Python module file in a directory.
 
     Args:
@@ -70,7 +70,7 @@ def path_to_module(path: str, name: str) -> Optional[str]:
     return os.path.join(path, python_file)
 
 
-def path_to_sub_directory(path: str, name: str) -> Optional[str]:
+def path_to_sub_directory(path: str, name: str) -> str | None:
     """Return a sub-directory path if it exists."""
     result = os.path.join(path, name)
     if os.path.isdir(result):
@@ -78,7 +78,7 @@ def path_to_sub_directory(path: str, name: str) -> Optional[str]:
     return None
 
 
-def path_to_python(path: str, name: str) -> Optional[str]:
+def path_to_python(path: str, name: str) -> str | None:
     """Return either a sub-directory or module path for a given name."""
     result = path_to_sub_directory(path, name)
     if result:
@@ -96,7 +96,7 @@ def built_in(name: str) -> bool:
     return "(built-in)" in str(sys.modules[name])
 
 
-def path_to_import(module_name: str) -> Optional[str]:
+def path_to_import(module_name: str) -> str | None:
     """Return the file path for an imported module.
 
     Args:
