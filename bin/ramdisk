@@ -1,8 +1,12 @@
 #!/usr/bin/env python3
 """Create a RAM disk on macOS or Linux.
 
-Creates a temporary RAM-backed filesystem. On macOS, uses hdiutil/diskutil
-to create an HFS+ volume. On Linux, mounts a ramfs at the specified path.
+Python rewrite since the original bash script had no license and no way to
+specify the size of the RAM disk.
+
+Copyright 2014-2026 Joe Block <jpb@unixorn.net>
+
+Apache 2.0 License (see LICENSE in this repo for further details)
 
 Testing:
     macOS:
