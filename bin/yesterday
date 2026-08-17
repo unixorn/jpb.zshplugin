@@ -24,7 +24,8 @@ def get_yesterday(fmt: str = "%m/%d/%Y") -> str:
     """
     if not fmt:
         fmt = "%m/%d/%Y"
-    yesterday = datetime.date.today() + datetime.timedelta(days=-1)
+    today = datetime.datetime.now(tz=datetime.timezone.utc).astimezone().date()
+    yesterday = today + datetime.timedelta(days=-1)
     return yesterday.strftime(fmt)
 
 

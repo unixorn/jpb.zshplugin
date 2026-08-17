@@ -113,6 +113,7 @@ def show_output_of_shell_command(command: str) -> None:
         [bash_executable(), "-c", command],
         capture_output=True,
         text=True,
+        check=False,
     )
     if not result.returncode:
         print(result.stdout, end="")
@@ -478,6 +479,7 @@ def show_path_to_command(path_to_command: str) -> None:
         [Bash.ls, "-l", path_to_command],
         capture_output=True,
         text=True,
+        check=False,
     )
     if result.stdout:
         print(result.stdout, end="")

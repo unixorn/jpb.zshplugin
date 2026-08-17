@@ -77,6 +77,7 @@ def show_module_path(path: str) -> None:
         ["ls", "-ld", path],
         capture_output=True,
         text=True,
+        check=False,
     )
     if result.stdout:
         print(result.stdout, end="")

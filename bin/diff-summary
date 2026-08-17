@@ -94,7 +94,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.parse_args(argv)
 
     # fileinput handles both stdin and file arguments via sys.argv
-    diff_lines = list(fileinput.input(files=argv if argv else ("-",)))
+    with fileinput.input(files=argv if argv else ("-",)) as fi:
+        diff_lines = list(fi)
     if not diff_lines:
         print("No input.")
         return 1
