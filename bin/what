@@ -12,22 +12,20 @@ Testing:
     python3 bin/what --verbose python3
 """
 
-_copyright = """
-(c) J Alan Brogan 2013
-    The source is released under the MIT license
-    See http://jalanb.mit-license.org/ for more information
-"""
-
 import argparse
 import doctest
-import fnmatch
 import functools
 import os
 import re
 import stat
 import subprocess
 import sys
-from collections.abc import Sequence
+
+_copyright = """
+(c) J Alan Brogan 2013
+    The source is released under the MIT license
+    See http://jalanb.mit-license.org/ for more information
+"""
 
 
 class Options:

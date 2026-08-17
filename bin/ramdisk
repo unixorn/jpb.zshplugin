@@ -22,7 +22,9 @@ import sys
 logger = logging.getLogger(__name__)
 
 
-def create_darwin_ramdisk(name: str = "", megabytes: int = 0, gigabytes: int = 0) -> int:
+def create_darwin_ramdisk(
+    name: str = "", megabytes: int = 0, gigabytes: int = 0
+) -> int:
     """Create a RAM disk on macOS using hdiutil and diskutil.
 
     Args:

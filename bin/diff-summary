@@ -53,7 +53,9 @@ def get_lines(diff_lines: list[str]) -> tuple[list[str], list[str]]:
     return added_lines, removed_lines
 
 
-def get_words(added_lines: list[str], removed_lines: list[str]) -> tuple[list[str], list[str]]:
+def get_words(
+    added_lines: list[str], removed_lines: list[str]
+) -> tuple[list[str], list[str]]:
     """Return word lists for added and removed diff lines.
 
     Args:

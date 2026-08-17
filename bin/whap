@@ -10,17 +10,17 @@ Testing:
     python3 bin/whap requests  # third-party example
 """
 
-_copyright = """
-(c) J Alan Brogan 2013
-    The source is released under the MIT license
-    See http://jalanb.mit-license.org/ for more information
-"""
-
 import argparse
 import importlib
 import logging
 import subprocess
 import sys
+
+_copyright = """
+(c) J Alan Brogan 2013
+    The source is released under the MIT license
+    See http://jalanb.mit-license.org/ for more information
+"""
 
 logger = logging.getLogger(__name__)
 
