@@ -1,14 +1,20 @@
 #!/usr/bin/env python3
+"""Locate Python modules and packages by name.
 
-"""This small script offers a python equivalent to "which"
+A Python equivalent to 'which' for Python modules. For each argument,
+lists all Python files and directories with that name found in sys.path.
 
-For every argument on the command line it lists
-    all python files and all directories with that name
-    in each of the directories in sys.path
-
-If a name is found more than once each is listed
-    (but python will only import one, probably the first listed)
+Testing:
+    python3 bin/whap --help
+    python3 bin/whap os json sys
+    python3 bin/whap requests  # third-party example
 """
+
+import argparse
+import importlib
+import logging
+import subprocess
+import sys
 
 _copyright = """
 (c) J Alan Brogan 2013
@@ -16,84 +22,23 @@ _copyright = """
     See http://jalanb.mit-license.org/ for more information
 """
 
-
-import fnmatch
-import importlib
-import os
-import sys
-from collections.abc import Sequence
-
-
-def directory_list(path: str) -> list[str]:
-    """Return a list of names in a directory.
-
-    Args:
-        path: Path to inspect.
-
-    Returns:
-        A list of entries in the directory, or an empty list if the path is not a directory.
-    """
-    if not os.path.isdir(path):
-        return []
-    return os.listdir(path)
-
-
-def is_file_in(path: str, name: str) -> bool:
-    """Return whether a name is a file at the given path."""
-    path_to_name = os.path.join(path, name)
-    return os.path.isfile(path_to_name)
-
-
-def is_matching_file_in(path: str, name: str, glob: str) -> bool:
-    """Return whether the name is a file in the path and matches the glob."""
-    return is_file_in(path, name) and fnmatch.fnmatch(name, glob)
-
-
-def path_to_module(path: str, name: str) -> str | None:
-    """Return the path to a Python module file in a directory.
-
-    Args:
-        path: Directory path to search.
-        name: Module name to look for.
-
-    Returns:
-        The path to the matching Python source or compiled file, or None if none found.
-    """
-    glob = "%s.py*" % name
-    python_files = [
-        f for f in directory_list(path) if is_matching_file_in(path, f, glob)
-    ]
-    if not python_files:
-        return None
-    source_files = [f for f in python_files if os.path.splitext(f)[-1] == ".py"]
-    python_file = source_files[0] if source_files else python_files[0]
-    return os.path.join(path, python_file)
-
-
-def path_to_sub_directory(path: str, name: str) -> str | None:
-    """Return a sub-directory path if it exists."""
-    result = os.path.join(path, name)
-    if os.path.isdir(result):
-        return result
-    return None
-
-
-def path_to_python(path: str, name: str) -> str | None:
-    """Return either a sub-directory or module path for a given name."""
-    result = path_to_sub_directory(path, name)
-    if result:
-        return result
-    return path_to_module(path, name)
+logger = logging.getLogger(__name__)
 
 
 def built_in(name: str) -> bool:
-    """Return whether the given name is a built-in Python module."""
+    """Return whether the given name is a built-in Python module.
+
+    Args:
+        name: Module name to check.
+
+    Returns:
+        True if the module is a built-in, False otherwise.
+    """
     try:
-        # Not all builtin modules are initially imported, so bring it in first.
         __import__(name)
     except ImportError:
         return False
-    return "(built-in)" in str(sys.modules[name])
+    return "(built-in)" in str(sys.modules.get(name, ""))
 
 
 def path_to_import(module_name: str) -> str | None:
@@ -105,40 +50,99 @@ def path_to_import(module_name: str) -> str | None:
     Returns:
         The path to the imported module, or None if unavailable.
     """
-    module = importlib.import_module(module_name)
-    if module:
-        path_to_file = getattr(module, "__file__", None)
-        if path_to_file is None:
-            return None
-        if ".egg/" in path_to_file:
-            return path_to_file.split(".egg/")[0] + ".egg"
-        return path_to_file
-    return None
+    try:
+        module = importlib.import_module(module_name)
+    except (ImportError, ModuleNotFoundError) as e:
+        logger.debug(f"Could not import '{module_name}': {e}")
+        return None
+
+    if module is None:
+        return None
+
+    path_to_file = getattr(module, "__file__", None)
+    if path_to_file is None:
+        return None
+    if ".egg/" in path_to_file:
+        return path_to_file.split(".egg/")[0] + ".egg"
+    return path_to_file
 
 
-def main(strings: Sequence[str]) -> int:
-    """Run the program for the provided arguments.
+def show_module_path(path: str) -> None:
+    """Display file details for a module path using ls -ld.
 
     Args:
-        strings: Module or package names to locate.
+        path: The filesystem path to display.
+    """
+    result = subprocess.run(
+        ["ls", "-ld", path],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if result.stdout:
+        print(result.stdout, end="")
+    if result.returncode:
+        logger.warning(f"ls failed for '{path}': {result.stderr.strip()}")
+
+
+def find_module(name: str) -> int:
+    """Locate and display a Python module by name.
+
+    Args:
+        name: The module or package name to find.
+
+    Returns:
+        0 if found, 1 if not found.
+    """
+    if built_in(name):
+        print(f"builtin {name}")
+        return 0
+
+    path = path_to_import(name)
+    if path:
+        show_module_path(path)
+        return 0
+
+    logger.warning(f"Module '{name}' not found.")
+    return 1
+
+
+def main(argv: list[str] | None = None) -> int:
+    """Locate Python modules and packages.
+
+    Args:
+        argv: Command-line arguments. Defaults to sys.argv[1:].
 
     Returns:
         Exit status code.
     """
-    for string in strings:
-        if built_in(string):
-            print("builtin", string)
-        path_to_imported_module = path_to_import(string)
-        if path_to_imported_module:
-            os.system("ls -ld %s" % path_to_imported_module)
-    return 0
+    parser = argparse.ArgumentParser(
+        description="Locate Python modules and packages by name (like 'which' for Python).",
+    )
+    parser.add_argument(
+        "modules",
+        nargs="+",
+        help="Module or package names to locate",
+    )
+    parser.add_argument(
+        "--log-level",
+        default="WARNING",
+        choices=["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
+        help="Set the logging level (default: WARNING)",
+    )
+    args = parser.parse_args(argv)
+
+    logging.basicConfig(
+        level=getattr(logging, args.log_level),
+        format="%(levelname)s: %(message)s",
+    )
+    logger.debug(f"Arguments: {vars(args)}")
+
+    result = 0
+    for name in args.modules:
+        result |= find_module(name)
+    return result
 
 
 if __name__ == "__main__":
-    args = sys.argv[1:]
-    if not args:
-        from what import test
-
-        sys.exit(test())
-    else:
-        sys.exit(main(args))
+    sys.exit(main())

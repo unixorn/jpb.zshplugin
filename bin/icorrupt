@@ -1,147 +1,101 @@
 #!/usr/bin/env python3
-#
-# Original source: https://gist.github.com/twirrim/b87d08a2436437c8ff97a65877586182
+"""Add random combining diacritics to text, making it look corrupted.
 
+Adds multiple Unicode combining marks to each character, producing
+the "Zalgo text" effect.
+
+Original source: https://gist.github.com/twirrim/b87d08a2436437c8ff97a65877586182
+
+Testing:
+    python3 bin/icorrupt "hello world"
+    echo "test" | python3 bin/icorrupt
+"""
+
+import argparse
 import random
 import sys
 
-random.seed()
-
-# Can't figure out a way to programmatically generate this
-diacritics = [
-    "\u0300",
-    "\u0301",
-    "\u0302",
-    "\u0303",
-    "\u0304",
-    "\u0305",
-    "\u0306",
-    "\u0307",
-    "\u0308",
-    "\u0309",
-    "\u030a",
-    "\u030b",
-    "\u030c",
-    "\u030d",
-    "\u030e",
-    "\u030f",
-    "\u0310",
-    "\u0311",
-    "\u0312",
-    "\u0313",
-    "\u0314",
-    "\u0315",
-    "\u0316",
-    "\u0317",
-    "\u0318",
-    "\u0319",
-    "\u031a",
-    "\u031b",
-    "\u031c",
-    "\u031d",
-    "\u031e",
-    "\u031f",
-    "\u0320",
-    "\u0321",
-    "\u0322",
-    "\u0323",
-    "\u0324",
-    "\u0325",
-    "\u0326",
-    "\u0327",
-    "\u0328",
-    "\u0329",
-    "\u032a",
-    "\u032b",
-    "\u032c",
-    "\u032d",
-    "\u032e",
-    "\u032f",
-    "\u0330",
-    "\u0331",
-    "\u0332",
-    "\u0333",
-    "\u0334",
-    "\u0335",
-    "\u0336",
-    "\u0337",
-    "\u0338",
-    "\u0339",
-    "\u033a",
-    "\u033b",
-    "\u033c",
-    "\u033d",
-    "\u033e",
-    "\u033f",
-    "\u0340",
-    "\u0341",
-    "\u0342",
-    "\u0343",
-    "\u0344",
-    "\u0345",
-    "\u0346",
-    "\u0347",
-    "\u0348",
-    "\u0349",
-    "\u034a",
-    "\u034b",
-    "\u034c",
-    "\u034d",
-    "\u034e",
-    "\u034f",
-    "\u0350",
-    "\u0351",
-    "\u0352",
-    "\u0353",
-    "\u0354",
-    "\u0355",
-    "\u0356",
-    "\u0357",
-    "\u0358",
-    "\u0359",
-    "\u035a",
-    "\u035b",
-    "\u035c",
-    "\u035d",
-    "\u035e",
-    "\u035f",
-    "\u0350",
-    "\u0361",
-    "\u0362",
-    "\u0363",
-    "\u0364",
-    "\u0365",
-    "\u0366",
-    "\u0367",
-    "\u0368",
-    "\u0369",
-    "\u036a",
-    "\u036b",
-    "\u036c",
-    "\u036d",
-    "\u036e",
-    "\u036f",
-]
+# Unicode combining diacritical marks (U+0300 to U+036F)
+DIACRITICS = [chr(c) for c in range(0x0300, 0x0370)]
 
 
-def add_a_diacritic(base_letter, diacritic_mark):
-    return base_letter + diacritic_mark
+def corrupt_letter(letter: str, intensity: int = 10) -> str:
+    """Add random diacritics to a single character.
+
+    Args:
+        letter: The character to corrupt.
+        intensity: Number of diacritics to add (default: 10).
+
+    Returns:
+        The character with combining marks appended.
+    """
+    if not letter or letter.isspace():
+        return letter
+    marks = random.sample(DIACRITICS, k=min(intensity, len(DIACRITICS)))
+    return letter + "".join(marks)
 
 
-def corrupt_letter(letter):
-    # Let's use 10 for now
-    to_add = random.sample(diacritics, 10)
+def corrupt_text(text: str, intensity: int = 10) -> str:
+    """Add random diacritics to every character in text.
 
-    for diacrit in to_add:
-        letter = letter + diacrit
+    Args:
+        text: The input text to corrupt.
+        intensity: Number of diacritics per character (default: 10).
 
-    return letter
+    Returns:
+        The corrupted text string.
+    """
+    if not text:
+        return ""
+    return "".join(corrupt_letter(c, intensity=intensity) for c in text)
 
 
-def corrupt_text(text):
-    corrupted = "".join(map(corrupt_letter, text))
-    print(corrupted)
+def main(argv: list[str] | None = None) -> int:
+    """Corrupt text with combining diacritical marks.
+
+    Args:
+        argv: Command-line arguments. Defaults to sys.argv[1:].
+
+    Returns:
+        Exit status code.
+    """
+    parser = argparse.ArgumentParser(
+        description="Add random combining diacritics to text (Zalgo text effect).",
+    )
+    parser.add_argument(
+        "text",
+        nargs="?",
+        default=None,
+        help="Text to corrupt (reads stdin if not provided)",
+    )
+    parser.add_argument(
+        "--intensity",
+        type=int,
+        default=10,
+        help="Number of diacritics per character (default: 10)",
+    )
+    parser.add_argument(
+        "--seed",
+        type=int,
+        default=None,
+        help="Random seed for reproducible output",
+    )
+    args = parser.parse_args(argv)
+
+    if args.seed is not None:
+        random.seed(args.seed)
+
+    if args.text is not None:
+        text = args.text
+    elif not sys.stdin.isatty():
+        text = sys.stdin.read().rstrip("\n")
+    else:
+        parser.error("No text provided. Pass as argument or pipe via stdin.")
+        return 1  # unreachable, but satisfies type checker
+
+    print(corrupt_text(text, intensity=args.intensity))
+    return 0
 
 
 if __name__ == "__main__":
-    corrupt_text(sys.argv[1])
+    sys.exit(main())

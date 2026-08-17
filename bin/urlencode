@@ -1,19 +1,61 @@
 #!/usr/bin/env python3
-#
-# urlencode
-#
-# Copyright 2022, Joe Block <jpb@unixorn.net>
+"""URL-encode a string.
 
+Copyright 2022-2026, Joe Block <jpb@unixorn.net>
+
+Testing:
+    python3 bin/urlencode "hello world"
+    echo "foo=bar&baz=qux" | python3 bin/urlencode
+"""
+
+import argparse
 import sys
 import urllib.parse
 
 
-def urlencode(data: str):
+def urlencode(data: str) -> str:
+    """Encode a string for use in a URL.
+
+    Args:
+        data: The string to URL-encode.
+
+    Returns:
+        The URL-encoded string.
     """
-    Encode data as an url
+    if not data:
+        return ""
+    return urllib.parse.quote_plus(data)
+
+
+def main(argv: list[str] | None = None) -> int:
+    """URL-encode input from argument or stdin.
+
+    Args:
+        argv: Command-line arguments. Defaults to sys.argv[1:].
+
+    Returns:
+        Exit status code.
     """
-    print(urllib.parse.quote_plus(data))
+    parser = argparse.ArgumentParser(description="URL-encode a string.")
+    parser.add_argument(
+        "data",
+        nargs="?",
+        default=None,
+        help="String to URL-encode (reads stdin if not provided)",
+    )
+    args = parser.parse_args(argv)
+
+    if args.data is not None:
+        data = args.data
+    elif not sys.stdin.isatty():
+        data = sys.stdin.read().rstrip("\n")
+    else:
+        parser.error("No input provided. Pass as argument or pipe via stdin.")
+        return 1
+
+    print(urlencode(data))
+    return 0
 
 
 if __name__ == "__main__":
-    urlencode(sys.argv[1])
+    sys.exit(main())

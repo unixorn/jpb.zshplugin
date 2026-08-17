@@ -1,19 +1,61 @@
 #!/usr/bin/env python3
-#
-# urldecode
-#
-# Copyright 2022, Joe Block <jpb@unixorn.net>
+"""URL-decode a string.
 
+Copyright 2022-2026, Joe Block <jpb@unixorn.net>
+
+Testing:
+    python3 bin/urldecode "hello%20world"
+    echo "foo%3Dbar" | python3 bin/urldecode
+"""
+
+import argparse
 import sys
 import urllib.parse
 
 
-def urldecode(data: str):
+def urldecode(data: str) -> str:
+    """Decode a URL-encoded string.
+
+    Args:
+        data: The URL-encoded string to decode.
+
+    Returns:
+        The decoded string.
     """
-    Decode an url
+    if not data:
+        return ""
+    return urllib.parse.unquote(data)
+
+
+def main(argv: list[str] | None = None) -> int:
+    """Decode URL-encoded input from argument or stdin.
+
+    Args:
+        argv: Command-line arguments. Defaults to sys.argv[1:].
+
+    Returns:
+        Exit status code.
     """
-    print(urllib.parse.unquote(data))
+    parser = argparse.ArgumentParser(description="URL-decode a string.")
+    parser.add_argument(
+        "data",
+        nargs="?",
+        default=None,
+        help="URL-encoded string to decode (reads stdin if not provided)",
+    )
+    args = parser.parse_args(argv)
+
+    if args.data is not None:
+        data = args.data
+    elif not sys.stdin.isatty():
+        data = sys.stdin.read().rstrip("\n")
+    else:
+        parser.error("No input provided. Pass as argument or pipe via stdin.")
+        return 1
+
+    print(urldecode(data))
+    return 0
 
 
 if __name__ == "__main__":
-    urldecode(sys.argv[1])
+    sys.exit(main())

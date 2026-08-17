@@ -1,17 +1,22 @@
 #!/usr/bin/env python3
-#
-# Takes an input string and flips it
-# based on the irssi plugin fliptext.pl by Gerfried Fuchs,
-# (http://rhonda.deb.at/projects/irssi/scripts/fliptext.pl)
-# but ported to python 3 and changed to operate as a simple cli app
-#
-# Source: https://github.com/twirrim/iflip/blob/master/iflip
-# Author: https://github.com/twirrim
-# Licnense: GPL v2
+"""Flip text upside-down with a table flip kaomoji.
 
+Based on the irssi plugin fliptext.pl by Gerfried Fuchs,
+ported to Python 3 as a CLI app.
+
+Source: https://github.com/twirrim/iflip/blob/master/iflip
+Author: https://github.com/twirrim
+License: GPL v2
+
+Testing:
+    python3 bin/iflip "hello world"
+    echo "test" | python3 bin/iflip
+"""
+
+import argparse
 import sys
 
-flipdict = {
+FLIP_MAP: dict[str, str] = {
     "a": "ɐ",
     "b": "q",
     "c": "ɔ",
@@ -52,21 +57,55 @@ flipdict = {
     "∴": "∵",
 }
 
+FLIPPER = "(╯°□°）╯︵"
 
-def fliptext(text):
-    # Reverse the text
-    text = text[::-1]
-    flipper = "(╯°□°）╯︵"
-    flipped = ""
-    # Replace each letter in the text with its upside down alternative
-    for letter in text:
-        if letter in flipdict:
-            flipped = flipped + flipdict[letter]
-        else:
-            flipped = flipped + letter
-    # Merge the two together
-    print(flipper, flipped)
+
+def fliptext(text: str) -> str:
+    """Reverse and flip text using Unicode substitutions.
+
+    Args:
+        text: The text to flip upside-down.
+
+    Returns:
+        The flipped text string prefixed with the table-flip kaomoji.
+    """
+    if not text:
+        return FLIPPER
+    reversed_text = text[::-1]
+    flipped = "".join(FLIP_MAP.get(c, c) for c in reversed_text)
+    return f"{FLIPPER} {flipped}"
+
+
+def main(argv: list[str] | None = None) -> int:
+    """Flip input text upside-down.
+
+    Args:
+        argv: Command-line arguments. Defaults to sys.argv[1:].
+
+    Returns:
+        Exit status code.
+    """
+    parser = argparse.ArgumentParser(
+        description="Flip text upside-down with a table flip kaomoji.",
+    )
+    parser.add_argument(
+        "text",
+        nargs="*",
+        help="Text to flip (reads stdin if not provided)",
+    )
+    args = parser.parse_args(argv)
+
+    if args.text:
+        text = " ".join(args.text)
+    elif not sys.stdin.isatty():
+        text = sys.stdin.read().rstrip("\n")
+    else:
+        parser.error("No text provided. Pass as argument or pipe via stdin.")
+        return 1
+
+    print(fliptext(text))
+    return 0
 
 
 if __name__ == "__main__":
-    fliptext(sys.argv[1])
+    sys.exit(main())
