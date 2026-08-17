@@ -1,37 +1,45 @@
 #!/usr/bin/env python3
-#
-# From Gary Bernhardt's dotfiles
-# https://github.com/garybernhardt/dotfiles/blob/main/bin/gn
-#
-# Print a summary of a piped diff like:
-#
-#   $ git diff main | gn
-#   49 lines of diff
-#   +11 lines (+18, -7)
-#   +77 words (+110, -33)
-#
-# or with a diff/patch file:
-#
-#   $ gn my-awesome-patch.diff
-#   49 lines of diff
-#   +11 lines (+18, -7)
-#   +77 words (+110, -33)
+"""Print a summary of a piped diff.
 
+Counts lines and words added/removed in a unified diff.
+
+Based on Gary Bernhardt's dotfiles:
+https://github.com/garybernhardt/dotfiles/blob/main/bin/gn
+
+Testing:
+    From stdin:
+        git diff main | python3 bin/diff-summary
+
+    From a file:
+        python3 bin/diff-summary my-patch.diff
+
+    Output example:
+        49 lines of diff
+        +11 lines (+18, -7)
+        +77 words (+110, -33)
+"""
+
+import argparse
 import fileinput
 import re
+import sys
 
 
 def get_lines(diff_lines: list[str]) -> tuple[list[str], list[str]]:
     """Return the added and removed lines from a diff.
 
+    Added lines start with '+' (but not '+++', which marks a new file).
+    Removed lines start with '-' (but not '---').
+
     Args:
         diff_lines: Lines from a diff or patch file.
 
     Returns:
-        A tuple containing added lines and removed lines.
+        A tuple of (added_lines, removed_lines).
     """
-    # Added lines start with '+' (but not '+++', because that marks a new
-    # file).  The same goes for removed lines, except '-' instead of '+'.
+    if not diff_lines:
+        return [], []
+
     added_lines = [
         line
         for line in diff_lines
@@ -45,9 +53,7 @@ def get_lines(diff_lines: list[str]) -> tuple[list[str], list[str]]:
     return added_lines, removed_lines
 
 
-def get_words(
-    added_lines: list[str], removed_lines: list[str]
-) -> tuple[list[str], list[str]]:
+def get_words(added_lines: list[str], removed_lines: list[str]) -> tuple[list[str], list[str]]:
     """Return word lists for added and removed diff lines.
 
     Args:
@@ -55,27 +61,56 @@ def get_words(
         removed_lines: Lines removed in the diff.
 
     Returns:
-        A tuple containing words from added lines and removed lines.
+        A tuple of (added_words, removed_words).
     """
 
-    def word_count(lines: list[str]) -> list[str]:
+    def extract_words(lines: list[str]) -> list[str]:
         return [
             word for line in lines for word in line.split() if re.match(r"^\w+", word)
         ]
 
-    return word_count(added_lines), word_count(removed_lines)
+    return extract_words(added_lines), extract_words(removed_lines)
+
+
+def main(argv: list[str] | None = None) -> int:
+    """Summarize a unified diff by line and word counts.
+
+    Args:
+        argv: Command-line arguments. Defaults to sys.argv[1:].
+
+    Returns:
+        Exit status code.
+    """
+    parser = argparse.ArgumentParser(
+        description="Print a summary of a unified diff (line and word counts).",
+    )
+    parser.add_argument(
+        "files",
+        nargs="*",
+        help="Diff/patch files to summarize (reads stdin if none given)",
+    )
+    parser.parse_args(argv)
+
+    # fileinput handles both stdin and file arguments via sys.argv
+    diff_lines = list(fileinput.input(files=argv if argv else ("-",)))
+    if not diff_lines:
+        print("No input.")
+        return 1
+
+    added_lines, removed_lines = get_lines(diff_lines)
+    added_words, removed_words = get_words(added_lines, removed_lines)
+
+    print(f"{len(diff_lines)} lines of diff")
+    print(
+        f"{len(added_lines) - len(removed_lines):+d} lines "
+        f"(+{len(added_lines)}, -{len(removed_lines)})"
+    )
+    print(
+        f"{len(added_words) - len(removed_words):+d} words "
+        f"(+{len(added_words)}, -{len(removed_words)})"
+    )
+    return 0
 
 
 if __name__ == "__main__":
-    diff_lines = list(fileinput.input())
-    added_lines, removed_lines = get_lines(diff_lines)
-    added_words, removed_words = get_words(added_lines, removed_lines)
-    print("%i lines of diff" % len(diff_lines))
-    print(
-        "%+i lines (+%i, -%i)"
-        % (len(added_lines) - len(removed_lines), len(added_lines), len(removed_lines))
-    )
-    print(
-        "%+i words (+%i, -%i)"
-        % (len(added_words) - len(removed_words), len(added_words), len(removed_words))
-    )
+    sys.exit(main())

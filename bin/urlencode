@@ -2,7 +2,7 @@
 #
 # urlencode
 #
-# Copyright 2022, Joe Block <jpb@unixorn.net>
+# Copyright 2022-2026, Joe Block <jpb@unixorn.net>
 
 import sys
 import urllib.parse
