@@ -1,18 +1,120 @@
-#!/usr/bin/env bash
-#
-# Pretty up json
-#
-# from: https://coderwall.com/p/hwu5uq?i=9&p=1&q=sort%3Ascore+desc&t%5B%5D=zsh
+#!/usr/bin/env python3
+"""Pretty-print JSON.
 
-set -o pipefail
+Formats JSON from files, arguments, or stdin with indentation and sorted keys.
 
-if [ $# -gt 0 ]; then
-  for arg in "$@"
-  do
-    if [ -f "$arg" ]; then
-      python -m json.tool < "$arg"
-    else
-      echo "$arg" | python -m json.tool
-    fi
-  done
-fi
+Source: https://coderwall.com/p/hwu5uq
+
+Testing:
+    echo '{"b":2,"a":1}' | python3 bin/pjson
+    python3 bin/pjson '{"foo":"bar"}'
+    python3 bin/pjson config.json
+"""
+
+import argparse
+import json
+import sys
+
+
+def pretty_print_json(data: str, indent: int = 2, sort_keys: bool = True) -> str:
+    """Format a JSON string with indentation.
+
+    Args:
+        data: A JSON string to format.
+        indent: Number of spaces for indentation (default: 2).
+        sort_keys: Whether to sort dictionary keys (default: True).
+
+    Returns:
+        The formatted JSON string.
+
+    Raises:
+        json.JSONDecodeError: If data is not valid JSON.
+    """
+    parsed = json.loads(data)
+    return json.dumps(parsed, indent=indent, sort_keys=sort_keys)
+
+
+def process_input(source: str, indent: int = 2, sort_keys: bool = True) -> int:
+    """Process a single input source (file path or JSON string).
+
+    Args:
+        source: A file path or raw JSON string.
+        indent: Number of spaces for indentation (default: 2).
+        sort_keys: Whether to sort dictionary keys (default: True).
+
+    Returns:
+        0 on success, 1 on error.
+    """
+    import os
+
+    if os.path.isfile(source):
+        try:
+            with open(source, encoding="utf-8") as f:
+                data = f.read()
+        except OSError as e:
+            print(f"Error reading {source}: {e}", file=sys.stderr)
+            return 1
+    else:
+        data = source
+
+    try:
+        print(pretty_print_json(data, indent=indent, sort_keys=sort_keys))
+    except json.JSONDecodeError as e:
+        print(f"Error: Invalid JSON: {e}", file=sys.stderr)
+        return 1
+    return 0
+
+
+def main(argv: list[str] | None = None) -> int:
+    """Pretty-print JSON from files, arguments, or stdin.
+
+    Args:
+        argv: Command-line arguments. Defaults to sys.argv[1:].
+
+    Returns:
+        Exit status code.
+    """
+    parser = argparse.ArgumentParser(description="Pretty-print JSON.")
+    parser.add_argument(
+        "inputs",
+        nargs="*",
+        help="JSON files or strings to format (reads stdin if none given)",
+    )
+    parser.add_argument(
+        "--indent",
+        type=int,
+        default=2,
+        help="Indentation spaces (default: 2)",
+    )
+    parser.add_argument(
+        "--no-sort-keys",
+        action="store_true",
+        help="Don't sort dictionary keys",
+    )
+    args = parser.parse_args(argv)
+
+    sort_keys = not args.no_sort_keys
+
+    if args.inputs:
+        result = 0
+        for source in args.inputs:
+            result |= process_input(source, indent=args.indent, sort_keys=sort_keys)
+        return result
+
+    if not sys.stdin.isatty():
+        data = sys.stdin.read()
+        try:
+            print(pretty_print_json(data, indent=args.indent, sort_keys=sort_keys))
+        except json.JSONDecodeError as e:
+            print(f"Error: Invalid JSON: {e}", file=sys.stderr)
+            return 1
+        return 0
+
+    parser.error(
+        "No input provided. Pass files/strings as arguments or pipe JSON via stdin."
+    )
+    return 1
+
+
+if __name__ == "__main__":
+    sys.exit(main())

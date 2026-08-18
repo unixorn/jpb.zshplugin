@@ -1,1 +1,101 @@
-yaml-to-json
+#!/usr/bin/env python3
+"""Convert YAML to JSON.
+
+Reads YAML from a file or stdin and outputs formatted JSON to stdout.
+
+Copyright 2022-2026, Joe Block <jpb@unixorn.net>
+License: Apache 2.0
+
+Testing:
+    echo "foo: bar" | python3 bin/yaml2json
+    python3 bin/yaml2json config.yaml
+    python3 bin/yaml2json --compact config.yaml
+"""
+
+import argparse
+import json
+import sys
+
+try:
+    import yaml
+except ImportError:
+    print(
+        "Error: PyYAML is required. Install with: pip install pyyaml", file=sys.stderr
+    )
+    sys.exit(1)
+
+
+def convert_yaml_to_json(
+    input_stream: object, indent: int = 4, compact: bool = False
+) -> str:
+    """Convert a YAML input stream to a JSON string.
+
+    Args:
+        input_stream: A file-like object containing YAML data.
+        indent: Number of spaces for JSON indentation (default: 4).
+        compact: If True, output compact JSON with no indentation.
+
+    Returns:
+        The JSON string representation of the YAML input.
+    """
+    data = yaml.safe_load(input_stream)
+    if compact:
+        return json.dumps(data, separators=(",", ":"))
+    return json.dumps(data, indent=indent)
+
+
+def main(argv: list[str] | None = None) -> int:
+    """Convert YAML input to JSON output.
+
+    Args:
+        argv: Command-line arguments. Defaults to sys.argv[1:].
+
+    Returns:
+        Exit status code.
+    """
+    parser = argparse.ArgumentParser(description="Convert YAML to JSON.")
+    parser.add_argument(
+        "file",
+        nargs="?",
+        default=None,
+        help="YAML file to convert (reads stdin if not provided)",
+    )
+    parser.add_argument(
+        "--indent",
+        type=int,
+        default=4,
+        help="JSON indentation spaces (default: 4)",
+    )
+    parser.add_argument(
+        "--compact",
+        action="store_true",
+        help="Output compact JSON with no indentation",
+    )
+    args = parser.parse_args(argv)
+
+    try:
+        if args.file:
+            with open(args.file, encoding="utf-8") as f:
+                output = convert_yaml_to_json(
+                    f, indent=args.indent, compact=args.compact
+                )
+        elif not sys.stdin.isatty():
+            output = convert_yaml_to_json(
+                sys.stdin, indent=args.indent, compact=args.compact
+            )
+        else:
+            parser.error("No input provided. Pass a file or pipe YAML via stdin.")
+            return 1
+    except yaml.YAMLError as e:
+        print(f"Error: Invalid YAML input: {e}", file=sys.stderr)
+        return 1
+    except OSError as e:
+        print(f"Error: {e}", file=sys.stderr)
+        return 1
+
+    print(output)
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

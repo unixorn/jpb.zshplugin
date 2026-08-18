@@ -1,34 +1,85 @@
-#!/usr/bin/env bash
-#
-# Convert yaml to json
-#
-# Copyright 2022, Joe Block <jpb@unixorn.net>
-#
-# License: Apache 2
+#!/usr/bin/env python3
+"""Convert JSON to YAML.
 
-set -o pipefail
-if [[ -n "$DEBUG" ]]; then
-  set -x
-fi
+Reads JSON from a file or stdin and outputs YAML to stdout.
 
-function debug() {
-  if [[ -n "$DEBUG" ]]; then
-    echo "$@"
-  fi
-}
+Copyright 2022-2026, Joe Block <jpb@unixorn.net>
+License: Apache 2.0
 
-function fail() {
-  printf '%s\n' "$1" >&2  ## Send message to stderr. Exclude >&2 if you don't want it that way.
-  exit "${2-1}"  ## Return a code specified by $2 or 1 by default.
-}
+Testing:
+    echo '{"foo": "bar"}' | python3 bin/json-to-yaml
+    python3 bin/json-to-yaml config.json
+"""
 
-function has() {
-  # Check if a command is in $PATH
-  which "$@" > /dev/null 2>&1
-}
+import argparse
+import json
+import sys
 
-if ! has python3; then
-  fail "Cannot find python3 in your PATH!"
-fi
+try:
+    import yaml
+except ImportError:
+    print(
+        "Error: PyYAML is required. Install with: pip install pyyaml", file=sys.stderr
+    )
+    sys.exit(1)
 
-exec python3 -c 'import sys, yaml, json; yaml.safe_dump(json.load(sys.stdin), sys.stdout, default_flow_style=False)'
+
+def convert_json_to_yaml(input_stream: object, default_flow_style: bool = False) -> str:
+    """Convert a JSON input stream to a YAML string.
+
+    Args:
+        input_stream: A file-like object containing JSON data.
+        default_flow_style: If True, use flow style for collections (default: False).
+
+    Returns:
+        The YAML string representation of the JSON input.
+    """
+    data = json.load(input_stream)
+    return yaml.safe_dump(data, default_flow_style=default_flow_style)
+
+
+def main(argv: list[str] | None = None) -> int:
+    """Convert JSON input to YAML output.
+
+    Args:
+        argv: Command-line arguments. Defaults to sys.argv[1:].
+
+    Returns:
+        Exit status code.
+    """
+    parser = argparse.ArgumentParser(description="Convert JSON to YAML.")
+    parser.add_argument(
+        "file",
+        nargs="?",
+        default=None,
+        help="JSON file to convert (reads stdin if not provided)",
+    )
+    parser.add_argument(
+        "--flow",
+        action="store_true",
+        help="Use flow style for collections",
+    )
+    args = parser.parse_args(argv)
+
+    try:
+        if args.file:
+            with open(args.file, encoding="utf-8") as f:
+                output = convert_json_to_yaml(f, default_flow_style=args.flow)
+        elif not sys.stdin.isatty():
+            output = convert_json_to_yaml(sys.stdin, default_flow_style=args.flow)
+        else:
+            parser.error("No input provided. Pass a file or pipe JSON via stdin.")
+            return 1
+    except json.JSONDecodeError as e:
+        print(f"Error: Invalid JSON input: {e}", file=sys.stderr)
+        return 1
+    except OSError as e:
+        print(f"Error: {e}", file=sys.stderr)
+        return 1
+
+    print(output, end="")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
