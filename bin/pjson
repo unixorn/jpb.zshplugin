@@ -110,7 +110,9 @@ def main(argv: list[str] | None = None) -> int:
             return 1
         return 0
 
-    parser.error("No input provided. Pass files/strings as arguments or pipe JSON via stdin.")
+    parser.error(
+        "No input provided. Pass files/strings as arguments or pipe JSON via stdin."
+    )
     return 1
 
 

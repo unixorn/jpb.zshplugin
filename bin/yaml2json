@@ -19,11 +19,15 @@ import sys
 try:
     import yaml
 except ImportError:
-    print("Error: PyYAML is required. Install with: pip install pyyaml", file=sys.stderr)
+    print(
+        "Error: PyYAML is required. Install with: pip install pyyaml", file=sys.stderr
+    )
     sys.exit(1)
 
 
-def convert_yaml_to_json(input_stream: object, indent: int = 4, compact: bool = False) -> str:
+def convert_yaml_to_json(
+    input_stream: object, indent: int = 4, compact: bool = False
+) -> str:
     """Convert a YAML input stream to a JSON string.
 
     Args:
@@ -72,9 +76,13 @@ def main(argv: list[str] | None = None) -> int:
     try:
         if args.file:
             with open(args.file, encoding="utf-8") as f:
-                output = convert_yaml_to_json(f, indent=args.indent, compact=args.compact)
+                output = convert_yaml_to_json(
+                    f, indent=args.indent, compact=args.compact
+                )
         elif not sys.stdin.isatty():
-            output = convert_yaml_to_json(sys.stdin, indent=args.indent, compact=args.compact)
+            output = convert_yaml_to_json(
+                sys.stdin, indent=args.indent, compact=args.compact
+            )
         else:
             parser.error("No input provided. Pass a file or pipe YAML via stdin.")
             return 1

@@ -13,9 +13,9 @@ License: Apache 2.0
 """
 
 import argparse
+import difflib
 import json
 import sys
-import difflib
 
 
 def normalize_json(path: str, sort_keys: bool = True) -> list[str]:
