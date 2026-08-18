@@ -1,19 +1,106 @@
-#!/usr/bin/env bash
-#
-# Diff JSON files and cope with key-order differences by processing with
-# json.tool
+#!/usr/bin/env python3
+"""Diff two JSON files, ignoring key order.
 
-set -o pipefail
+Normalizes both files by sorting keys before comparing, so differences
+in key ordering don't produce false positives.
 
-if [[ ! -r "${1}" ]]; then
-  echo "Can't read ${1}"
-  exit 1
-fi
+Testing:
+    python3 bin/jsondiff file1.json file2.json
+    python3 bin/jsondiff --sort-arrays file1.json file2.json
 
-if [[ ! -r "${2}" ]]; then
-  echo "Can't read ${2}"
-  exit 1
-fi
+Copyright 2026 Joe Block <jpb@unixorn.net>
+License: Apache 2.0
+"""
 
-# shellcheck disable=SC2002
-diff -B <( cat "${1}" | python -m json.tool ) <( cat "${2}" | python -m json.tool )
+import argparse
+import json
+import sys
+import difflib
+
+
+def normalize_json(path: str, sort_keys: bool = True) -> list[str]:
+    """Load and normalize a JSON file into sorted, indented lines.
+
+    Args:
+        path: Path to the JSON file.
+        sort_keys: Whether to sort dictionary keys (default: True).
+
+    Returns:
+        A list of formatted JSON lines.
+
+    Raises:
+        OSError: If the file cannot be read.
+        json.JSONDecodeError: If the file is not valid JSON.
+    """
+    with open(path, encoding="utf-8") as f:
+        data = json.load(f)
+    formatted = json.dumps(data, indent=2, sort_keys=sort_keys)
+    return formatted.splitlines(keepends=True)
+
+
+def main(argv: list[str] | None = None) -> int:
+    """Diff two JSON files with key-order normalization.
+
+    Args:
+        argv: Command-line arguments. Defaults to sys.argv[1:].
+
+    Returns:
+        0 if files are identical, 1 if they differ, 2 on error.
+    """
+    parser = argparse.ArgumentParser(
+        description="Diff two JSON files, ignoring key order.",
+    )
+    parser.add_argument(
+        "file1",
+        help="First JSON file",
+    )
+    parser.add_argument(
+        "file2",
+        help="Second JSON file",
+    )
+    parser.add_argument(
+        "--no-sort-keys",
+        action="store_true",
+        help="Don't sort keys (compare with original key order)",
+    )
+    parser.add_argument(
+        "--context",
+        "-c",
+        type=int,
+        default=3,
+        help="Number of context lines in diff output (default: 3)",
+    )
+    args = parser.parse_args(argv)
+
+    sort_keys = not args.no_sort_keys
+
+    try:
+        lines1 = normalize_json(args.file1, sort_keys=sort_keys)
+    except (OSError, json.JSONDecodeError) as e:
+        print(f"Error reading {args.file1}: {e}", file=sys.stderr)
+        return 2
+
+    try:
+        lines2 = normalize_json(args.file2, sort_keys=sort_keys)
+    except (OSError, json.JSONDecodeError) as e:
+        print(f"Error reading {args.file2}: {e}", file=sys.stderr)
+        return 2
+
+    diff = list(
+        difflib.unified_diff(
+            lines1,
+            lines2,
+            fromfile=args.file1,
+            tofile=args.file2,
+            n=args.context,
+        )
+    )
+
+    if diff:
+        sys.stdout.writelines(diff)
+        return 1
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
