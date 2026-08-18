@@ -275,6 +275,7 @@ License: MIT
 
 import argparse
 import logging
+import os
 import sys
 
 logger = logging.getLogger(__name__)
@@ -296,11 +297,20 @@ def main(argv: list[str] | None = None) -> int:
         choices=["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
         help="Set the logging level (default: INFO)",
     )
+    parser.add_argument(
+        "--log-format",
+        "--logformat",
+        default=os.environ.get(
+            "PYTHON_LOG_FORMAT",
+            "[%(asctime)s][%(levelname)8s][%(filename)s:%(lineno)s - %(funcName)20s() ] %(message)s",
+        ),
+        help="Set the log format (default: $PYTHON_LOG_FORMAT or detailed format)",
+    )
     args = parser.parse_args(argv)
 
     logging.basicConfig(
         level=getattr(logging, args.log_level),
-        format="%(levelname)s: %(message)s",
+        format=args.log_format,
     )
     logger.debug(f"Arguments: {{vars(args)}}")
 
@@ -338,11 +348,16 @@ def setup_logging(level)
   end
   logger.formatter = proc do |severity, datetime, progname, msg|
     date_format = datetime.strftime("%Y-%m-%d %H:%M:%S")
-    if severity == "INFO" or severity == "WARN"
-      "[#{{date_format}}] #{{severity}}  (#{{progname}}): #{{msg}}\\n"
-    else
-      "[#{{date_format}}] #{{severity}} (#{{progname}}): #{{msg}}\\n"
+    callinfo = caller(4)&.first
+    file = "unknown"
+    line = "0"
+    func = "unknown"
+    if callinfo =~ /([^\\/]+):(\\d+):in `(.+)'/
+      file = $1
+      line = $2
+      func = $3
     end
+    "[#{{date_format}}][%8s][#{{file}}:#{{line}} - %20s() ] #{{msg}}\\n" % [severity, func]
   end
   return logger
 end
@@ -502,11 +517,20 @@ def main(argv: list[str] | None = None) -> int:
         choices=["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
         help="Set the logging level (default: INFO)",
     )
+    parser.add_argument(
+        "--log-format",
+        "--logformat",
+        default=os.environ.get(
+            "PYTHON_LOG_FORMAT",
+            "[%(asctime)s][%(levelname)8s][%(filename)s:%(lineno)s - %(funcName)20s() ] %(message)s",
+        ),
+        help="Set the log format (default: $PYTHON_LOG_FORMAT or detailed format)",
+    )
     args = parser.parse_args(argv)
 
     logging.basicConfig(
         level=getattr(logging, args.log_level),
-        format="%(levelname)s: %(message)s",
+        format=args.log_format,
     )
     logger.debug(f"Arguments: {vars(args)}")
 
