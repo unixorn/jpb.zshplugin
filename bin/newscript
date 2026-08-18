@@ -1,58 +1,53 @@
-#!/usr/bin/env ruby
-# shellcheck disable=SC1234,SC1071
-# Shellcheck finds the embedded bash template and complains because of the
-# ruby and python also found in the script
-#
-#   Copyright 2016-2026 Joe Block <jpb@unixorn.net>
-#
-#   Licensed under the Apache License, Version 2.0 (the "License");
-#   you may not use this file except in compliance with the License.
-#   You may obtain a copy of the License at
-#
-#       http://www.apache.org/licenses/LICENSE-2.0
-#
-#   Unless required by applicable law or agreed to in writing, software
-#   distributed under the License is distributed on an "AS IS" BASIS,
-#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#   See the License for the specific language governing permissions and
-#   limitations under the License.
-#
+#!/usr/bin/env python3
+"""Generate new script files from templates.
 
-# Got tired of 'vim foo' && chmod +x foo && cat /path/to/template > foo,
-# so made a helper to create new scripts with the base stuff I wanted in them.
+Creates new bash, python, or ruby scripts from built-in templates,
+sets them executable, and populates a copyright year placeholder.
 
-require "rubygems"
-require "pp"
-require "optimist"
+Copyright 2016-2026 Joe Block <jpb@unixorn.net>
 
-def clean_name(name)
-  # get rid of toxic spaces
-  return name.gsub(" ", "_")
-end
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
-def write_script(name:, source:)
-  if File.exist?(name)
-    puts "There's already a file at #{name}. Bailing out."
-    exit 13
-  else
-    File.open(name, "w") do |content|
-      content.write(source)
-      `chmod 755 #{name}`
-    end
-  end
-end
+    http://www.apache.org/licenses/LICENSE-2.0
 
-def generate_bash_script(name:)
-  copyright_year = `date -u "+%Y"`.chomp
-  rawScript =<<"END_BASH_SCRIPT"
-#!/usr/bin/env bash
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+Testing:
+    python3 bin/newscript --help
+    python3 bin/newscript --dry-run --script-type bash my-tool
+    python3 bin/newscript --dry-run --script-type python my-tool
+    python3 bin/newscript --dry-run --script-type ruby my-tool
+    python3 bin/newscript --script-type python /tmp/test-script
+"""
+
+import argparse
+import datetime
+import logging
+import os
+import stat
+import sys
+from pathlib import Path
+
+logger = logging.getLogger(__name__)
+
+# ---------------------------------------------------------------------------
+# Templates
+# ---------------------------------------------------------------------------
+
+BASH_TEMPLATE = """#!/usr/bin/env bash
 #
 # This base script is MIT licensed so you can base your
 # own work on it.
 #
-# #{name} script skeleton
+# {name} script skeleton
 #
-# Copyright #{copyright_year}, Your Name <yourname@yourdomain.com>
+# Copyright {year}, {author} <{email}>
 
 set -o pipefail
 if [[ -n "$DEBUG" ]]; then
@@ -62,31 +57,31 @@ if [[ -n "$DEBUG" ]]; then
   fi
 fi
 
-function echo-stderr() {
-  printf '%s\n' "$1" >&2  ## Send message to stderr. Exclude >&2 if you don't want it that way.
-}
+function echo-stderr() {{
+  printf '%s\\n' "$1" >&2  ## Send message to stderr. Exclude >&2 if you don't want it that way.
+}}
 
-function debug() {
+function debug() {{
   if [[ -n "$DEBUG" ]]; then
     echo-stderr "$@"
   fi
-}
+}}
 
-function verbose() {
+function verbose() {{
   if [[ -n "$VERBOSE" ]]; then
     echo "$@"
   fi
-}
+}}
 
-function fail() {
+function fail() {{
   echo-stderr "$1"
-  exit "${2-1}"  ## Return a code specified by $2 or 1 by default.
-}
+  exit "${{2-1}}"  ## Return a code specified by $2 or 1 by default.
+}}
 
-function has() {
+function has() {{
   # Check if a command is in $PATH
   which "$@" > /dev/null 2>&1
-}
+}}
 
 # on_exit and add_on_exit from http://www.linuxjournal.com/content/use-bash-trap-statement-cleanup-temporary-files
 
@@ -97,23 +92,23 @@ function has() {
 #   add_on_exit rm -f "$tempfile"
 
 function on_exit()
-{
-  for i in "${on_exit_items[@]}"
+{{
+  for i in "${{on_exit_items[@]}}"
   do
     # shellcheck disable=SC2086
     eval $i
   done
-}
+}}
 
 function add_on_exit()
-{
-  local n=${#on_exit_items[*]}
+{{
+  local n=${{#on_exit_items[*]}}
   # shellcheck disable=SC2004
   on_exit_items[$n]="$*"
   if [[ $n -eq 0 ]]; then
     trap on_exit EXIT
   fi
-}
+}}
 
 # Set up a working scratch directory
 SCRATCH_D=$(mktemp -d)
@@ -125,30 +120,30 @@ fi
 
 add_on_exit rm -rf "$SCRATCH_D"
 
-function get-default-settings() {
+function get-default-settings() {{
   # Make it easy to override settings from CLI or by setting an
   # environment variable
-  A_BOOL_SETTING=${A_BOOL_SETTING:-'false'}
-  A_PATH_TO_A_FILE=${A_PATH_TO_A_FILE:-'/path/to/file'}
+  A_BOOL_SETTING=${{A_BOOL_SETTING:-'false'}}
+  A_PATH_TO_A_FILE=${{A_PATH_TO_A_FILE:-'/path/to/file'}}
   STALE_BASH_TREATMENT=warning # set to 'failure' if the script won't work on stale bash
-}
+}}
 
-function only-run-on() {
+function only-run-on() {{
   # shellcheck disable=SC2086
   if [[ "$(uname -s | tr '[:upper:]' '[:lower:]')" != "$(echo $1 | tr '[:upper:]' '[:lower:]')" ]]; then
     fail "This script only runs on $1, this machine is running $(uname -s)"
   else
     debug "OS ($(uname -s)) is valid..."
   fi
-}
+}}
 
-function check-dependency() {
+function check-dependency() {{
   if ! (builtin command -V "$1" >/dev/null 2>&1); then
     fail "Missing dependency: can't find $1 in your PATH"
   fi
-}
+}}
 
-function check-dependencies() {
+function check-dependencies() {{
   debug "Checking dependencies..."
   # shellcheck disable=SC2041
   # Placeholders for whatever programs you really need
@@ -160,67 +155,67 @@ function check-dependencies() {
       debug "- Found $dep"
     fi
   done
-}
+}}
 
-function approve() {
+function approve() {{
   # $1 = prompt for user, or Continue?
   # $2 = message for non approved
   local prompt
   local reject_message
-  prompt=${1-'Ok to continue?'}
-  reject_message=${2-'Exiting...'}
+  prompt=${{1-'Ok to continue?'}}
+  reject_message=${{2-'Exiting...'}}
   echo -n "$prompt [yes/NO]"
   read -r answer
   # shellcheck disable=SC2086
   if [[ ! "$(echo $answer | tr '[:upper:]' '[:lower:]')" == "yes" ]]; then
     fail "$reject_message"
   fi
-}
+}}
 
-function check_bash_version() {
-  if [[ "${BASH_VERSINFO[0]}" == "3" ]]; then
+function check_bash_version() {{
+  if [[ "${{BASH_VERSINFO[0]}}" == "3" ]]; then
     echo "You are running a very old version of bash.  Please upgrade to the"
     echo "latest version."
     echo
-    echo "If you are on macOS, please use homebrew to install the latest GPL'd
+    echo "If you are on macOS, please use homebrew to install the latest GPL'd"
     echo "version of bash with the following command:"
     echo
     echo "brew install bash"
     echo
-    if [[ "${STALE_BASH_TREATMENT}" == 'failure' ]]; then
+    if [[ "${{STALE_BASH_TREATMENT}}" == 'failure' ]]; then
       exit 1
     fi
   fi
-  if [[ "${BASH_VERSINFO[0]}" -lt "5" ]]; then
+  if [[ "${{BASH_VERSINFO[0]}}" -lt "5" ]]; then
     echo "Please make sure you are running v5 or greater of bash"
     exit 1
   fi
-}
+}}
 
-function my-name() {
+function my-name() {{
   basename "$0"
-}
+}}
 
-function usage() {
+function usage() {{
   echo "Usage: $(my-name) ARG ARG"
-}
+}}
 
-function path-exists() {
-  local file="${1}"
-  [[ -s "${file}" ]] || fail "$1 is not valid"
-  [[ -d "${file}" ]] && return
-  [[ -f "${file}" ]] && return
+function path-exists() {{
+  local file="${{1}}"
+  [[ -s "${{file}}" ]] || fail "$1 is not valid"
+  [[ -d "${{file}}" ]] && return
+  [[ -f "${{file}}" ]] && return
   fail "$1 is not a directory or file"
-}
+}}
 
-function pingable() {
+function pingable() {{
   if ! ping -c 5 $@ > /dev/null 2>&1; then
     debug "Could not ping $@"
     return 1
   else
     return 0
   fi
-}
+}}
 
 # If you need to restrict to a specific os, use
 # only-run-on Darwin
@@ -269,80 +264,77 @@ do
 done
 
 check_bash_version
+"""
 
-END_BASH_SCRIPT
-  write_script(name: name, source: rawScript)
-end
+PYTHON_TEMPLATE = '''#!/usr/bin/env python3
+"""{name} - description of what this script does.
 
-def generate_python_script(name:)
-  copyright_year = `date -u "+%Y"`.chomp
-  rawScript =<<"END_PYTHON_SCRIPT"
-#!/usr/bin/env python3
-#
-# This base script is MIT licensed so you can base your
-# own work on it.
-#
-# ${name} script skeleton
-#
-# Copyright #{copyright_year}, Your Name <yourname@yourdomain.com>
+Copyright {year}, {author} <{email}>
+License: MIT
+"""
 
 import argparse
 import logging
 import os
 import sys
 
-
-def parseCLI():
-    '''
-    Parse the command line options
-    '''
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-d', '--debug',
-                        help='Debug setting',
-                        action='store_true')
-    parser.add_argument('-l', '--log-level',
-                        type=str.upper,
-                        help='set log level',
-                        choices=['DEBUG','INFO','ERROR','WARNING','CRITICAL'],
-                        default='INFO')
-
-    cli = parser.parse_args()
-    loglevel = getattr(logging, cli.log_level.upper(), None)
-    logFormat = "[%(asctime)s][%(levelname)8s][%(filename)s:%(lineno)s - %(funcName)20s() ] %(message)s"
-    logging.basicConfig(level=loglevel, format=logFormat)
-    logging.info('Set log level to %s', cli.log_level.upper())
-    return cli
+logger = logging.getLogger(__name__)
 
 
-def main():
-    '''
-    Main program driver
-    '''
-    cli = parseCLI()
+def main(argv: list[str] | None = None) -> int:
+    """Main entry point.
+
+    Args:
+        argv: Command-line arguments. Defaults to sys.argv[1:].
+
+    Returns:
+        Exit status code.
+    """
+    parser = argparse.ArgumentParser(description="{name}")
+    parser.add_argument(
+        "--log-level",
+        default="INFO",
+        choices=["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
+        help="Set the logging level (default: INFO)",
+    )
+    parser.add_argument(
+        "--log-format",
+        "--logformat",
+        default=os.environ.get(
+            "PYTHON_LOG_FORMAT",
+            "[%(asctime)s][%(levelname)8s][%(filename)s:%(lineno)s - %(funcName)20s() ] %(message)s",
+        ),
+        help="Set the log format (default: $PYTHON_LOG_FORMAT or detailed format)",
+    )
+    args = parser.parse_args(argv)
+
+    logging.basicConfig(
+        level=getattr(logging, args.log_level),
+        format=args.log_format,
+    )
+    logger.debug(f"Arguments: {{vars(args)}}")
+
+    # Your code here
+
+    return 0
 
 
-if __name__ == '__main__':
-    main()
+if __name__ == "__main__":
+    sys.exit(main())
+'''
 
-END_PYTHON_SCRIPT
-  write_script(name: name, source: rawScript)
-end
-
-def generate_ruby_script(name:)
-  copyright_year = `date -u "+%Y"`.chomp
-  rawScript =<<'END_RUBY_SCRIPT'
-#!/usr/bin/env ruby
+RUBY_TEMPLATE = """#!/usr/bin/env ruby
 #
 # Script skeleton
 #
-# Copyright #{copyright_year}, Your Name <yourname@yourdomain.com>
+# Copyright {year}, {author} <{email}>
 
-require 'trollop'
+require 'optimist'
 require 'logger'
 
-def setup_logging
+def setup_logging(level)
   logger = Logger.new(STDOUT)
-  case $opts[:log_level].upcase
+  case level.upcase
   when 'DEBUG'
     logger.level = Logger::DEBUG
   when 'ERROR'
@@ -356,22 +348,28 @@ def setup_logging
   end
   logger.formatter = proc do |severity, datetime, progname, msg|
     date_format = datetime.strftime("%Y-%m-%d %H:%M:%S")
-    if severity == "INFO" or severity == "WARN"
-      "[#{date_format}] #{severity}  (#{progname}): #{msg}\n"
-    else
-      "[#{date_format}] #{severity} (#{progname}): #{msg}\n"
+    callinfo = caller(4)&.first
+    file = "unknown"
+    line = "0"
+    func = "unknown"
+    if callinfo =~ /([^\\/]+):(\\d+):in `(.+)'/
+      file = $1
+      line = $2
+      func = $3
     end
+    "[#{{date_format}}][%8s][#{{file}}:#{{line}} - %20s() ] #{{msg}}\\n" % [severity, func]
   end
   return logger
 end
 
 def main
-  $opts = Trollop::options do
-    version "yourscript 0.1 (c) 2016 Your Name <yourname@yourdomain.com>"
+  opts = Optimist::options do
+    version "{name} 0.1 (c) {year} {author} <{email}>"
     banner <<-EOS
-  The quick brown fox jumped over the lazy dog.
+  {name}
+
   Usage:
-         yourscript [options]
+         {name} [options]
   where [options] are:
   EOS
 
@@ -379,53 +377,178 @@ def main
     opt :log_level, "Set log level", :default => "INFO", :type => String
   end
 
-  validLevels = ['DEBUG', 'ERROR', 'FATAL', 'INFO', 'WARN']
-  Trollop::die :log_level, "#{$opts[:log_level]} must be in #{validLevels}" unless validLevels.include?($opts[:log_level].upcase)
+  valid_levels = ['DEBUG', 'ERROR', 'FATAL', 'INFO', 'WARN']
+  Optimist::die :log_level, "#{{opts[:log_level]}} must be in #{{valid_levels}}" unless valid_levels.include?(opts[:log_level].upcase)
 
-  $logger = setup_logging
+  logger = setup_logging(opts[:log_level])
+  logger.info("Starting {name}")
 
-end
-
-main
-
-END_RUBY_SCRIPT
-  write_script(name: name, source: rawScript)
-end
-
-def main
-  $opts = Optimist::options do
-    version "newscript 0.1 (c) 2016 Joe Block <jpb@unixorn.net>"
-    banner <<-EOS
-  Generate a new script file from a template.
-  Usage:
-         newscript [options] name
-  where [options] are:
-  EOS
-
-    opt :debug, "Set debug level", default: 0
-    opt :script_type, "Script type. Valid options: bash, python or ruby", type: String, default: "bash"
-  end
-
-  validFlavors = ["bash", "python", "ruby"]
-
-  # Sanity check args
-  Optimist::die :script_type, "#{$opts[:script_type]} must be in #{validFlavors}" unless validFlavors.include?($opts[:script_type])
-  Optimist::die "Specify at least one file name" unless ARGV.length > 0
-
-  ARGV.each { |name|
-    case $opts[:script_type]
-    when "bash"
-      generate_bash_script(name: name)
-    when "python"
-      generate_python_script(name: name)
-    when "ruby"
-      generate_ruby_script(name: name)
-    else
-      puts "script type #{$opts[:script_type]} unknown"
-      exit 13
-    end
-  }
+  # Your code here
 
 end
 
 main
+"""
+
+TEMPLATES: dict[str, str] = {
+    "bash": BASH_TEMPLATE,
+    "python": PYTHON_TEMPLATE,
+    "ruby": RUBY_TEMPLATE,
+}
+
+
+# ---------------------------------------------------------------------------
+# Core logic
+# ---------------------------------------------------------------------------
+
+
+def clean_name(name: str) -> str:
+    """Sanitize a file name by replacing spaces with underscores.
+
+    Args:
+        name: The raw file name.
+
+    Returns:
+        The sanitized file name.
+    """
+    if not name:
+        return name
+    return name.replace(" ", "_")
+
+
+def render_template(
+    script_type: str,
+    name: str,
+    author: str = "Your Name",
+    email: str = "yourname@yourdomain.com",
+) -> str:
+    """Render a script template with name, year, author, and email substitutions.
+
+    Args:
+        script_type: One of 'bash', 'python', or 'ruby'.
+        name: The script name to embed in the template.
+        author: Author name for the copyright line.
+        email: Author email for the copyright line.
+
+    Returns:
+        The rendered template string.
+    """
+    year = datetime.datetime.now(tz=datetime.timezone.utc).year
+    template = TEMPLATES[script_type]
+    return template.format(name=name, year=year, author=author, email=email)
+
+
+def write_script(path: Path, content: str, dry_run: bool = False) -> int:
+    """Write a script file and make it executable.
+
+    Args:
+        path: Destination path for the new script.
+        content: The rendered template content.
+        dry_run: If True, print to stdout instead of writing.
+
+    Returns:
+        0 on success, 1 on failure.
+    """
+    if dry_run:
+        logger.info(f"Would write to: {path}")
+        print(content)
+        return 0
+
+    if path.exists():
+        logger.error(f"File already exists: {path}. Refusing to overwrite.")
+        return 1
+
+    try:
+        path.write_text(content, encoding="utf-8")
+        os.chmod(
+            path,
+            stat.S_IRWXU | stat.S_IRGRP | stat.S_IXGRP | stat.S_IROTH | stat.S_IXOTH,
+        )  # 755
+        logger.info(f"Created: {path}")
+    except OSError as e:
+        logger.error(f"Failed to write {path}: {e}")
+        return 1
+
+    return 0
+
+
+def main(argv: list[str] | None = None) -> int:
+    """Generate new script files from templates.
+
+    Args:
+        argv: Command-line arguments. Defaults to sys.argv[1:].
+
+    Returns:
+        Exit status code.
+    """
+    parser = argparse.ArgumentParser(
+        description="Generate new script files from built-in templates.",
+    )
+    parser.add_argument(
+        "names",
+        nargs="+",
+        help="File names for the new scripts",
+    )
+    parser.add_argument(
+        "-s",
+        "--script-type",
+        choices=list(TEMPLATES.keys()),
+        default="bash",
+        help="Template language (default: bash)",
+    )
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Print the template to stdout without writing a file",
+    )
+    parser.add_argument(
+        "--author",
+        default=os.environ.get("AUTHOR", "Your Name"),
+        help="Author name for the copyright line (default: $AUTHOR or 'Your Name')",
+    )
+    parser.add_argument(
+        "--email",
+        default=os.environ.get("EMAIL", "yourname@yourdomain.com"),
+        help="Author email for the copyright line (default: $EMAIL or 'yourname@yourdomain.com')",
+    )
+    parser.add_argument(
+        "--log-level",
+        default="INFO",
+        choices=["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
+        help="Set the logging level (default: INFO)",
+    )
+    parser.add_argument(
+        "--log-format",
+        "--logformat",
+        default=os.environ.get(
+            "PYTHON_LOG_FORMAT",
+            "[%(asctime)s][%(levelname)8s][%(filename)s:%(lineno)s - %(funcName)20s() ] %(message)s",
+        ),
+        help="Set the log format (default: $PYTHON_LOG_FORMAT or detailed format)",
+    )
+    args = parser.parse_args(argv)
+
+    logging.basicConfig(
+        level=getattr(logging, args.log_level),
+        format=args.log_format,
+    )
+    logger.debug(f"Arguments: {vars(args)}")
+
+    result = 0
+    for raw_name in args.names:
+        name = clean_name(raw_name)
+        path = Path(name)
+        basename = path.stem
+        content = render_template(
+            script_type=args.script_type,
+            name=basename,
+            author=args.author,
+            email=args.email,
+        )
+        result |= write_script(path=path, content=content, dry_run=args.dry_run)
+
+    return result
+
+
+if __name__ == "__main__":
+    sys.exit(main())

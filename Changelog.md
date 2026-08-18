@@ -1,5 +1,19 @@
 # Changelog
 
+## 2026.8.18
+
+### Changed
+
+- `newscript`: Rewritten from Ruby to Python 3. Eliminates `optimist` gem dependency. Modernized Python template output. Added `--dry-run` flag. Uses `pathlib` and `os.chmod` instead of shelling out. Templates stored as extensible dictionary.
+
+- `yaml2json`: Rewritten from bash wrapper to standalone Python 3 script. Uses `yaml.safe_load`. Added `--indent` and `--compact` flags. `yaml-to-json` is now a symlink to `yaml2json`.
+
+- `json-to-yaml`: Rewritten from bash wrapper to standalone Python 3 script. Added `--flow` flag. `json2yaml` is now a symlink to `json-to-yaml`.
+
+- `jsondiff`: Rewritten from bash to pure Python 3. Uses `json` + `difflib` instead of external `diff`. Added `--no-sort-keys` and `--context` flags.
+
+- `pjson`: Rewritten from bash wrapper to standalone Python 3 script. Accepts files, raw JSON strings, or stdin. Added `--indent` and `--no-sort-keys` flags.
+
 ## 2026.8.17
 
 ### Fixed
