@@ -84,6 +84,7 @@ The scripts in this collection don't actually require you to be using ZSH as you
 | `jmemstat` | [majk1's shellrc](https://github.com/majk1/shellrc/blob/master/utils/jmemstat.sh) | Displays a memory information summary for a java process |
 | `json2yaml` / `json-to-yaml` | jpb@unixorn.net | Converts JSON to YAML |
 | `jsondiff` | ? | Diff JSON files and cope with key-order differences by processing with json.tool |
+| `killport` | jpb@unixorn.net | Kill processes (and optionally containers) listening on ports; supports multiple ports, signal control, dry-run, and container mode |
 | `lineprof` | Mislav Marohnić's [dotfiles](https://github.com/mislav/dotfiles)  | Annotates each line of input with the number of milliseconds elapsed since the last line. Useful for figuring out slow points of output-producing programs. |
 | `local-ip-address` | jpb@unixorn.net | Print local IP v4 address |
 | `local-ipv6-address` | jpb@unixorn.net | Print local IP v6 address |
