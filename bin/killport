@@ -1,0 +1,292 @@
+#!/usr/bin/env python3
+"""
+killport — kill processes (and optionally containers) listening on ports
+
+Python 3 implementation (standard library only). Cross-platform helpers try
+`lsof` first (macOS & Linux), fall back to `ss` (Linux). Container support
+is best-effort via `docker` or `podman` if available on PATH.
+
+Behavior mirrors the original script's intent:
+  - multiple ports
+  - signal control
+  - dry-run
+  - no-fail
+  - exit codes: 0 success, 1 error, 2 nothing found
+
+"""
+
+from __future__ import annotations
+
+import argparse
+import logging
+import os
+import re
+import shlex
+import signal
+import subprocess
+import sys
+
+# use module logger
+logger = logging.getLogger(__name__)
+
+
+def parse_args() -> argparse.Namespace:
+    p = argparse.ArgumentParser(
+        description="Kill processes or containers listening on ports"
+    )
+    p.add_argument("ports", nargs="+", type=int, help="port(s) to target")
+    p.add_argument(
+        "-s",
+        "--signal",
+        default="TERM",
+        help="signal to send (name or number), default: TERM",
+    )
+    p.add_argument(
+        "-m",
+        "--mode",
+        choices=("auto", "process", "container"),
+        default="auto",
+        help="auto | process | container (default: auto)",
+    )
+    p.add_argument(
+        "--dry-run", action="store_true", help="show what would be killed, don't kill"
+    )
+    p.add_argument(
+        "--no-fail", action="store_true", help="exit 0 even when nothing is found"
+    )
+    p.add_argument(
+        "-v",
+        "--verbose",
+        action="store_true",
+        help="enable debug logging",
+    )
+    return p.parse_args()
+
+
+def parse_signal(sig: str) -> int | None:
+    # Accept numbers or names like KILL or SIGKILL
+    sig = sig.strip()
+    if sig.isdigit():
+        return int(sig)
+    name = sig.upper()
+    if not name.startswith("SIG"):
+        name = "SIG" + name
+    try:
+        return getattr(signal, name).value
+    except AttributeError:
+        return None
+
+
+def run_cmd(cmd: list[str]) -> subprocess.CompletedProcess:
+    return subprocess.run(cmd, capture_output=True, text=True, check=False)
+
+
+def pids_from_lsof(port: int) -> set[int]:
+    pids: set[int] = set()
+    try:
+        cp = run_cmd(["lsof", "-nP", f"-iTCP:{port}", "-sTCP:LISTEN"])
+    except FileNotFoundError:
+        return pids
+    if cp.returncode != 0 and not cp.stdout:
+        return pids
+    lines = cp.stdout.splitlines()
+    if not lines:
+        return pids
+    for line in lines[1:]:
+        cols = line.split()
+        if len(cols) >= 2:
+            try:
+                pids.add(int(cols[1]))
+            except ValueError:
+                continue
+    return pids
+
+
+def pids_from_ss(port: int) -> set[int]:
+    pids: set[int] = set()
+    try:
+        cp = run_cmd(["ss", "-lntp"])
+    except FileNotFoundError:
+        return pids
+    if cp.returncode != 0 and not cp.stdout:
+        return pids
+    # lines contain pid=NNN in process/users column
+    for line in cp.stdout.splitlines():
+        if f":{port}" in line:
+            m = re.search(r"pid=(\d+)", line)
+            if m:
+                pids.add(int(m.group(1)))
+    return pids
+
+
+def get_pids_for_port(port: int) -> set[int]:
+    # Try lsof first (best cross-platform), then ss (Linux)
+    pids = pids_from_lsof(port)
+    if pids:
+        return pids
+    pids = pids_from_ss(port)
+    if pids:
+        return pids
+    # final fallback: netstat heuristics (best-effort; may require root on some systems)
+    pids = pids_from_netstat(port)
+    return pids
+
+
+def pids_from_netstat(port: int) -> set[int]:
+    """Best-effort netstat parser for systems without lsof/ss.
+
+    Tries common netstat forms on Linux and macOS; extracts pids when present
+    (Linux `-p` shows pid/program). Returns empty set when no PID info found.
+    """
+    pids: set[int] = set()
+    candidates = [
+        ["netstat", "-ltnp"],  # Linux
+        ["netstat", "-anv", "-p", "tcp"],  # macOS-ish
+    ]
+    for cmd in candidates:
+        try:
+            cp = run_cmd(cmd)
+        except FileNotFoundError:
+            continue
+        if cp.returncode != 0 and not cp.stdout:
+            continue
+        for line in cp.stdout.splitlines():
+            if f":{port}" not in line:
+                continue
+            # Linux netstat with -p shows '1234/program'
+            m = re.search(r"\b(\d+)/(?:[\w\-\.]+)\b", line)
+            if m:
+                try:
+                    pids.add(int(m.group(1)))
+                except ValueError:
+                    continue
+    return pids
+
+
+def containers_for_port(port: int) -> set[str]:
+    containers: set[str] = set()
+    for cli in ("docker", "podman"):
+        try:
+            cp = run_cmd([cli, "ps", "--format", "{{.ID}} {{.Ports}} {{.Names}}"])
+        except FileNotFoundError:
+            continue
+        if cp.returncode != 0:
+            continue
+        for line in cp.stdout.splitlines():
+            parts = line.split(None, 2)
+            if not parts:
+                continue
+            cid = parts[0]
+            ports_str = parts[1] if len(parts) > 1 else ""
+            # Common docker port formats include:
+            #  - "0.0.0.0:5432->5432/tcp"
+            #  - ":::5432->5432/tcp"
+            #  - "5432/tcp" (exposed container port; not necessarily published)
+            if (
+                f":{port}->" in ports_str
+                or re.search(rf"\b{port}\b", ports_str)
+                or re.search(rf":{port}(/|\b)", ports_str)
+            ):
+                containers.add(cli + ":" + cid)
+    return containers
+
+
+def kill_process(pid: int, sig: int, dry_run: bool) -> bool:
+    if dry_run:
+        logger.info("DRY-RUN: would send signal %s to pid %s", sig, pid)
+        return True
+    try:
+        os.kill(pid, sig)
+        logger.info("killed pid %s with signal %s", pid, sig)
+        return True
+    except PermissionError:
+        logger.error("permission denied killing pid %s", pid)
+        return False
+    except ProcessLookupError:
+        logger.warning("pid %s no longer exists", pid)
+        return True
+    except OSError as e:
+        logger.error("error killing pid %s: %s", pid, e)
+        return False
+
+
+def kill_container(cli_prefixed_id: str, sig_name: str, dry_run: bool) -> bool:
+    # cli_prefixed_id is like 'docker:abcd' or 'podman:abcd'
+    cli, cid = cli_prefixed_id.split(":", 1)
+    cmd = [cli, "kill"]
+    if sig_name:
+        cmd += ["-s", sig_name]
+    cmd.append(cid)
+    if dry_run:
+        logger.info("DRY-RUN: %s", " ".join(shlex.quote(c) for c in cmd))
+        return True
+    try:
+        cp = run_cmd(cmd)
+    except FileNotFoundError:
+        logger.error("%s not found", cli)
+        return False
+    if cp.returncode == 0:
+        logger.info(
+            "killed container %s via %s (signal %s)", cid, cli, sig_name or "TERM"
+        )
+        return True
+    else:
+        logger.error(
+            "error killing container %s via %s: %s",
+            cid,
+            cli,
+            (cp.stderr.strip() or cp.stdout.strip()),
+        )
+        return False
+
+
+def main() -> int:
+    args = parse_args()
+    logging.basicConfig(
+        level=logging.DEBUG if args.verbose else logging.INFO, format="%(message)s"
+    )
+    sig_num = parse_signal(args.signal)
+    if sig_num is None:
+        logger.error("invalid signal: %s", args.signal)
+        return 1
+
+    sig_name = args.signal if not args.signal.isdigit() else None
+
+    found_any = False
+    failed = False
+
+    for port in args.ports:
+        if args.mode in ("auto", "process"):
+            pids = get_pids_for_port(port)
+            if pids:
+                found_any = True
+                for pid in sorted(pids):
+                    ok = kill_process(pid, sig_num, args.dry_run)
+                    if not ok:
+                        failed = True
+            elif args.mode == "process":
+                # nothing found for this port in process mode
+                continue
+
+        if args.mode in ("auto", "container"):
+            containers = containers_for_port(port)
+            if containers:
+                found_any = True
+                for cid in sorted(containers):
+                    ok = kill_container(cid, sig_name, args.dry_run)
+                    if not ok:
+                        failed = True
+
+    if failed:
+        return 1
+    if not found_any:
+        return 0 if args.no_fail else 2
+    return 0
+
+
+if __name__ == "__main__":
+    try:
+        rc = main()
+    except KeyboardInterrupt:
+        rc = 1
+    sys.exit(rc)

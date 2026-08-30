@@ -1,0 +1,88 @@
+#!/usr/bin/env python
+import logging
+import os
+import shlex
+
+# save our current directory so we know where to write the file in the end
+INITIAL_CWD = os.path.abspath(os.getcwd())
+
+home_dir = os.environ["HOME"]
+
+dirs = []
+
+loglevel = "DEBUG"
+logFormat = "[%(asctime)s][%(levelname)8s][%(filename)s:%(lineno)s - %(funcName)20s() ] %(message)s"
+logging.basicConfig(level=logging.DEBUG, format=logFormat)
+logger = logging.getLogger(__name__)
+
+# get all the paths we cd'd to in the past
+logger.info("Opening .zsh_history...")
+with open(f"{home_dir}/.zsh_history", encoding="utf-8", errors="ignore") as file:
+    for line in file:
+        # logging.debug(f"line: {line}")
+        try:
+            cmd_part = line.split(";")[1]
+            tokens = shlex.split(cmd_part.strip())
+            logger.debug("tokens: %s", tokens)
+        except (IndexError, ValueError) as _:
+            # skip malformed history lines
+            continue
+        if "cd" in tokens:
+            logger.info("Found cd in %s", tokens)
+            save_next = False
+            for t in tokens:
+                if t == "cd":
+                    save_next = True
+                    continue
+                if save_next:
+                    dirs.append(t)
+                    logger.debug("Appending %s to dirs", t)
+                    save_next = False
+        else:
+            logger.info("no cd in %s", tokens)
+
+visited_dirs = []
+
+# get absolute paths
+os.chdir(home_dir)
+cwd = os.path.abspath(os.getcwd())
+last_cwd = cwd
+logger.info("Starting to process dirs")
+for dir in dirs:
+    try:
+        # try to read it as an absolute path
+        if os.path.isabs(dir):
+            os.chdir(dir)
+            last_cwd = cwd
+            cwd = os.path.abspath(os.getcwd())
+            if cwd != last_cwd:
+                visited_dirs.append(cwd)
+                logger.debug("Appended %s to dirs", cwd)
+        # try to read it relative to CWD (unless CWD is ~)
+        if os.path.abspath(home_dir) != os.path.abspath(cwd) and os.path.isdir(dir):
+            os.chdir(dir)
+            last_cwd = cwd
+            cwd = os.path.abspath(os.getcwd())
+            if cwd != last_cwd:
+                visited_dirs.append(cwd)
+        # try to read it relative to CWD (unless we're just going up one dir)
+        if (os.path.isdir(os.path.join(home_dir, dir))) and dir != "..":
+            os.chdir(os.path.join(home_dir, dir))
+            last_cwd = cwd
+            cwd = os.path.abspath(os.getcwd())
+            if cwd != last_cwd:
+                visited_dirs.append(cwd)
+    except (OSError, FileNotFoundError) as exc:
+        logger.error("Couldn't process %s: %s", dir, exc)
+
+for dir in visited_dirs:
+    assert os.path.isdir(dir) and os.path.isabs(dir)
+
+os.chdir(INITIAL_CWD)
+
+# build one long zoxide add command:
+cmd = ["zoxide", "add"] + visited_dirs
+command = shlex.join(cmd)
+logger.info("zoxide command: %s", command)
+with open("add_command.bash", "w") as file:
+    file.write(command)
