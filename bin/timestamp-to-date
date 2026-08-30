@@ -1,0 +1,90 @@
+#!/usr/bin/env python3
+#
+# License: Apache 2.0
+#
+# Copyright 2026, Joe Block <jpb@unixorn.net>
+
+import argparse
+import datetime
+import logging
+import sys
+
+try:
+    from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
+except ImportError:  # pragma: no cover - zoneinfo should exist on py3.9+
+    ZoneInfo = None
+    ZoneInfoNotFoundError = LookupError
+
+logger = logging.getLogger(__name__)
+
+
+def parse_cli():
+    """Parse the command line options."""
+    parser = argparse.ArgumentParser(
+        description="Convert a Unix timestamp to a human-readable date (like `date`)"
+    )
+    parser.add_argument(
+        "timestamp",
+        help="Unix timestamp (seconds since epoch)",
+    )
+    parser.add_argument(
+        "--timezone",
+        "--time-zone",
+        dest="timezone",
+        help="IANA timezone name (e.g. America/Los_Angeles). Defaults to local timezone.",
+        default=None,
+    )
+    parser.add_argument(
+        "-v", "--verbose", action="store_true", help="enable debug logging"
+    )
+
+    cli = parser.parse_args()
+    loglevel = logging.DEBUG if cli.verbose else logging.INFO
+    logging.basicConfig(level=loglevel, format="%(message)s")
+    return cli
+
+
+def main():
+    """Main program driver."""
+    cli = parse_cli()
+
+    # Parse timestamp
+    try:
+        ts = float(cli.timestamp)
+    except (ValueError, TypeError):
+        logger.error("invalid timestamp: %s", cli.timestamp)
+        return 1
+
+    # Determine timezone
+    tzinfo: datetime.tzinfo | None
+    if cli.timezone:
+        if ZoneInfo is None:
+            logger.error("timezone support not available in this Python build")
+            return 1
+        try:
+            tzinfo = ZoneInfo(cli.timezone)
+        except (ZoneInfoNotFoundError, ValueError):
+            logger.error("invalid timezone: %s", cli.timezone)
+            return 1
+    else:
+        # Local timezone via astimezone()
+        tzinfo = datetime.datetime.now().astimezone().tzinfo
+
+    # Build datetime with timezone
+    try:
+        dt = datetime.datetime.fromtimestamp(ts, tz=tzinfo)
+    except (OSError, OverflowError, ValueError) as exc:
+        logger.error("could not convert timestamp: %s (%s)", cli.timestamp, exc)
+        return 1
+
+    # Format similar to `date` output: 'Tue Mar 16 12:34:56 PDT 2021'
+    # Use space-padded day number to match `date`'s %e behavior
+    day_str = f"{dt.day:2d}"
+    out = f"{dt.strftime('%a %b')} {day_str} {dt.strftime('%H:%M:%S %Z %Y')}"
+    print(out)
+    return 0
+
+
+if __name__ == "__main__":
+    rc = main()
+    sys.exit(rc)
