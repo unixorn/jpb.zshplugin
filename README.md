@@ -86,6 +86,7 @@ The scripts in this collection don't actually require you to be using ZSH as you
 | `jsondiff` | ? | Diff JSON files and cope with key-order differences by processing with json.tool |
 | `killport` | jpb@unixorn.net | Kill processes (and optionally containers) listening on ports; supports multiple ports, signal control, dry-run, and container mode |
 | `lineprof` | Mislav Marohnić's [dotfiles](https://github.com/mislav/dotfiles)  | Annotates each line of input with the number of milliseconds elapsed since the last line. Useful for figuring out slow points of output-producing programs. |
+| `load-zoxide-from-zsh-history` | jpb@unixorn.net | Parse `~/.zsh_history` and generate a `zoxide add` command containing visited directories |
 | `local-ip-address` | jpb@unixorn.net | Print local IP v4 address |
 | `local-ipv6-address` | jpb@unixorn.net | Print local IP v6 address |
 | `ls-open-ports` | jpb@unixorn.net | List open ports |
@@ -105,8 +106,8 @@ The scripts in this collection don't actually require you to be using ZSH as you
 | `pidpwd` | jpb@unixorn.net | Find the pwd of a given pid. Only works on linux since it requires `/proc` |
 | `pjson` | [https://coderwall.com/](https://coderwall.com/p/hwu5uq?i=9&p=1&q=sort%3Ascore+desc&t%5B%5D=zsh) | Prettify json files |
 | `plot` | katef's [gist](https://gist.github.com/katef/fb4cb6d47decd8052bd0e8d88c03a102) | Draw a graph in the terminal |
-| `port-listeners-ipv{4,6}` | jpb@unixorn.net | Show what programs are listening to a given port |
 | `port-listened-by}` | jpb@unixorn.net | Show what programs are listening to a given port |
+| `port-listeners-ipv{4,6}` | jpb@unixorn.net | Show what programs are listening to a given port |
 | `prettyping` | [Denilson Sá Maia](https://github.com/denilsonsa/prettyping) | Prettify `ping` output |
 | `pydoc` | Hangops Slack | Look something up on [docs.python.org](https://docs.python.org) and opens it in your default browser |
 | `random-password` | jpb@unixorn.net | Generate a random password. If no argument, assume 32 character length |
@@ -121,6 +122,7 @@ The scripts in this collection don't actually require you to be using ZSH as you
 | `steal` | jpb@unixorn.net | Helper for quickly resetting ownership of files you created with the wrong userid |
 | `strip-ansi-codes` | jpb@unixorn.net | Strips the ANSI codes from STDIN. Makes grepping through things like jenkins logs considerably less painful |
 | `tableflip` | [hangops](https://hangops.slack.com) slack | Prints a tableflip animation. |
+| `timestamp-to-date` | jpb@unixorn.net | Convert a Unix timestamp to a human-readable date (supports IANA timezones) |
 | `title-text` | jpb@unixorn.net | Set the terminal title in any application (like iTerm 2 or Terminal on macOS) that supports VT100 escape sequences. |
 | `tmux-cleanup` | jpb@unixorn.net | Kill unattached `tmux` sessions |
 | `urldecode` | jpb@unixorn.net | Decode an url string |

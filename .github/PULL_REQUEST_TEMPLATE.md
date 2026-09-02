@@ -42,8 +42,8 @@
 
 ## Scripts
 
-- [ ] I have run `pylint` on all python files touched in my branch.
-- [ ] I have run `rubocop` on all ruby files touched in my branch.
-- [ ] I have run `shellcheck` on all shell scripts touched in my branch.
+- [ ] I have run `ruff check` or `pylint` on all python files touched in my PR.
+- [ ] I have run `rubocop` on all ruby files touched in my PR.
+- [ ] I have run `shellcheck` on all shell scripts touched in my PR.
 - [ ] All scripts touched/added in this PR have valid shebang lines and are marked executable.
-- [ ] Any scripts added in my PR do not include language extensions in their names - no `foo.sh`, `foo.rb` or `foo.py`. We do not want to have to change other scripts just because something gets rewritten in a better fitting language.
+- [ ] Any scripts added in my PR do not include language extensions in their names - no `foo.sh`, `foo.rb` or `foo.py`. We do not want to have to change other scripts just because something gets rewritten in a better fitting language later.
