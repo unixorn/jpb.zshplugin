@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026.09.02
+
+### Added / Changed
+
+- `killport`: New Python3 implementation (stdlib-only). Finds listening processes via `lsof`/`ss` with a `netstat` fallback; supports killing containers via `docker`/`podman`, signal control, `--dry-run`, `--no-fail`, and `--mode`.
+- `timestamp-to-date`: Added `timestamp-to-date` script; accepts a bare Unix timestamp and optional `--timezone` (IANA) and prints a `date`-style output.
+- `load-zoxide-from-zsh-history`: Improved robustness and logging; replaced bare `except` handlers and switched to module logger. Linted with `ruff`.
+
 ## 2026.8.18
 
 ### Changed
