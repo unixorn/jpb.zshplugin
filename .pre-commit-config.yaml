@@ -22,13 +22,13 @@ repos:
         args: ["--ignore", "LICENSE.md", "--disable", "~MD013"]
 
   - repo: https://github.com/thlorenz/doctoc
-    rev: v2.4.1
+    rev: v2.5.0
     hooks:
       - id: doctoc
         args: ["--update-only"]
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.16.3
+    rev: v0.16.5
     hooks:
       - id: ruff-check
         args: ["--fix", "--ignore=E402"]
