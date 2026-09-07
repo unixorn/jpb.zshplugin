@@ -28,7 +28,7 @@ repos:
         args: ["--update-only"]
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.16.5
+    rev: v0.16.6
     hooks:
       - id: ruff-check
         args: ["--fix", "--ignore=E402"]
