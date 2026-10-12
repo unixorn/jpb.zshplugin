@@ -433,7 +433,7 @@ def render_template(
     Returns:
         The rendered template string.
     """
-    year = datetime.datetime.now(tz=datetime.timezone.utc).year
+    year = datetime.datetime.now(tz=datetime.UTC).year
     template = TEMPLATES[script_type]
     return template.format(name=name, year=year, author=author, email=email)
 
